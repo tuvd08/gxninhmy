@@ -546,3 +546,70 @@ function twentythirteen_customize_preview_js() {
 	wp_enqueue_script( 'twentythirteen-customizer', get_template_directory_uri() . '/js/theme-customizer.js', array( 'customize-preview' ), '20130226', true );
 }
 add_action( 'customize_preview_init', 'twentythirteen_customize_preview_js' );
+
+
+
+
+
+/**
+ *  Register template
+ */
+function main_template() { 
+        // Check if the template file exists
+        if(file_exists(TEMPLATEPATH . '/main_template.php')){ 
+            include(TEMPLATEPATH . '/main_template.php');
+            exit;
+        }
+    return;
+}
+add_action('template_redirect', 'main_template');
+
+
+
+function get_main_menu() {
+        // Check if the template file exists
+        if(file_exists(TEMPLATEPATH . '/main_menu.php')){ 
+            include(TEMPLATEPATH . '/main_menu.php');
+        }
+}
+function get_right_menu() {
+        // Check if the template file exists
+        if(file_exists(TEMPLATEPATH . '/right_menu.php')){ 
+            include(TEMPLATEPATH . '/right_menu.php');
+        }
+}
+function render_home() {
+        // Check if the template file exists
+        if(file_exists(TEMPLATEPATH . '/home_page.php')){ 
+            include(TEMPLATEPATH . '/home_page.php');
+        }
+}
+function render_page() {
+        // Check if the template file exists
+        if(file_exists(TEMPLATEPATH . '/render_page.php')){ 
+            include(TEMPLATEPATH . '/render_page.php');
+        }
+}
+
+
+function get_ID_by_slug($page_slug) {
+    $page = get_page_by_path($page_slug);
+    if ($page) {
+        return $page->ID;
+    } else {
+        return null;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

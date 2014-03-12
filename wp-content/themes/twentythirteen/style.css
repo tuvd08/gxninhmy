@@ -923,7 +923,7 @@ ul.nav-menu li:hover > ul,
 /* Navbar */
 .navbar {
 	background-color: #f7f5e7;
-	margin: 0 auto;
+	margin: 0 auto !important;
 	max-width: 1600px;
 	width: 100%;
 }
@@ -966,7 +966,7 @@ ul.nav-menu li:hover > ul,
  */
 
 .hentry {
-	padding: 40px 0;
+	padding: 10px 0;
 }
 
 .entry-header,
@@ -974,8 +974,8 @@ ul.nav-menu li:hover > ul,
 .entry-summary,
 .entry-meta {
 	margin: 0 auto;
-	max-width: 604px;
 	width: 100%;
+  padding: 0px 10px;
 }
 
 .sidebar .entry-header,
@@ -1002,11 +1002,14 @@ ul.nav-menu li:hover > ul,
 }
 
 .entry-header {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
 }
 
 .entry-title {
-	font-weight: normal;
+  font-family: "Helvetica Neue Bold", Helvetica, Lucida, Arial, sans-serif;
+	font-weight: bold;
+  font-size: 22px;
 	margin: 0 0 5px;
 }
 
@@ -3134,4 +3137,80 @@ footer.entry-meta {
 	.comment-reply-login {
 		color: #333;
 	}
+}
+
+
+.uiBox {
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+-webkit-box-shadow: 0px 2px 4px -1px rgba(35, 44, 48, 0.18);
+-moz-box-shadow: 0px 2px 4px -1px rgba(35, 44, 48, 0.18);
+box-shadow: 0px 2px 4px -1px rgba(35, 44, 48, 0.18);
+border: 1px solid #cccccc;
+background: #ffffff;
+margin: 0 0 20px 0;
+}
+.uiBox .title {
+background-color: #f0f0f0;
+border-bottom: 1px solid #cccccc;
+-webkit-box-shadow: 0 1px 2px rgba(13, 13, 13, 0.2);
+-moz-box-shadow: 0 1px 2px rgba(13, 13, 13, 0.2);
+box-shadow: 0 1px 2px rgba(13, 13, 13, 0.2);
+-webkit-border-radius: 4px 4px 0 0;
+-moz-border-radius: 4px 4px 0 0;
+border-radius: 4px 4px 0 0;
+padding: 8px 10px;
+line-height: 20px;
+margin: 0;
+word-wrap: break-word;
+}
+.uiBox .title .actionIcon {
+margin: -3px 0;
+}
+.uiBox .uiContentBox {
+padding: 20px;
+}
+.uiBox.roundedBottom {
+-webkit-border-radius: 0 0 4px 4px;
+-moz-border-radius: 0 0 4px 4px;
+border-radius: 0 0 4px 4px;
+}
+.uiBox.roundedBottom .title {
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+}
+.uiBox.roundedTop {
+-webkit-border-radius: 4px 4px 0 0;
+-moz-border-radius: 4px 4px 0 0;
+border-radius: 4px 4px 0 0;
+}
+.uiBox.uiGrayLightBox {
+background: #f0f0f0;
+}
+.uiBox.noRounded {
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+}
+.uiBox.noRounded .title {
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+}
+.uiBox .uiActionBorder {
+margin: 0px -20px;
+}
+.uiBox .uiPopup .uiActionBorder {
+margin: 10px -10px;
+}
+.uiBox .tab-content .uiActionBorder {
+margin: 10px -10px;
+}
+.uiBox > .uiTrees {
+border: none;
+-webkit-border-radius: 0 0 3px 3px;
+-moz-border-radius: 0 0 3px 3px;
+border-radius: 0 0 3px 3px;
 }
