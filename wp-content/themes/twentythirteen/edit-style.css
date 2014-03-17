@@ -34,6 +34,33 @@ html, body {
 .uiHomeMenu .uiNavigations>li>a>i{margin-right:8px;}
 .uiHomeMenu .uiNavigations>li>a:hover{color:#2f5e92; text-decoration: none;}
 
+.uiNavigations .sub-menu {
+  left: 252px;
+  top: 0px;
+}
+
+.min-body .uiNavigations .sub-menu {
+  left: 200px;
+  top: 0px;
+}
+
+.min-body code {
+  white-space: normal;
+}
+
+img.thumbnail-menu {
+  width: 60px !important;
+  height: 50px !important;
+  margin: 0px 10px !important;
+  padding: 1px !important;
+}
+
+img.thumbnail-left-menu {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+}
 
 .panel-title {
   font-weight: bold;
@@ -42,13 +69,76 @@ html, body {
   padding:10px;
 }
 
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
 
+.max {
+  display: block;
+}
+
+.min {
+  display: none;
+}
+
+.menu-show {
+  font-size: 2.2em;
+  margin: 8px 20px;
+  color: #000;
+}
+
+.show-menu-block {
+  position: absolute;
+  border: 1px solid #eee;
+  width: 200px;
+  background: #fff;
+}
+
+.ellipsis {
+  display:block;width:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+
+.avatarCircle {
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top,#fff,#f1f1f1);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f1f1f1));
+  background-image: -webkit-linear-gradient(top,#fff,#f1f1f1);
+  background-image: -o-linear-gradient(top,#fff,#f1f1f1);
+  background-image: linear-gradient(to bottom,#fff,#f1f1f1);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff1f1f1',GradientType=0);
+  width: 35px;
+  height: 35px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  -webkit-box-shadow: 0 2px 4px rgba(13,13,13,0.27);
+  -moz-box-shadow: 0 2px 4px rgba(13,13,13,0.27);
+  box-shadow: 0 2px 4px rgba(13,13,13,0.27);
+  border: 1px solid #b1b1b1;
+  padding: 2px;
+}
+.avatarCircle img {
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  width: 30px;
+  height: 30px;
+}
 /*----- home-page  ------*/
 .home-page {
   padding: 10px;
 }
 
-
+.home-page .the-title a {
+  display: block;
+}
+.home-page .the-title .title-post {
+  margin-left: 80px;
+}
 
 
 

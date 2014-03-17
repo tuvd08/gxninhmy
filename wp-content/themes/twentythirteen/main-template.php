@@ -6,9 +6,10 @@
   <tbody>
     <tr>
       <td class="left-column">
-        <?php get_main_menu(); ?>
+        <div class="min left-bar"></div>
+        <div class="max menu-container"><?php get_main_menu(); ?></div>
       </td>
-      <td class="main-column">
+      <td class="main-column on-hide-menu">
         <?php 
         $pageid = basename(get_permalink());
         $isHome = (strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0);
@@ -22,7 +23,8 @@
       
       </td>
       <td class="right-column">
-        <?php get_right_menu();?>
+        <div class="min right-bar"></div>
+        <div class="max right-container"><?php get_right_menu();?></div>
       </td>
     </tr>
   </tbody>

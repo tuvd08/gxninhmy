@@ -549,6 +549,15 @@ add_action( 'customize_preview_init', 'twentythirteen_customize_preview_js' );
 
 
 
+if ( function_exists( 'add_theme_support' ) ) { 
+  add_theme_support( 'post-thumbnails' );
+  set_post_thumbnail_size( 60, 50, true ); // default Post Thumbnail dimensions (cropped)
+
+  // additional image sizes
+  // delete the next line if you do not need additional image sizes
+  add_image_size( 'home-thumb', 60, 9999 ); //300 pixels wide (and unlimited height)
+}
+
 
 
 /**
@@ -600,6 +609,14 @@ function get_ID_by_slug($page_slug) {
         return null;
     }
 }
+
+function get_sub_categories_by_slug($page_slug) {
+  $cateNow = get_category_by_slug($page_slug); 
+  // find all the child categories of the current parent
+  return get_terms ( 'category', array ( 'child_of' => $cateNow-> cat_ID, 'hide_empty' => false ) ) ;
+}
+
+
 
 
 

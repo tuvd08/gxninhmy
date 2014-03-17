@@ -27,15 +27,36 @@
 
       $pages = get_pages($args); 
       $isHome = (strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0);
+      
+      $my_wp_query = new WP_Query();
+      $all_wp_pages = $my_wp_query->query(array('post_type' => 'page'));
+
+      
       foreach( $pages as $p ) {
         $clazz = "navItem";
         if(strcmp($p -> post_name, $pageid) == 0 || $isHome === true && strcmp($p -> post_name, "home") == 0) {
           $clazz = "navItemSelected";
         }
         
-        echo '<li class="'. $clazz .'">';
-        echo '  <a href="'. site_url() .'/' . $p -> post_name . '">'. $p->post_title .'</a>';
+        if($p->post_parent) {
+          $children = wp_list_pages("title_li=&child_of=".$p->post_parent."&echo=0");
+        } else {
+          $children = wp_list_pages("title_li=&child_of=".$p->ID."&echo=0");
+        }
+        
+        echo '<li class="dropdown '. $clazz .'">';
+        
+        if($children) {
+          echo '  <a class="dropdown-toggle" data-toggle="dropdown" href="'. site_url() .'/' . $p -> post_name . '">'. $p->post_title .'</a>';
+          echo '<ul class="dropdown-menu sub-menu">';
+          echo $children;
+          echo '</ul>';
+        } else {
+          echo '  <a class="menu-item" href="'. site_url() .'/' . $p -> post_name . '">'. $p->post_title .'</a>';
+        }
+        
         echo '</li>';
+        
       }
       
       ?>

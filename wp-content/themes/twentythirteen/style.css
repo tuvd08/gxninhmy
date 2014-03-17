@@ -996,8 +996,11 @@ ul.nav-menu li:hover > ul,
 	padding: 0;
 }
 
+.entry-thumbnail {
+  text-align: center;
+}
+
 .entry-thumbnail img {
-	display: block;
 	margin: 0 auto 10px;
 }
 

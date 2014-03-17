@@ -13,20 +13,16 @@
   <tbody>
     <tr>
       <td class="left-column">
-        <?php get_main_menu(); ?>
+        <div class="min left-bar"></div>
+        <div class="max menu-container"><?php get_main_menu(); ?></div>
       </td>
       <td class="main-column post-content">
 
-<div class="uiBox">
+<div class="uiBox on-hide-menu" id="post-detail">
 
     
         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
           <header class="entry-header">
-            <?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
-            <div class="entry-thumbnail">
-              <?php the_post_thumbnail(); ?>
-            </div>
-            <?php endif; ?>
 
             <?php if ( is_single() ) : ?>
             <h1 class="entry-title"><?php the_title(); ?></h1>
@@ -41,6 +37,15 @@
               <?php edit_post_link( __( 'Edit', 'twentythirteen' ), '<span class="edit-link">', '</span>' ); ?>
             </div><!-- .entry-meta -->
           </header><!-- .entry-header -->
+
+          <?php if ( has_post_thumbnail() ) : ?>
+            <div class="entry-thumbnail">
+              <?php $full_img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'full');  ?>
+              <a class="image-box" href="<?php echo $full_img[0]; ?>">
+                <?php the_post_thumbnail("large"); ?>
+              </a>
+            </div>
+          <?php endif; ?>
 
           <?php if ( is_search() ) : // Only display Excerpts for Search ?>
           <div class="entry-summary">
@@ -70,7 +75,8 @@
       
       </td>
       <td class="right-column">
-        <?php get_right_menu();?>
+        <div class="min right-bar"></div>
+        <div class="max right-container"><?php get_right_menu();?></div>
       </td>
     </tr>
   </tbody>
