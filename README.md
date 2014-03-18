@@ -1,4 +1,4 @@
 gxninhmy
 ========
 
-Site of ninhmy.net
+Site of http://ninhmy.net
