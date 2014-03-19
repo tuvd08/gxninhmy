@@ -17,7 +17,7 @@ the_post_thumbnail( array(100,100) );  // Other resolutions
 
 <div class="home-page">
 <?php
-$categories = array("ha-giai-thanh-duong","thuong-vi-thanh-duong","thu-ngo", "cam-nhan-ve-thanh-duong");
+$categories = array("ha-giai-thanh-duong","thuong-vi-thanh-duong","thu-tro-giup", "cam-nhan-ve-thanh-duong");
 foreach($categories as $cate) {
   $category = get_category_by_slug($cate);
   $strQuery = array( 'posts_per_page' => 5, 'category_name' => $cate, 'orderby' => 'date', 'order' => 'ASC' );

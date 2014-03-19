@@ -16,12 +16,14 @@
     });
     
     $('.on-hide-menu').on('click', function() {
-      var menu = $('.menu-container');
-      var sMenu = $('.main_menu');
-      sMenu.css({overflow :'hidden'}).animate({width: '0px', height:'0px'}, 300, function() { 
-          $(this).removeAttr('style');
-          menu.hide();
-      });
+      if($('.left-column').width() < 20) {
+        var menu = $('.menu-container');
+        var sMenu = $('.main_menu');
+        sMenu.css({overflow :'hidden'}).animate({width: '0px', height:'0px'}, 300, function() { 
+            $(this).removeAttr('style');
+            menu.hide();
+        });
+      }
     });
 
 })(jQuery, window);

@@ -1,7 +1,7 @@
 <div class="right_menu">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Xây Dựng Nhà Thờ</h3>
+      <h3 class="panel-title">Xây Dựng Thánh Đường</h3>
     </div>
     <div class="panel-body">
       <?php 

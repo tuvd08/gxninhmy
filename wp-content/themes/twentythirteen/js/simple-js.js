@@ -43,13 +43,6 @@
         $('.menu-container').css('position', 'relative')
            .find('.main_menu').addClass('show-menu-block');
         
-        $('.on-show-menu').on('click', function() {
-          $('.menu-container').toggle(500);
-        });
-        
-        $('.on-hide-menu').on('click', function() {
-          $('.menu-container').hide(500);
-        });
      } else {
        if($('.min').eq(0).css('display') === 'block') {
          $('.max').show();
@@ -112,7 +105,7 @@
         if(thizz.height() >= 40) {
           return 0;
         }
-        return 15;
+        return 11;
       });
     }
 
@@ -128,8 +121,8 @@
       $('html').css('overflow', 'auto');
       $('#layer-info').hide(300).html('');
     }
-    
-    // load
+
+    // load after ready
     $(document).ready(function() {
       Load.onload(); 
     });
