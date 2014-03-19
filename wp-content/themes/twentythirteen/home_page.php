@@ -32,17 +32,18 @@ foreach($categories as $cate) {
     <div class="panel-body">
 <?php
     while ( $the_query->have_posts() ) {
-			$the_query->the_post();
+      $the_query->the_post();
       $the_ID = get_the_ID();
+      $the_clazz = "link-post";
 ?>
-    <div class="the-post">
+    <div class="the-post home-box">
       <div class="the-title clearfix">
         <?php if ( has_post_thumbnail() ) : ?>
           <a class="entry-thumbnail left" href="<?php echo get_permalink(); ?>" class="aImg53">
-              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail-menu')); $the_clazz = "link-post-image title-post";?>
+              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-box')); $the_clazz = "title-post";?>
           </a>
         <?php endif; ?>
-          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php the_excerpt(); ?>" class="<?php echo $the_clazz; ?>">
+          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
               <?php the_title(); ?>                                                                              
           </a>
           <?php the_excerpt(); ?>
@@ -78,7 +79,7 @@ wp_reset_postdata();
       <div class="the-title clearfix">
         <?php if ( has_post_thumbnail() ) : ?>
           <a class="entry-thumbnail left" href="<?php echo get_permalink(); ?>" class="aImg53">
-              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail-menu')); $the_clazz = "link-post-image title-post";?>
+              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-menu')); $the_clazz = "link-post-image title-post";?>
           </a>
         <?php endif; ?>
         

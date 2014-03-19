@@ -55,11 +55,24 @@ img.thumbnail-menu {
   padding: 1px !important;
 }
 
+img.thumbnail-box {
+  width: 150px !important;
+  height: 100px !important;
+  margin: 0px 10px !important;
+  padding: 1px !important;
+}
+
 img.thumbnail-left-menu {
   width: 30px !important;
   height: 30px !important;
   margin: 0px !important;
   padding: 0px !important;
+}
+
+.entry-content img.thumbnail {
+  width: 99% !important;
+  height: auto !important;
+  margin: 10px auto !important;
 }
 
 .panel-title {
@@ -139,8 +152,20 @@ img.thumbnail-left-menu {
 .home-page .the-title .title-post {
   margin-left: 80px;
 }
-
-
+.home-page .home-box .title-post {
+  margin-top:5px;
+  margin-left: 165px;
+  font-size: 16px;
+  line-height: 24px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+}
+.home-page .home-box .entry-thumbnail {
+  padding-top:10px;
+}
+.home-page .home-box p {
+  margin-bottom: 0px;
+}
 
 
 
