@@ -168,6 +168,30 @@ img.thumbnail-left-menu {
 }
 
 
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  max-width: 99%;
+  margin: auto;
+}
+
+.slider-container .item-slider {
+  display: none;
+  float: left;
+  position: absolute;
+  top: 0px; left: 0px;
+  width: auto;
+}
+
+.slider-container .active-item {
+  display: block;
+}
+
+.slider-container ul, li {
+  list-style-type: none;
+}
+
+
 
 
 

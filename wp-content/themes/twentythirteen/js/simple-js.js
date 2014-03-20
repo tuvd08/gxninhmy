@@ -1,8 +1,8 @@
 (function ($) {
 
     window.Load = {};
-    window.Resize = new Array(); //push
-    window.ResizeWidth = new Array();
+    window.Resize = window.Resize || new Array(); //push
+    window.ResizeWidth = window.ResizeWidth || new Array();
 
     Load.currWidth = 0;
         
@@ -107,6 +107,8 @@
         }
         return 11;
       });
+      
+      $('a').each(function(id) {if($(this).data('toggle') === 'tooltip') {$(this).tooltip();} });
     }
 
     Load.getLayer = function() {
