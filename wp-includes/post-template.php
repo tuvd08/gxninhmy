@@ -195,7 +195,7 @@ function get_the_album($album_tag='', $size='w292-h218') {
       $text .= '  <ul class="slider-container slider clearfix">'."\n";
       foreach($urls as $url) {
         $text .= '  <li class="item-slider'. ((strpos($text, 'li>')) ? '' : ' active-item') .'">'."\n";
-        $text .= '    <a href="'. $url .'=w1024-h768-p-no" class="image-box">'."\n";
+        $text .= '    <a target="_blank" href="'. $url .'=w1024-h768-p-no" class="image-box">'."\n";
         $text .= '      <img class="img-slider" src="' . $url .'='.$size.'-p-no"/>'."\n";
         $text .= '    </a>'."\n";
         $text .= '  </li>'."\n";

@@ -108,7 +108,22 @@
         return 11;
       });
       
-      $('a').each(function(id) {if($(this).data('toggle') === 'tooltip') {$(this).tooltip();} });
+      $('a').each(function(id) {
+        if($(this).data('toggle') === 'tooltip') {
+          $(this).tooltip();
+          $(this).on('shown.bs.tooltip', function () {
+            var title = $(this).parents('div:first').find('.tooltip:first').find('.tooltip-inner');
+            var size = title.text().length;
+            if(size < 100) {
+              title.css('max-width', '220px');
+            } else if(size < 200) {
+              title.css('max-width', '320px');
+            } else {
+              title.css('max-width', '420px');
+            }
+          });
+        }
+      });
     }
 
     Load.getLayer = function() {

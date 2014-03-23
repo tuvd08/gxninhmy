@@ -68,14 +68,20 @@
       <h3 class="panel-title">Video về Giáo Xứ</h3>
     </div>
     <div class="panel-body">
+      <iframe width="420" src="//www.youtube.com/embed/K4rxLmhw088" frameborder="0" allowfullscreen></iframe>
+      <a href="https://www.youtube.com/user/gxninhmy/videos" target="_blank">Xem Tất Cả</a>
     </div>
   </div>
   
-  <div class="panel panel-default">
+  <div class="panel panel-default hinhanhgx">
     <div class="panel-heading">
       <h3 class="panel-title">Hình Ảnh về Giáo Xứ</h3>
     </div>
     <div class="panel-body">
+      <?php 
+      $url_test="https://plus.google.com/u/0/photos/110773227077499625727/albums/5991617952845892657";
+      echo get_the_album($url_test, 'w292-h218');
+      ?>
     </div>
   </div>
 </div>

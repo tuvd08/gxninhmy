@@ -15,29 +15,38 @@
           effect.container = $('.'+prElm);
         }
         effect.allItems = effect.container.find('> .item-slider');
+        effect.size = effect.allItems.length;
+        if(effect.size.length === 0) {
+          return;
+        }
         effect.currentBlock = effect.container.find('> .active-item');
-        effect.isImgSlider = (effect.currentBlock.find('.img-slider').length > 0);
+        var firstImg = effect.currentBlock.find('.img-slider');
+        effect.isImgSlider = (firstImg.length > 0);
         //
         effect.allItems.each(function(index) { $(this).attr('data-index', index);});
-        effect.size = effect.allItems.length;
-       // effect.resetHeight();
+
         if(typeof time != 'undefined') {
           effect.time = time;
         }
+        //
+        if(effect.isImgSlider) {
+          firstImg.on('load', effect.resetHeight);
+        }
       },
       resetHeight: function() {
-        effect.container.width('auto');
-        var w = effect.container.outerWidth();
-        
+        var w = effect.container.parent().width();
         if(effect.isImgSlider) {
-          var img = new Image();
-          img.src = effect.currentBlock.find('img.img-slider').attr('src');
-          var imgW = img.width;
-          w = Math.min(w, imgW);
+          var imgW = effect.currentBlock.find('img.img-slider').width();
+          if(imgW > 0) {
+            w = Math.min(w, imgW);
+          }
+          if(w != imgW) {
+            effect.container.find('img.img-slider').css('max-width', (w-4) + 'px').addClass('thumbnail');
+          }
+          effect.isImgSlider = false;
         }
         effect.currentBlock.css('max-width', w + 'px');
-        effect.container.width(w + 'px');
-        var h = effect.currentBlock.outerHeight();
+        var h = effect.currentBlock.height();
         effect.container.css('min-height', h + 'px');
       },
       getCurrentBlock : function(index){
@@ -99,7 +108,7 @@
     items : [],
     size : 0,
     isAuto: true,
-    timeLive : 3000,
+    timeLive : 4000,
     end: true,
     init : function(container, isAuto, timeLive) {
       var p = PostSlider;
@@ -126,7 +135,7 @@
     },
     initInterval : function() {
       var p = PostSlider;
-      if(p.isAuto && p.interval === undefined) {
+      if(p.isAuto && p.interval === undefined && p.EffectPost.size > 0) {
         p.interval = setInterval(function(evt) {
           var type = 'rtl';
           var currentIndex = p.EffectPost.currentBlock.attr('data-index')*1 + 1;
