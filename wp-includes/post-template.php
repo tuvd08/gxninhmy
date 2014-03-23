@@ -172,8 +172,8 @@ function the_content( $more_link_text = null, $strip_teaser = false) {
   if(preg_match_all($regex , $content, $matches)) {
     $result = $matches[0];
     foreach($result as $album_tag) {
-      $album = get_the_album($album_tag, 'w456-h304');
-      str_replace( $album_tag, $album, $content);
+      $album = get_the_album($album_tag, 'w1046-h568');
+      $content = str_replace($album_tag, $album, $content);
     }
   }
 
@@ -195,8 +195,8 @@ function get_the_album($album_tag='', $size='w292-h218') {
       $text .= '  <ul class="slider-container slider clearfix">'."\n";
       foreach($urls as $url) {
         $text .= '  <li class="item-slider'. ((strpos($text, 'li>')) ? '' : ' active-item') .'">'."\n";
-        $text .= '    <a target="_blank" href="'. $url .'=w1024-h768-p-no" class="image-box">'."\n";
-        $text .= '      <img class="img-slider" src="' . $url .'='.$size.'-p-no"/>'."\n";
+        $text .= '    <a target="_blank" href="'. $url .'=w1600-h1200-no" class="image-box">'."\n";
+        $text .= '      <img class="img-slider thumbnail" src="' . $url .'='.$size.'-p-no"/>'."\n";
         $text .= '    </a>'."\n";
         $text .= '  </li>'."\n";
       }

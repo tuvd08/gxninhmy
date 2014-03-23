@@ -92,11 +92,15 @@
         var maxW = postContent.width() - 10;
         var imgs = postContent.find('img');
         imgs.each(function(index) {
-          var img = $(this).css({'padding':'0px', 'margin': '10px 0px'}).addClass('thumbnail');
-          img.after( '<a class="img-' +index+ '" href="' + img.attr('src') + '"></a>');
-          var a = postContent.find('a.img-'+index + ':first');
-          a.append(img);
-          a.fancybox();
+          if($(this).parents('.album-container:first').length === 0) {
+            var img = $(this).css({'padding':'0px', 'margin': '10px 0px'}).addClass('thumbnail');
+            img.after( '<a class="img-' +index+ '" href="' + img.attr('src') + '"></a>');
+            var a = postContent.find('a.img-'+index + ':first');
+            a.append(img);
+            a.fancybox();
+          } else {
+            $(this).parents('a:first').fancybox();
+          }
         });
       }
        
