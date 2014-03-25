@@ -80,6 +80,8 @@ img.thumbnail-left-menu {
 }
 .post-content {
   padding:10px;
+  font-size: 15px;
+  font-family: "Source Sans Pro",Helvetica,sans-serif;
 }
 
 .left {
@@ -141,6 +143,25 @@ img.thumbnail-left-menu {
   width: 30px;
   height: 30px;
 }
+/*----- home-banner ------*/
+.home-banner {
+  display: block;
+  width: 100%;
+  margin: 0px auto;
+  background: #457fa8;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+}
+
+.home-banner img.banner-img {
+  margin: 0px auto;
+  width: 100%;
+  max-width: 1349px;
+  max-height: 200px;
+  min-width: 540px;
+}
+
 /*----- home-page  ------*/
 .home-page {
   padding: 10px;
@@ -191,7 +212,9 @@ img.thumbnail-left-menu {
   list-style-type: none;
 }
 
-
+.right_menu .other-right .panel-body {
+  padding: 8px 5px;
+}
 
 
 

@@ -42,6 +42,8 @@
         $('.left-column').css({padding:'0px', margin: '0px', width : '5px'});
         $('.menu-container').css('position', 'relative')
            .find('.main_menu').addClass('show-menu-block');
+           
+        var img = $('img.banner-img').css('margin-left', function() {return (window.maxWidth - $(this).width())/2;});
         
      } else {
        if($('.min').eq(0).css('display') === 'block') {
