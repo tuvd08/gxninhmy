@@ -42,15 +42,14 @@
         $('.left-column').css({padding:'0px', margin: '0px', width : '5px'});
         $('.menu-container').css('position', 'relative')
            .find('.main_menu').addClass('show-menu-block');
-           
+        //
         var img = $('img.banner-img').css('margin-left', function() {return (window.maxWidth - $(this).width())/2;});
-        
      } else {
        if($('.min').eq(0).css('display') === 'block') {
          $('.max').show();
          $('.min').hide();
          //$('.right-column').attr('style', '');
-         $('.left-column').animateWidth({to: 250, callback:function(elm){ $(elm).attr('style', '');} }); 
+         $('.left-column').animateWidth({to: 250, callback: Load.callBackLoadResize }); 
          $('.menu-container').attr('style', '')
            .find('.main_menu').removeClass('show-menu-block');
        }
@@ -63,12 +62,18 @@
       if(window.maxWidth < 900) {
         $('.right-column').css({padding:'0px', margin: '0px', width : '5px'});
         $('.right-container').hide();
+        //
       } else {
        if($('.right-container').css('display') === 'none' || $('.right-column').width() < 20) {
          $('.right-container').show();
-         $('.right-column').animateWidth({to: 280, callback:function(elm){ $(elm).attr('style', '');} }); 
+         $('.right-column').animateWidth({to: 280, callback: Load.callBackLoadResize }); 
        }
      }
+    }
+    
+    Load.callBackLoadResize = function(elm) {
+      $(elm).attr('style', '');
+      Load.homeBox();
     }
     
     Load.maxWidthImg = function() {
@@ -130,7 +135,16 @@
           });
         }
       });
+      //
+      Load.homeBox();
     }
+    
+    Load.homeBox = function() {
+      $('a.sub-post').each(function(id) {
+        var thizz = $(this);
+        thizz.css('max-width', (thizz.parents('.home-box:first').width() - 47) + 'px');
+      });
+    };
 
     Load.getLayer = function() {
       var layer = $('#layer-info');
@@ -153,7 +167,7 @@
     // resize
     window.ResizeWidth.push(Load.loadMin700);
     window.ResizeWidth.push(Load.loadMin900);
-    window.ResizeWidth.push(Load.maxWidthImg);
+    window.ResizeWidth.push(Load.homeBox);
 
     $(window).on('resize', function (evt) {
       try {

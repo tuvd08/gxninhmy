@@ -8,7 +8,7 @@ $pageid = basename(get_permalink());
     foreach($subcategories as $cat){ $qr_categories .= ','.$cat -> slug;}
   }
 	//$strQuery = array( 'posts_per_page' => 16, 'offset' => $offset, 'category_name' => 'art_culture,food_travel,science_tech,health_sports', 'orderby' => 'date', 'order' => 'ASC' ); rand
-  $strQuery = array( 'category_name' => $qr_categories, 'orderby' => $order );
+  $strQuery = array('posts_per_page' => 100, 'category_name' => $qr_categories, 'orderby' => 'date', 'order' => 'DESC'  );
   $the_query = new WP_Query( $strQuery );
   $size = $the_query->found_posts;
   
