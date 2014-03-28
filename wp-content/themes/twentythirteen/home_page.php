@@ -177,13 +177,13 @@ wp_reset_postdata();
     while ( $the_query->have_posts() ) {
 			$the_query->the_post();
       $the_ID = get_the_ID();
-      $the_clazz = "link-post";
+      $the_clazz = "mini-link-post";
 ?>
     <div class="the-post">
       <div class="the-title clearfix">
         <?php if ( has_post_thumbnail() ) : ?>
           <a class="entry-thumbnail left" href="<?php echo get_permalink(); ?>" class="aImg53">
-              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-menu')); $the_clazz = "link-post-image title-post";?>
+              <?php the_post_thumbnail('home-thumb', array('class' => 'thumbnail mini-thumbnail-menu')); $the_clazz = "title-post mini-link-post-image ellipsis";?>
           </a>
         <?php endif; ?>
         
@@ -193,7 +193,7 @@ wp_reset_postdata();
           $excerpt = str_replace('</p>', '', $excerpt);
         ?>
           <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
-              <?php the_title(); ?> 
+              <?php the_title(); echo ' - ' . get_the_date(). ''; ?>
           </a>
       </div>
     </div>
@@ -208,7 +208,7 @@ wp_reset_postdata();
 wp_reset_postdata();
 
 //
-   $strQuery = array( 'posts_per_page' => 5, 'category_name' => 'tin-tuc,tin-giao-hoi', 'orderby' => 'date', 'order' => 'DESC' );
+   $strQuery = array( 'posts_per_page' => 10, 'category_name' => 'tin-tuc,tin-giao-hoi,tu-lieu-cong-giao,thanh-nhac,phim-anh', 'orderby' => 'date', 'order' => 'DESC' );
    $the_query = new WP_Query( $strQuery );
 ?>
   <div class="panel panel-info">
@@ -220,13 +220,13 @@ wp_reset_postdata();
     while ( $the_query->have_posts() ) {
 			$the_query->the_post();
       $the_ID = get_the_ID();
-      $the_clazz = "link-post";
+      $the_clazz = "mini-link-post";
 ?>
     <div class="the-post">
       <div class="the-title clearfix">
         <?php if ( has_post_thumbnail() ) : ?>
-          <a class="entry-thumbnail left" href="<?php echo get_permalink(); ?>" class="aImg53">
-              <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-menu')); $the_clazz = "link-post-image title-post";?>
+          <a class="entry-thumbnail left" href="<?php echo get_permalink(); ?>">
+              <?php the_post_thumbnail('home-thumb', array('class' => 'thumbnail mini-thumbnail-menu')); $the_clazz = "title-post mini-link-post-image ellipsis";?>
           </a>
         <?php endif; ?>
         
@@ -236,7 +236,7 @@ wp_reset_postdata();
           $excerpt = str_replace('</p>', '', $excerpt);
         ?>
           <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
-              <?php the_title(); ?> 
+              <?php the_title(); echo ' - ' . get_the_date(). ''; ?>
           </a>
       </div>
     </div>
