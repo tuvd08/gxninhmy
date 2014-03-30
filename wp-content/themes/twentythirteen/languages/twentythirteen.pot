@@ -331,3 +331,7 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "the WordPress team"
 msgstr ""
+
+
+msgid "Username"
+msgstr "Ten Dang Nhap"
