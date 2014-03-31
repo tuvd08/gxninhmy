@@ -82,7 +82,8 @@ img.thumbnail-left-menu {
 }
 
 .entry-content img.thumbnail {
-  width: 99% !important;
+  min-width: 50% !important;
+  max-width: 80% !important;
   height: auto !important;
   margin: 10px auto !important;
 }

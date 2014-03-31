@@ -9,6 +9,7 @@
  * @since Twenty Thirteen 1.0
  */
 ?>
+
 <table style="table-layout: fixed; margin: 0px auto; width: 100%">
   <tbody>
     <tr>
