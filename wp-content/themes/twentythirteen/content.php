@@ -9,7 +9,6 @@
  * @since Twenty Thirteen 1.0
  */
 ?>
-
 <table style="table-layout: fixed; margin: 0px auto; width: 100%">
   <tbody>
     <tr>
@@ -72,10 +71,12 @@
         </div>
 
       </td>
+      <?php if(false) { ?>
       <td class="right-column">
         <div class="min right-bar"></div>
         <div class="max right-container"><?php get_right_menu();?></div>
       </td>
+      <?php }?>
     </tr>
   </tbody>
 </table>

@@ -251,3 +251,16 @@ img.thumbnail-left-menu {
 .right_menu .other-right .panel-body {
   padding: 8px 5px;
 }
+
+.main_menu .statistic {
+ margin: 10px;
+}
+.statistic .list-group-item {
+  padding: 6px 15px;
+}
+.statistic .list-group-item span.lb {
+  display: inline-block;
+  width: 100px;
+}
+
+

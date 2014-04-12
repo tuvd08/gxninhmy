@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
       <?php 
-      $strQuery = array( 'posts_per_page' => 10, 'category_name' => 'xay-dung-thanh-duong,ha-giai-thanh-duong,thuong-vi-thanh-duong,thu-ngo,cam-nhan-ve-thanh-duong', 'orderby' => 'date', 'order' => 'DES' );
+      $strQuery = array( 'posts_per_page' => 15, 'category__in' => array(2,15,16,17,19), 'orderby' => 'date', 'order' => 'DESC' );
       $the_query = new WP_Query( $strQuery );
       while ( $the_query->have_posts() ) {
         $the_query->the_post();
@@ -37,7 +37,7 @@
     </div>
     <div class="panel-body" style="padding: 15px 10px;">
        <?php 
-      $strQuery = array( 'posts_per_page' => 10, 'category__not_in' => '2,15,16,17,19', 'orderby' => 'date', 'order' => 'DES' );
+      $strQuery = array( 'posts_per_page' => 10, 'category__not_in' => array(2,15,19), 'orderby' => 'date', 'order' => 'DESC' );
       $the_query = new WP_Query( $strQuery );
       while ( $the_query->have_posts() ) {
         $the_query->the_post();

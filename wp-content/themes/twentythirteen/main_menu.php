@@ -28,7 +28,6 @@
           $pageid = 'xay-dung-thanh-duong';
         }
         //
-
         $args = array(
           'sort_order' => 'ASC',
           'sort_column' => 'menu_order',
@@ -83,7 +82,16 @@
       
       ?>
     </ul>
-      
+    
+    <h5 class="title" style="border-top:1px solid #cccccc">Thống Kê</h5>
+    <ul class="list-group statistic"> 
+      <li class="list-group-item" id="day"><span class="lb">Trong ngày</span></li>
+      <li class="list-group-item" id="week"><span class="lb">Trong tuần</span></li>
+      <li class="list-group-item" id="month"><span class="lb">Trong tháng</span></li>
+      <li class="list-group-item" id="year"><span class="lb">Trong năm</span></li>
+      <li class="list-group-item" id="all"><span class="lb">Tất cả</span></li>
+    </ul>
+    <div style="border-top:1px solid #cccccc; height:1px;"></div>
   </div>
 
 

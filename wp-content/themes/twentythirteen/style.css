@@ -678,7 +678,9 @@ img.size-full,
 img.size-large,
 img.wp-post-image {
 	height: auto;
+  width: auto;
 	max-width: 100%;
+  max-height: 500px;
 }
 
 /* Make sure videos and embeds fit their containers. */
