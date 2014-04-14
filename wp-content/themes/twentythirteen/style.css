@@ -1856,9 +1856,12 @@ footer.entry-meta {
 	text-decoration: none;
 }
 
-.paging-navigation {
-	background-color: #e8e5ce;
-	padding: 40px 0;
+.paging-navigation .alert-warning {
+	padding: 10px 20px;
+}
+
+.paging-navigation .glyphicon {
+  top: 3px;
 }
 
 .paging-navigation .nav-links {
@@ -1873,7 +1876,6 @@ footer.entry-meta {
 }
 
 .paging-navigation .nav-next {
-	padding: 13px 0;
 }
 
 .paging-navigation a {

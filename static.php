@@ -24,6 +24,21 @@ function newInfo($crT, $o) {
 }
 ?>
 
+
+<?php
+// add new month:
+function addNewMonthly() {
+  $c_year = date("Y", time());
+  $c_month = date("n", time());
+  $result= mysql_query("SELECT * FROM `nm_monthly_static` m WHERE `m`.index='".$c_month. "-". $c_year."'");
+  $items=mysql_fetch_array($result);
+  if(!$items || count($items) == 0) {
+    mysql_query("INSERT INTO `nm_monthly_static` (`index`) VALUES ('".$c_month. "-". $c_year."')");
+  }
+}
+
+?>
+
 <?php
 $isCount = true;
 $ip = 'UnUserRequest';
@@ -43,11 +58,11 @@ if(isset($_COOKIE['static_info'])) {
   }
 }
 //
-$sqlcn = mysql_connect('localhost:3306', 'gxlongchau', 'giaophanbuichu');
+$sqlcn = mysql_connect('127.0.0.1:3306', 'root', 'root');
 if (!$sqlcn) {
     die('Could not connect: ' . mysql_error());
 }
-mysql_select_db('gxlongchau_a', $sqlcn); 
+mysql_select_db('gxninhmy', $sqlcn); 
 $result= mysql_query("SELECT * FROM `nm_static`");
 $static=mysql_fetch_array($result);
 $od = $static['per_day'];
@@ -55,6 +70,9 @@ $ow = $static['per_week'];
 $om = $static['per_month'];
 $oy = $static['per_year'];
 $oa = $static['all'];
+
+//
+addNewMonthly();
 
 if($isCount) {
   $expire = time()+60*60*24;

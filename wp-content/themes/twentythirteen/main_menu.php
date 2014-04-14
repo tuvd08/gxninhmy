@@ -7,25 +7,30 @@
       <?php 
         $pageid = basename(get_permalink());
         
-        $cat = get_category_by_slug($pageid);
-        if($cat && $cat -> category_parent > 0) {
-           $cat = get_term( $cat -> category_parent, 'category' );
+        if(is_search()) {
+          $isHome = true;
         }
-        if($cat && $cat -> slug) {
-          $pageid = $cat -> slug;
-        }
-        //
-        $cats = get_the_category( get_the_ID() );
-        if(count($cats) > 0) {
-          $homeCate = $cats[count($cats)-1];
-          if($homeCate -> category_parent > 0) {
-            $homeCate = get_term( $homeCate -> category_parent, 'category' );
+        if(!$isHome) {
+          $cat = get_category_by_slug($pageid);
+          if($cat && $cat -> category_parent > 0) {
+             $cat = get_term( $cat -> category_parent, 'category' );
           }
-          $pageid = $homeCate -> slug;
-        }
-        
-        if($pageid === 'thanh-duong-cu-ha-giai' || $pageid === 'cam-nhan-ve-thanh-duong') {
-          $pageid = 'xay-dung-thanh-duong';
+          if($cat && $cat -> slug) {
+            $pageid = $cat -> slug;
+          }
+          //
+          $cats = get_the_category( get_the_ID() );
+          if(count($cats) > 0) {
+            $homeCate = $cats[count($cats)-1];
+            if($homeCate -> category_parent > 0) {
+              $homeCate = get_term( $homeCate -> category_parent, 'category' );
+            }
+            $pageid = $homeCate -> slug;
+          }
+          
+          if($pageid === 'thanh-duong-cu-ha-giai' || $pageid === 'cam-nhan-ve-thanh-duong') {
+            $pageid = 'xay-dung-thanh-duong';
+          }
         }
         //
         $args = array(
@@ -47,7 +52,7 @@
         );
 
       $pages = get_pages($args); 
-      $isHome = (strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0);
+      $isHome = ($isHome || strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0);
       
       $my_wp_query = new WP_Query();
       $all_wp_pages = $my_wp_query->query(array('post_type' => 'page'));
