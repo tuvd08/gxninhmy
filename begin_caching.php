@@ -1,15 +1,18 @@
 <?php
     // Settings
-    $cachedir = '../cache/'; // Directory to cache files in (keep outside web root)
+    $cachedir = '/tmp/cache-ninhmy/'; // Directory to cache files in (keep outside web root)
     $cachetime = 600; // Seconds to cache files for
-    $cacheext = 'cache'; // Extension to give cached files (usually cache, htm, txt)
+    $cacheext = 'html'; // Extension to give cached files (usually cache, htm, txt)
     // Ignore List
+    $domain= $_SERVER['HTTP_HOST'];
     $ignore_list = array(
-        'addedbytes.com/rss.php',
-        'addedbytes.com/search/'
+        $domain.'/rss.php',
+        $domain.'/search/'
     );
+    echo $domain;
     // Script
-    $page = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; // Requested page
+    $page = 'http://' . $domain . $_SERVER['REQUEST_URI']; // Requested page
+    echo $page;
     $cachefile = $cachedir . md5($page) . '.' . $cacheext; // Cache file to either load or create
     $ignore_page = false;
     for ($i = 0; $i < count($ignore_list); $i++) {
