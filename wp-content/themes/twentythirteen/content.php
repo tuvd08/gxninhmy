@@ -69,7 +69,30 @@
             </footer><!-- .entry-meta -->
           </article><!-- #post -->
         </div>
-
+        <?php
+        if(get_the_ID() != '362') {
+        ?>
+        <div class="panel panel-danger uiBox">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">ĐƠN XIN TÀI TRỢ XÂY DỰNG CÔNG TRÌNH NHÀ THỜ NINH MỸ</h3>
+          </div>
+          <div class="panel-body entry-content">
+            <a class="image-box" href="https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-frc1/t1.0-9/1902841_10203217767946371_3628640_n.jpg">
+              <img alt="" src="https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-frc1/t1.0-9/1902841_10203217767946371_3628640_n.jpg" class="thumbnail" style="padding: 0px; margin: 10px 0px;">
+            </a>
+            <p>
+Chúng con kính xin Quý vị Hảo Tâm tạo điều kiện giúp đỡ Giáo xứ Ninh Mỹ sớm hoàn tất ngôi Thánh Đường.<br/>
+Mọi liên hệ, xin liên hệ trực tiếp với Cha xứ:<br/>
+Linh mục: Giuse Đinh Quang Thành<br/>
+Số đt: (+84) 983 27 3635<br/>
+Hoặc email: <a href="mailto:gxninhmy@gmail.com"><span style="color:rgb(0, 0, 0);">gxninhmy@gmail.com</span></a><br/>
+Chúng con xin chân thành cảm ơn !
+            </p>
+          </div>
+        </div>
+       <?php
+        }
+        ?>        
       </td>
       <?php if(false) { ?>
       <td class="right-column">
@@ -80,3 +103,6 @@
     </tr>
   </tbody>
 </table>
+<script type="text/javascript">
+  window.the_post_id = '<?php echo get_the_ID(); ?>';
+</script>

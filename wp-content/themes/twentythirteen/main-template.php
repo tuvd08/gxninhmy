@@ -2,6 +2,7 @@
 /* Template Name: main-template  */ 
 ?>
 <?php get_header(); ?>
+
 <table style="table-layout: fixed; margin: 0px auto; width: 100%">
   <tbody>
     <tr>
@@ -31,4 +32,3 @@
 </table>
 
 <?php get_footer(); ?>
-

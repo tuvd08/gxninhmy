@@ -143,7 +143,23 @@ function lastIndexOf($string, $item){
 <?php
 $url_test="https://plus.google.com/u/0/photos/110773227077499625727/albums/5991617952845892657";
 //w292-h218
-echo get_the_album($url_test, 'w456-h304');
+//echo get_the_album($url_test, 'w456-h304');
+
+function str_contain($haystack, $needle) {
+  $result = strpos($haystack, $needle);
+  if(strlen($result.'') > 0 && $result*1 >= 0 ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+if(!str_contain('abc', 'bc')) {
+    echo "Not contain ";
+} else {
+    echo "contain ";
+}
+
 ?>
 </div>
 

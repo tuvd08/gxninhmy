@@ -86,7 +86,7 @@
 
     Load.onload = function() {
       if(window.isLogin === true) {
-        $('#menu-item-459').hide();
+        $('.menu-item-object-custom').hide();
       }
       window.maxWidth = $('body').width();
 

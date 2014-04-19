@@ -31,10 +31,14 @@
 		</footer>
 <!-- #colophon -->
 	</div><!-- #page -->
-  
+  <script type="text/javascript">
+    window.pageid = '<?php echo $GLOBALS["pageid"]; ?>';
+    window.parentId = '<?php echo $GLOBALS["parentId"]; ?>';
+  </script>
   <script src="<?php echo get_template_directory_uri(); ?>/js/main-base.js" type="text/javascript"></script>
   <script src="<?php echo esc_url( home_url( '/' ) ); ?>/static.php?f=Load.callBack" type="text/javascript"></script>
-
 	<?php wp_footer(); ?>
 </body>
 </html>
+
+<?php include 'end_caching.php'; ?>

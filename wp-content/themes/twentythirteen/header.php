@@ -8,7 +8,11 @@
  * @subpackage Twenty_Thirteen
  * @since Twenty Thirteen 1.0
  */
-?><!DOCTYPE html>
+?>
+
+<?php include 'begin_caching.php'; ?>
+
+<!DOCTYPE html>
 <!--[if IE 7]>
 <html class="ie ie7" <?php language_attributes(); ?>>
 <![endif]-->

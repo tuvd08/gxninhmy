@@ -68,7 +68,7 @@
       <h3 class="panel-title">Video về Giáo Xứ</h3>
     </div>
     <div class="panel-body">
-      <iframe width="420" src="//www.youtube.com/embed/K4rxLmhw088" frameborder="0" allowfullscreen></iframe>
+      <iframe width="420" src="https://www.youtube.com/embed/K4rxLmhw088" frameborder="0" allowfullscreen></iframe>
       <a href="https://www.youtube.com/user/gxninhmy/videos" target="_blank">Xem Tất Cả</a>
     </div>
   </div>

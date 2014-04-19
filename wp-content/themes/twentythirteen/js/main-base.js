@@ -25,5 +25,11 @@
         });
       }
     });
-    
+    if(window.pageid && window.pageid != '') {
+      if(window.pageid == 'thu-tro-giup') {
+         $('div.entry-thumbnail').hide();
+      }
+      
+      
+    }
 })(jQuery, window);

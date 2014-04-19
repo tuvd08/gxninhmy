@@ -65,7 +65,9 @@ var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>',
 	adminpage = '<?php echo $admin_body_class; ?>',
 	thousandsSeparator = '<?php echo addslashes( $wp_locale->number_format['thousands_sep'] ); ?>',
 	decimalPoint = '<?php echo addslashes( $wp_locale->number_format['decimal_point'] ); ?>',
-	isRtl = <?php echo (int) is_rtl(); ?>;
+	isRtl = <?php echo (int) is_rtl(); ?>,
+  sire_url = '<?php echo esc_url( home_url( '/' ) );?>';
+  
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <?php
@@ -156,6 +158,8 @@ if ( is_network_admin() )
 $admin_body_class .= ' no-customize-support no-svg';
 
 ?>
+
+<script type="text/javascript" src="<?php echo esc_url( home_url( '/' ) ) .'wp-admin/js/me.js'; ?>"></script>
 </head>
 <?php
 /**

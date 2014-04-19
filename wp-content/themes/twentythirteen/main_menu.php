@@ -5,13 +5,21 @@
       <ul class="uiNavigations">  
       
       <?php 
+        $GLOBALS["pageid"] = "home";
+        $GLOBALS["parentId"] = "home";
+        //
         $pageid = basename(get_permalink());
         
-        if(is_search()) {
+        if(is_search() || strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0) {
           $isHome = true;
         }
         if(!$isHome) {
           $cat = get_category_by_slug($pageid);
+
+          if($cat && $cat -> slug) {
+            $GLOBALS["pageid"] = $cat -> slug;
+          }
+          
           if($cat && $cat -> category_parent > 0) {
              $cat = get_term( $cat -> category_parent, 'category' );
           }
@@ -22,6 +30,8 @@
           $cats = get_the_category( get_the_ID() );
           if(count($cats) > 0) {
             $homeCate = $cats[count($cats)-1];
+            $GLOBALS["pageid"] = $cats[0] -> slug;
+            //
             if($homeCate -> category_parent > 0) {
               $homeCate = get_term( $homeCate -> category_parent, 'category' );
             }
@@ -52,8 +62,11 @@
         );
 
       $pages = get_pages($args); 
-      $isHome = ($isHome || strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0);
-      
+
+      if($isHome != true) {
+        $GLOBALS["parentId"] = $pageid;
+      }
+      //      
       $my_wp_query = new WP_Query();
       $all_wp_pages = $my_wp_query->query(array('post_type' => 'page'));
 
