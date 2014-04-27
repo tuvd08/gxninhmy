@@ -2050,21 +2050,29 @@ footer.entry-meta {
 
 .error404 .page-header {
 	background-color: #fff;
+  height: 300px;
 }
 
 .error404 .page-title {
 	line-height: 0.6;
 	margin: 0;
-	padding: 300px;
 	position: relative;
 	text-align: center;
 	width: auto;
 }
 
+.error404 .error404-text {
+  filter: alpha(opacity=40);
+  position: absolute; 
+  z-index: 100;
+  top: 100px; left: 83px;
+  opacity: 0.4;
+}
+
 .error404 .page-title:before {
 	color: #e8e5ce;
 	content: "\f423";
-	font-size: 964px;
+	font-size: 500px;
 	line-height: 0.6;
 	overflow: hidden;
 	position: absolute;

@@ -107,7 +107,7 @@
       <li class="list-group-item" id="week"><span class="lb">Trong tuần</span></li>
       <li class="list-group-item" id="month"><span class="lb">Trong tháng</span></li>
       <li class="list-group-item" id="year"><span class="lb">Trong năm</span></li>
-      <li class="list-group-item" id="all"><span class="lb">Tất cả</span></li>
+      <li class="list-group-item" id="all"><span class="lb">Tất cả(4/4/2014)</span></li>
     </ul>
     <div style="border-top:1px solid #cccccc; height:1px;"></div>
   </div>

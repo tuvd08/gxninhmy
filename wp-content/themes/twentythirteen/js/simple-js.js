@@ -209,7 +209,7 @@
         if(vl.indexOf('-') > 0) {
           vl = vl.substring(0, vl.indexOf('-'));
         }
-        thiz.append('<span>' + vl + '</span>');
+        thiz.append('<span class="badge">' + vl + '</span>');
       });
       
       
