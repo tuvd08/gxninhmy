@@ -22,24 +22,21 @@ function newInfo($crT, $o) {
     return ('1-'.$crT);
   }  
 }
-?>
 
-
-<?php
-// add new month:
-function addNewMonthly() {
+// update monthly:
+function updateMonthly($val) {
   $c_year = date("Y", time());
   $c_month = date("n", time());
   $result= mysql_query("SELECT * FROM `nm_monthly_static` m WHERE `m`.index='".$c_month. "-". $c_year."'");
   $items=mysql_fetch_array($result);
   if(!$items || count($items) == 0) {
-    mysql_query("INSERT INTO `nm_monthly_static` (`index`) VALUES ('".$c_month. "-". $c_year."')");
-  }
+    mysql_query("INSERT INTO `nm_monthly_static` VALUES (NULL,'".$c_month. "-". $c_year."', ".$val.")");
+  } else {print_r($items);
+		mysql_query("UPDATE `nm_monthly_static` s SET `s`.`count`=". $val . "  WHERE `s`.index='".$c_month. "-". $c_year."'");
+	}
+  //
 }
 
-?>
-
-<?php
 $isCount = true;
 $ip = 'UnUserRequest';
 $time = time();
@@ -71,9 +68,6 @@ $om = $static['per_month'];
 $oy = $static['per_year'];
 $oa = $static['all'];
 
-//
-addNewMonthly();
-
 if($isCount) {
   $expire = time()+60*60*24;
   setcookie('static_info', ''.$time, $expire);
@@ -104,13 +98,16 @@ if($isCount) {
     //check day
     $od = newInfo(date("j", $time), $od);
     
-    //check week
-    $cW = floor($time/(60*60*24*7));
+    //check week $cW = floor($time/(60*60*24*7));
+		$ddate = date("Y", $time)."-".date("n", $time)."-".(date("j", $time)*1 - 1);
+		$date = new DateTime($ddate);
+		$cW = $date->format("W");
     $ow = newInfo($cW, $ow);
     
     // check month
     $om = newInfo(date("n", $time), $om);
-    
+    //
+    updateMonthly(getInfoValue($om));
     // check year
     $oy = newInfo(date("Y", $time), $oy);
     
