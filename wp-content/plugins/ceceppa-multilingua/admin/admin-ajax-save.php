@@ -108,7 +108,7 @@ if ( ! defined( 'ABSPATH' ) ) die( "Access denied" );
                                                 "id" => $id,
                                                 "custom_flag" => $data[ 'cml_custom_flag' ],
                                               ) );
-      
+
       //Try to download language pack
       cml_download_mo_file( @$form[ 'wp-locale' ] );
     }
@@ -122,6 +122,12 @@ if ( ! defined( 'ABSPATH' ) ) die( "Access denied" );
     if( ! empty( $error ) ) { 
       $out = array( "error" => $error );
     }
+
+    /*
+     * if user change default language I need to generate settings again
+     */
+    update_option( 'cml_need_update_settings', 1 );
+    update_option( 'cml_get_translation_from_po', 0 );
 
     die();
   }
@@ -188,6 +194,7 @@ function cml_admin_save_options_actions() {
 
   if( $tab == 2 ) {
     update_option( "cml_debug_enabled", intval( @$_POST[ 'cml-debug' ] ) );
+    update_option( "cml_update_static_page", intval( @$_POST[ 'cml-static' ] ) );
   } else {
     //Redirect
     $redirect = array( "auto", "default", "others", "nothing" );
@@ -216,6 +223,9 @@ function cml_admin_save_options_actions() {
     
       //Change locale
       update_option("cml_option_change_locale", intval( @$_POST['change-locale'] ) );
+
+      //translate media?
+      update_option("cml_option_translate_media", intval( @$_POST['translate-media'] ) );
     }
   }
 
@@ -369,7 +379,7 @@ function cml_admin_save_site_title() {
     $i++;
   }
 
-  cml_generate_mo_from_translations( "_X_" );
+  cml_generate_mo_from_translations( "_X_", false );
 
   $return = array( "url" => admin_url( 'admin.php?page=' . $page . '&tab=' . $tab . '&cml-generate-settings=true' ) );
 
@@ -383,7 +393,7 @@ function cml_admin_generate_mo() {
   if( ! wp_verify_nonce( $_POST[ "ceceppaml-nonce" ], "security" ) ) die( "-1" );
 
     //CML parser, used for translate theme and plugin
-  require_once ( CML_PLUGIN_ADMIN_PATH . 'parser.php' );
+  require_once ( CML_PLUGIN_ADMIN_PATH . 'po-parser.php' );
 
   $page = $_POST[ 'page' ];
   $tab = isset( $_POST[ 'tab' ] ) ? intval( $_POST[ 'tab' ] ) : 1;
@@ -403,7 +413,7 @@ function cml_admin_generate_mo() {
 
   update_option( 'cml_translate_' . $name . "_in", $translate_in );
 
-  if( ! empty( $translate_in ) ) {
+  if( ! empty( $translate_in ) && ! isset( $_POST[ 'nolang' ] ) ) {
     //$parser = new CMLParser( "Ceceppa Multilingua", "en", CML_PLUGIN_PATH, CML_PLUGIN_LANGUAGES_PATH, "ceceppaml", false );
     $parser = new CMLParser( $name, $src_path, $dest_path, $domain, false );
 
@@ -414,7 +424,7 @@ function cml_admin_generate_mo() {
   } else {
     $return = array( "url" => admin_url( 'admin.php?page=' . $page . '&tab=' . $tab ) );
   }
-
+  
   die( json_encode( $return ) );
 }
 

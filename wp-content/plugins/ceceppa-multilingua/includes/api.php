@@ -80,6 +80,15 @@ class CMLLanguage {
   public static function get_default_slug() {
     return self::get_default()->cml_language_slug;
   }
+
+  /**
+   * return default language locale
+   *
+   * return string
+   */
+  public static function get_default_locale() {
+    return self::get_default()->cml_locale;
+  }
   
   /**
    * return all configured languages, enabled or not...
@@ -217,6 +226,13 @@ class CMLLanguage {
   }
 
   /**
+   * return current language locale
+   */
+  public static function get_current_locale() {
+    return self::get_current()->cml_locale;
+  }
+
+  /**
    * return the name of language
    *
    * @param int/string $lang - id or slug of language
@@ -256,8 +272,8 @@ class CMLLanguage {
    * @return stdObject
    */
   public static function get_by_id( $id ) {
-    if( empty( self::$_all_languages ) ) self::get_all();
-    if( ! is_numeric( $id ) ) $id = CMLLanguage::get_by_slug( $id );
+    if( empty( self::$_all_languages ) || ! is_array( self::$_all_languages ) ) self::get_all();
+    if( ! is_numeric( $id ) ) $id = CMLLanguage::get_id_by_slug( $id );
 
     return self::$_all_languages[ $id ];
   }
@@ -305,7 +321,7 @@ class CMLLanguage {
     $langs = self::get_all();
     
     foreach( $langs as $lang ) {
-      if( $lang->cml_locale == $locale ) return $lang;
+      if( strtolower( $lang->cml_locale ) == strtolower( $locale ) ) return $lang->id;
     }
     
     return null;
@@ -388,6 +404,8 @@ class CMLLanguage {
   /**
    * get language object by post id
    *
+   * <i>This function is equivalent to CMLPost::get_language_by_id()</i>
+   *
    * @param int $post_id - id of post/page
    *
    * @return stdObject
@@ -399,6 +417,8 @@ class CMLLanguage {
   /**
    * get language id by post id
    *
+   * <i>This function is equivalent to CMLPost::get_language_id_by_id()</i>
+   * 
    * @param int $post_id - id of post
    *
    * @return int
@@ -407,6 +427,19 @@ class CMLLanguage {
     return CMLPost::get_language_id_by_id( $post_id );
   }
   
+  /**
+   * get language slug by post id
+   *
+   * <i>This function is equivalent to CMLPost::get_language_slug_by_id();</i>
+   * 
+   * @param int $post_id - id of post
+   *
+   * @return string
+   */
+  public static function get_slug_by_post_id( $post_id ) {
+    return CMLPost::get_language_slug_by_id( $post_id );
+  }
+
   /**
    * Is $lang the default one?
    *
@@ -544,28 +577,41 @@ class CMLTranslations {
    *
    * @return string
    */
-  public static function set( $lang, $original, $translated, $type ) {
+  public static function set( $lang, $original, $translated, $type, $record_id = 0 ) {
     global $wpdb;
 
     if( ! is_numeric( $lang ) ) $lang = CMLLanguage::get_id_by_slug( $lang );
     $original = trim( $original );
 
-    $wpdb->delete( CECEPPA_ML_TRANSLATIONS,
-                    array( "cml_text" => bin2hex( $original ),
-                           "cml_type" => $type,
-                           "cml_lang_id" => $lang ),
-                    array( "%s", "%s", "%d" ) );
+    if( $record_id == 0 ) {
+      $wpdb->delete( CECEPPA_ML_TRANSLATIONS,
+                      array( "cml_text" => bin2hex( $original ),
+                             "cml_type" => $type,
+                             "cml_lang_id" => $lang ),
+                      array( "%s", "%s", "%d" ) );
+  
+      return $wpdb->insert( CECEPPA_ML_TRANSLATIONS, 
+                            array( 'cml_text' => bin2hex( $original ),
+                                  'cml_lang_id' => $lang,
+                                  'cml_translation' => bin2hex( $translated ),
+                                  'cml_type' => $type ),
+                            array( '%s', '%d', '%s', '%s' ) );
+    } else {
+      $wpdb->update( CECEPPA_ML_TRANSLATIONS, 
+                    array( 'cml_text' => bin2hex( $original ),
+                          'cml_lang_id' => $lang,
+                          'cml_translation' => bin2hex( $translated ),
+                          'cml_type' => $type ),
+                    array( 'id' => $record_id ),
+                    array( '%s', '%d', '%s', '%s' ),
+                    array( '%d' ) );
 
-    return $wpdb->insert( CECEPPA_ML_TRANSLATIONS, 
-                          array( 'cml_text' => bin2hex( $original ),
-                                'cml_lang_id' => $lang,
-                                'cml_translation' => bin2hex( $translated ),
-                                'cml_type' => $type ),
-                          array( '%s', '%d', '%s', '%s' ) );
+      return $record_id;
+    }
   }
   
   /**
-   * return translation stored in cml_trans table.
+   * return translation stored in cml_trans table by key
    *
    * This function will get translation from ".mo" file if:
    *    1) it's generated correctly
@@ -594,6 +640,8 @@ class CMLTranslations {
   public static function get( $lang, $string, $type = "", $return_empty = false, $ignore_po = false ) {
     global $wpdb;
 
+    if( empty( $string ) ) return "";
+
     if( "_" == $type[ 0 ] && ! $return_empty ) {
       $return_empty = true;
     }
@@ -604,19 +652,23 @@ class CMLTranslations {
     $s = ( $type == "C" ) ? strtolower( $string ) : $string;
 
     //Look if I already translated it...
-    if( isset( self::$_keys[ $lang ] ) && 
-      in_array( sanitize_title( $s ), self::$_keys[ $lang ] ) ) {
-
-      $index = array_search( sanitize_title( $s ), self::$_keys[ $lang ] );
-      return self::$_translations[ $lang ][ $index ];
-    }
+    //if( isset( self::$_keys[ $lang ] ) && 
+    //  in_array( sanitize_title( $s ), self::$_keys[ $lang ] ) ) {
+    //
+    //  $index = array_search( sanitize_title( $s ), self::$_keys[ $lang ] );
+    //  return self::$_translations[ $lang ][ $index ];
+    //}
 
     if( CML_GET_TRANSLATIONS_FROM_PO &&
        ! $ignore_po &&
        1 == CMLUtils::_get( '_po_loaded' ) ) {
 
       $translations = get_translations_for_domain( 'cmltrans' );
-      if( isset( $translations->entries[ $string ] ) ) {
+      $slug = CMLLanguage::get_slug( $lang );
+
+      $s = "_{$slug}_" . sanitize_title( $s );
+
+      if( isset( $translations->entries[ $s ] ) ) {
         return __( $s, 'cmltrans' );
       } else {
         if( $return_empty ) return "";
@@ -636,41 +688,67 @@ class CMLTranslations {
 
     $return = ( empty( $return ) ) ?  $string : html_entity_decode( stripslashes( $return ) );
     
-    self::$_translations[$lang][] = $return;
-    self::$_keys[ $lang ][] = sanitize_title( $string );
+    //self::$_translations[$lang][] = $return;
+    //self::$_keys[ $lang ][] = sanitize_title( $string );
 
     return $return;
   }
   
-  /*
+  /**
    * get translation from wordpress
    *
    * @ignore
    */
-  public static function gettext( $lang, $string, $type, $ignore_po = false ) {
-    $ret = self::get( $lang, $string, $type, true, $ignore_po );
-
-    if( ! empty( $ret ) ) return $ret;
+  public static function gettext( $lang, $string, $type, $path = null ) {
+    if( null != $path && ! CML_GET_TRANSLATIONS_FROM_PO ) {
+      return CMLTranslations::get( $lang, $string, $type, true, true );
+    }
 
     //Recupero la traduzione dalle frasi di wordpress ;)
     require_once( CML_PLUGIN_PATH . "gettext/gettext.inc" );
-    
-    $locale = CMLLanguage::get_current()->cml_locale;
+
+    if( empty( $lang ) ) $lang = CMLLanguage::get_current_id();
+    $lang = CMLLanguage::get_by_id( $lang );
+    $locale = $lang->cml_locale;
 
     // gettext setup
     T_setlocale( LC_MESSAGES, $locale );
     // Set the text domain as 'messages'
 
-    $domain = $locale;
-    T_bindtextdomain( $domain, CML_WP_LOCALE_DIR );
+    if( ! empty( $path ) ) {
+      $domain = "cmltrans-" . $locale;
+    } else {
+      $domain = $locale;
+      $path = trailingslashit( CML_WP_LOCALE_DIR );
+    }
+
+    T_bindtextdomain( $domain, $path );
     T_bind_textdomain_codeset( $domain, 'UTF-8' );
     T_textdomain( $domain );
 
-    $ret = T_gettext( $string );
+    if( $path !== null ) $string = strtolower( $string );
 
-    return ( empty( $ret ) ) ?  $string : html_entity_decode( stripslashes( $ret ) );
+    return T_gettext( $string );
+
+    //return ( empty( $ret ) ) ?  $string : html_entity_decode( stripslashes( $ret ) );
   }
   
+  /**
+   * return key stored in translations table by its translation
+   *
+   * @param string $text to search
+   * @param string $group group
+   */
+  public static function search( $lang, $text, $group ) {
+    global $wpdb;
+
+    if( ! is_numeric( $lang ) ) $lang = CMLLanguage::get_id_by_slug( $lang );
+    $query = sprintf( "SELECT UNHEX(cml_text) FROM %s WHERE cml_lang_id = %d AND cml_translation = '%s' AND cml_type = '%s'",
+			CECEPPA_ML_TRANSLATIONS, $lang, bin2hex( $text ), $group );
+
+    return $wpdb->get_var( $query );
+  }
+
   /**
    * delete all records with cml_type = xx
    *
@@ -678,10 +756,22 @@ class CMLTranslations {
    */
   public static function delete( $type ) {
     global $wpdb;
-    
+
     $wpdb->delete( CECEPPA_ML_TRANSLATIONS,
                   array( "cml_type" => $type ),
                   array( "%s" ) );
+  }
+  
+  /* @ignore */
+  public static function delete_text( $text, $group ) {
+    global $wpdb;
+
+    $wpdb->delete( CECEPPA_ML_TRANSLATIONS,
+                  array( 
+		    "cml_text" => bin2hex( $text ),
+		    "cml_type" => $group,
+                  ),
+                  array( "%s", "%s" ) );
   }
 }
 
@@ -718,7 +808,7 @@ class CMLPost {
       return CMLLanguage::get_current();
     }
 
-    foreach( CMLLanguage::get_others() as $lang ) {
+    foreach( CMLLanguage::get_others( ! is_admin() ) as $lang ) {
       if( @in_array( $post_id, self::$_indexes[ $lang->id ] ) )
         return $lang;
     }
@@ -730,8 +820,7 @@ class CMLPost {
    * return language id by post id
    *
    * @param int $post_id - id of post/page
-   * @param boolean $unique check if $post_id exists in all languages, if true return
-   *                        0, otherwise return 
+   * @param boolean $unique check if $post_id exists in all languages, if true return 0
    *                        In backend I need to get information by post meta, or I'll lost
    *                        "all languages" ( = 0 ) information.
    *
@@ -801,8 +890,9 @@ class CMLPost {
     //}
   
     $linked = self::get_translations( $post_id );
+    if( empty( $linked ) ) return 0;
 
-    return ( ! array_key_exists( $lang, $linked) ) ? 0 : $linked[ $lang ];
+    return ( ! @array_key_exists( $lang, $linked) ) ? 0 : $linked[ $lang ];
   }
 
   /**
@@ -865,6 +955,15 @@ class CMLPost {
     global $wpdb;
   
     if( empty( $post_id ) ) return array();
+
+    if( ! $force ) {
+      $lang = CMLLanguage::get_id_by_post_id( $post_id );
+  
+      $key = "__cml_lang_{$lang}__{$post_id}";
+      $val = CMLUtils::_get_translation( $key, $lang );
+  
+      if( null !== $val ) return $val;
+    }
 
     if( ! isset( self::$_posts_meta[ $post_id ] ) || $force ) {
       $row = ""; //get_post_meta( $post_id, "_cml_meta", true );
@@ -998,12 +1097,12 @@ class CMLPost {
     //$_cml_language_columns = & $GLOBALS[ '_cml_language_columns' ];
     if( null === $post_lang ) $post_lang = CMLPost::get_language_id_by_id( $post_id );
 
-    $tot = count( $translations );
-    if( $tot < count( CMLLanguage::get_no_default() ) ) {
-
+    /*
+     * for quickedit
+     */
+    if( $post_lang !== null && isset( $translations[ $post_lang ] ) ) {
+      unset( $translations[ $post_lang ] );
     }
-
-    $old = CMLPost::get_translations( $post_id, true );
 
     foreach( $translations as $key => $id ) {
       if( ! is_numeric( $key ) ) $key = CMLLanguage::get_id_by_slug( $key );
@@ -1011,11 +1110,24 @@ class CMLPost {
       cml_migrate_database_add_item( $post_lang, $post_id, $key, $id );
     }
 
+    require_once( CML_PLUGIN_ADMIN_PATH . "admin-settings-gen.php" );
+
     // //Update info
     cml_fix_rebuild_posts_info();
+    cml_generate_mo_from_translations( "_X_" );
+
     self::_load_indexes();
   }
   
+  /**
+   * set post as unique ( it will be exists in all languages )
+   *
+   * @param int $post_id the post id
+   */
+  public static function set_as_unique( $post_id ) {
+    cml_migrate_database_add_item( 0, $post_id, 0, 0 );
+  }
+
   /*
    * update post meta
    * @ignore
@@ -1166,10 +1278,8 @@ class CMLPost {
         /*
          * when hook get_page_link, wordpress pass me only post id, not full object
          */
-        $post_title = $post->post_title; //( ! isset( $post->post_name ) ) ?
-          //$post->post_title : $post->post_name;
-          // $a = $wpdb->get_var( "SELECT post_title FROM $wpdb->posts WHERE id = $post->ID" );
-
+        $post_title = $post->post_title;
+        
         /*
          * got how many number occourrences ( -d ) are in the "real title"
          */
@@ -1183,7 +1293,7 @@ class CMLPost {
         if( count( $pout[0] ) < count( $out[ 0 ] ) && CMLPost::has_translations( $post->ID ) ) {
           $permalink = trailingslashit( preg_replace( "/-\d*$/", "",
                                                      untrailingslashit( $permalink ) ) );
-
+          
           $removed = true;
         }
       }
@@ -1424,7 +1534,13 @@ class CMLUtils {
    * @return string
    */
   public static function get_clean_url() {
-    return self::$_clean_url;
+    if( ! empty( self::$_clean_url ) ) {
+      return self::$_clean_url;
+    } else {
+      $_url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+      
+      return preg_replace( "/\?.*/", "", $_url );
+    }
   }
   
   /**
@@ -1446,8 +1562,8 @@ class CMLUtils {
   /**
    * @ignore
    */
-  public static function _get( $key ) {
-    return isset( self::$_vars[ $key ] ) ? self::$_vars[ $key ] : null;
+  public static function _get( $key, $default = null ) {
+    return isset( self::$_vars[ $key ] ) ? self::$_vars[ $key ] : $default;
   }
   
   /**
@@ -1466,6 +1582,27 @@ class CMLUtils {
     }
     
     self::$_vars[ $key ][] = $value;
+  }
+  
+  /**
+   * @ignore
+   *
+   * return translated string from .po file
+   */
+  public static function _get_translation( $key ) {
+    if( ! CML_GET_TRANSLATIONS_FROM_PO ||
+        1 != CMLUtils::_get( '_po_loaded' ) ) {
+
+      return null;
+    }
+
+    $translations = get_translations_for_domain( 'cmltrans' );
+
+    if( isset( $translations->entries[ $key ] ) ) {
+      return unserialize( stripslashes( __( $key, 'cmltrans' ) ) );
+    }
+    
+    return null;
   }
 }
 ?>

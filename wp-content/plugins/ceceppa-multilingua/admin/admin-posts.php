@@ -2,13 +2,18 @@
 if ( ! defined( 'ABSPATH' ) ) die( "Access denied" );
 
 function cml_admin_post_meta_box( $tag ) {
-  global $wpdb;
-  
-  $langs = cml_get_languages( false );
+  global $wpdb, $pagenow;
+
+  $langs = CMLLanguage::get_all();
 
   //I have clicked on "+" symbol for add translation?
   if( array_key_exists( "post-lang", $_GET) ) {
     $post_lang = intval( $_GET[ 'post-lang' ] );
+  }
+
+  if( ! isset( $post_lang ) &&
+      "post-new.php" == $pagenow ) {
+    $post_lang = CMLLanguage::get_default_id();
   }
 
   //Language of post/page
@@ -17,8 +22,12 @@ function cml_admin_post_meta_box( $tag ) {
   echo '<span class="cml-help cml-pointer-help cml-post-help"></span>';
   echo "</h4>";
   
+  //Fix "All languages" issue
+  $meta_lang = get_post_meta( $tag->ID, "_cml_lang_id", true );
+  if( empty( $meta_lang ) ) $meta_lang = CMLPost::get_language_id_by_id( $tag->ID, true );
+
   $post_lang = ( ! isset( $post_lang ) || $post_lang < 0 ) ?
-    CMLPost::get_language_id_by_id( $tag->ID, true ) : $post_lang;
+    $meta_lang : $post_lang;
 
   cml_dropdown_langs( "post_lang", $post_lang, false, true, __( "All languages", "ceceppaml" ), "", 0 );
 
@@ -52,6 +61,9 @@ function cml_admin_post_meta_box( $tag ) {
     //Has translation?
     $parent_t = CMLPost::get_translation( $post_lang, $post->post_parent );
     $tag->post_parent = ( ! empty( $parent_t ) ) ? $parent_t : $post->post_parent;
+    
+    //Clone post meta
+    _cml_clone_post_meta( $link_id, $tag->ID ); 
   } else {
     $link_id = 0;
   }
@@ -198,6 +210,8 @@ function cml_admin_save_extra_post_fields( $term_id ) {
   }
 
   CMLPost::set_translations( $post_id, $linkeds, $post_lang );
+
+  update_post_meta( $post_id, "_cml_lang_id", $post_lang );
 }
 
 /*
@@ -255,7 +269,7 @@ function cml_admin_add_flag_column( $col_name, $id ) {
       
     } else {
       echo '<a href="' . get_bloginfo( "wpurl" ) . '/wp-admin/post-new.php?post_type=' . $post_type . '&link-to=' . $id . '&post-lang=' . $lang->id . '">';
-      echo '    <img class="add tipsy-me" src="' . CML_PLUGIN_URL . 'images/edit.png" title="' . __( 'Translate to:', 'ceceppaml' ) . ' ' . $lang->cml_language . '" />';
+      echo '    <img class="add tipsy-me" src="' . CML_PLUGIN_URL . 'images/edit.png" title="' . __( 'Translate in:', 'ceceppaml' ) . ' ' . $lang->cml_language . '" />';
       echo '</a>';
     }
   }
@@ -322,7 +336,7 @@ function cml_admin_add_meta_boxes() {
   // remove_meta_box('tagsdiv-post_tag','post','side');
   // add_meta_box( 'ceceppaml-tags-meta-box', __('Tags', 'ceceppaml'), 'cml_admin_tags_meta_box', 'post', 'side', 'core' );
 
-  $post_types = apply_filters( 'cml_remove_post_type', $post_types );
+  $post_types = apply_filters( 'cml_manage_post_types', $post_types );
 
   foreach( $post_types as $post_type ) {
     if( ! in_array( $post_type, $posts ) ) {
@@ -332,6 +346,12 @@ function cml_admin_add_meta_boxes() {
 }
 
 function cml_admin_filter_all_posts_page() {
+  $post_types = get_post_types('','names');
+  $post_types = apply_filters( 'cml_manage_post_types', $post_types );
+
+  if( isset( $_GET[ 'post_type' ] ) &&
+     ! in_array( $_GET[ 'post_type' ], $post_types ) ) return;
+
   //Se sto nel cestino di default visualizzo tutti gli articoli :)
   $d = CMLLanguage::get_default_id();
 
@@ -351,7 +371,7 @@ function cml_admin_filter_all_posts_query( $query ) {
   
   //$this->_no_filter_query is set when the function "quick_edit_box_posts" is called,
   //I have to exit from that function or all WP_Query return only items in current language...
-  if( null !== CMLUtils::_get( '_cml_no_filter_query' ) ) return;
+  if( null !== CMLUtils::_get( '_cml_no_filter_query' ) ) return $query;
 
   if ( ! array_key_exists('post_type', $_GET) )
       $post_type = 'post';
@@ -370,7 +390,7 @@ function cml_admin_filter_all_posts_query( $query ) {
       $query->query_vars[ 'post__in' ] = $posts;
     }
   }
-  
+
   return $query;
 }
 
@@ -401,9 +421,33 @@ function cml_admin_delete_extra_post_fields( $id ) {
   cml_fix_rebuild_posts_info();
 }
 
+/*
+ * When user start new post I clone meta from "original" to clone one.
+ */
+function _cml_clone_post_meta( $from, $new_post_id ) {
+  global $wpdb;
+
+  /*
+   * duplicate all post meta
+   */
+  $post_meta_infos = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$from" );
+
+  if ( count( $post_meta_infos ) != 0 ) {
+      $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
+      foreach ($post_meta_infos as $meta_info) {
+          $meta_key = $meta_info->meta_key;
+          $meta_value = addslashes($meta_info->meta_value);
+          $sql_query_sel[]= "SELECT $new_post_id, '$meta_key', '$meta_value'";
+      }
+      $sql_query.= implode(" UNION ALL ", $sql_query_sel);
+      $wpdb->query($sql_query);
+  }
+}
+
 function cml_manage_posts_columns() {
   //Show flags in list for all registered post types ( so also custom posts )
   $post_types = get_post_types('','names');
+  $post_types = apply_filters( 'cml_manage_post_types', $post_types );
 
   foreach ($post_types as $type ) {
     add_action( "manage_${type}_posts_custom_column", 'cml_admin_add_flag_column', 10, 2);
@@ -431,5 +475,4 @@ add_action('delete_page', 'cml_admin_delete_extra_post_fields' );
 //Filters
 add_filter( 'parse_query', 'cml_admin_filter_all_posts_query' );
 add_action( 'restrict_manage_posts', 'cml_admin_filter_all_posts_page' );
-
 ?>

@@ -117,6 +117,8 @@ class MyTranslations_Table extends WP_List_Table {
     }
     
     function display_rows() {
+      global $wpdb;
+
       //Get the records registered in the prepare_items method
       $records = $this->items;
 
@@ -205,8 +207,12 @@ class MyTranslations_Table extends WP_List_Table {
                 
                 $value = CMLTranslations::get( $lang->id,
                                            $rec->cml_text,
-                                           $rec->cml_type, true );
+                                           $rec->cml_type, true, true );
 
+                $q = sprintf( "SELECT id FROM %s WHERE cml_text = '%s' AND cml_lang_id = %d", CECEPPA_ML_TRANSLATIONS, bin2hex( $rec->cml_text ), $lang->id );
+                $recid = $wpdb->get_var( $q );
+
+                echo '<input type="hidden" name="ids[' . $rec->id . '][' . $lang->id .  ']" value="' . intval( $recid ) . '" />';
                 echo '&nbsp;<input type="text" name="values[' . $lang->id .  '][]" value="' . $value . '" style="width: 90%" />';
                 echo '</div>';
               }

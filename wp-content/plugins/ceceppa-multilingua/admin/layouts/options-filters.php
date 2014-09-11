@@ -44,6 +44,14 @@ function cml_admin_options_filter_posts() {
           <?php _e('Hide empty translations of posts and show in default language', 'ceceppaml') ?>
         </label>
       </li>
+
+      <li>
+        <label>
+          <input id="filter-posts" type="radio" value="<?php echo FILTER_NONE ?>" name="filter-posts" <?php checked( $mode, FILTER_NONE ) ?> />
+          <?php _e("Don't filter", 'ceceppaml') ?>
+        </label>
+      </li>
+
     </ul>
   </div>
   
@@ -69,6 +77,14 @@ function cml_admin_options_filter_posts() {
       </dt>
         <dd>
           <?php _e( "If a post doesn't have a translation in current language, post in \"default language\" will be shown", 'ceceppaml') ?>
+        </dd>
+
+
+      <dt>
+        <?php _e("Don't filter", 'ceceppaml') ?>
+      </dt>
+        <dd>
+          <?php _e( "Don't filter wordpress queries, useful for one page themes", 'ceceppaml') ?>
         </dd>
 
     </dl>
@@ -111,19 +127,12 @@ function cml_admin_options_filter_search() {
   $_cml_settings = $GLOBALS[ '_cml_settings' ];
 ?>
   <div id="minor-publishing">
-    <span class="cml-indent">
-      <?php
-        _e( 'Plugin will automatically filter search in according to current language.', 'ceceppaml' );
-        echo "<br />";
-        _e( "You have to set html form element only if \"?lang\" argument will not be added to your search.", 'ceceppaml' );
-      ?>
-    </span>
-    <br />
-    <label>
-      <input type="text" name="filter-form" id="filter-form" value="<?php echo $_cml_settings[ "cml_option_filter_form_class" ] ?>" />
-      &nbsp;&nbsp;<?php _e( 'Insert html element with className or id of your searchform', 'ceceppaml' ); ?>
-    </label>
-    <br /><br />
+    <div class="cml-checkbox">
+      <input type="checkbox" id="filter-search" name="filter-search" value="1" <?php checked( $_cml_settings[ 'cml_option_filter_search' ], 1 ) ?> />
+      <label for="filter-search"><span>||</span></label>
+    </div>
+    <label for="filter-search"><?php _e( 'Enable', 'ceceppaml' ) ?>&nbsp;</label>
+
   </div>
 
   <div id="major-publishing-actions" class="cml-description">
@@ -245,7 +254,7 @@ add_meta_box( 'cml-box-options-widgets', '<span class="cml-icon cml-icon-widgets
 
 // $mode = CMLUtils::get_url_mode();
 // if( $mode == PRE_LANG || $mode == PRE_NONE ) {
-  // add_meta_box( 'cml-box-options-search', '<span class="cml-icon cml-icon-search"></span>' . __( 'Search', 'ceceppaml' ) . "<span class=\"cml-help tipsy-w\" title=\"$help\"></span>", 'cml_admin_options_filter_search', 'cml_box_options' );
+  add_meta_box( 'cml-box-options-search', '<span class="cml-icon cml-icon-search"></span>' . __( 'Search', 'ceceppaml' ) . "<span class=\"cml-help tipsy-w\" title=\"$help\"></span>", 'cml_admin_options_filter_search', 'cml_box_options' );
 // }
 
 add_meta_box( 'cml-box-options-comments', '<span class="cml-icon cml-icon-comments"></span>' . __( 'Comments', 'ceceppaml' ) . "<span class=\"cml-help tipsy-w\" title=\"$help\"></span>", 'cml_admin_options_filter_comments', 'cml_box_options' );

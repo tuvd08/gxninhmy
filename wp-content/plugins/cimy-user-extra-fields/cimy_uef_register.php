@@ -476,11 +476,11 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 			if ((!$rules['can_be_empty']) || (!empty($value))) {
 				if (($i == 1) && ($input_name == ($prefix."PASSWORD2"))) {
 					if ($value != $_POST[$prefix."PASSWORD"])
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('không giống nhau.', $cimy_uef_domain));
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('does not match.', $cimy_uef_domain));
 				}
 				if (($rules['email']) && (in_array($type, $rule_email))) {
 					if (!is_email($value))
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('không chính xác.', $cimy_uef_domain));
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('hasn&#8217;t a correct email syntax.', $cimy_uef_domain));
 				}
 
 				if ((!$rules['can_be_empty']) && (in_array($type, $rule_canbeempty)) && (empty($value))) {
@@ -494,7 +494,7 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 						$empty_error = false;
 
 					if ($empty_error)
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('không được bỏ trống.', $cimy_uef_domain));
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('couldn&#8217;t be empty.', $cimy_uef_domain));
 				}
 
 				if ((isset($rules['equal_to'])) && (in_array($type, $apply_equalto_rule))) {
@@ -514,7 +514,7 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 						$equalTo = (($rules['equal_to_case_sensitive']) ? $equalTo.'u' : $equalTo.'iu');
 						if (!preg_match($equalTo, $value)) {
 							$equalmsg = " ".__("isn&#8217;t correct", $cimy_uef_domain);
-							$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.$equalmsg.'.');
+							$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.$equalmsg.'.');
 						}
 					}
 					else if ($value != $equalTo) {
@@ -522,11 +522,11 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 							$equalTo == "YES" ? $equalTo = __("YES", $cimy_uef_domain) : __("NO", $cimy_uef_domain);
 
 						if ($type == "password")
-							$equalmsg = " ".__("không chính xác", $cimy_uef_domain);
+							$equalmsg = " ".__("isn&#8217;t correct", $cimy_uef_domain);
 						else
-							$equalmsg = ' '.__("phải là", $cimy_uef_domain).' '.esc_html($equalTo);
+							$equalmsg = ' '.__("should be", $cimy_uef_domain).' '.esc_html($equalTo);
 
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.$equalmsg.'.');
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.$equalmsg.'.');
 					}
 				}
 
@@ -539,7 +539,7 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 						$file_type2 = $validate['type'];
 
 					if (((stristr($file_type1, "image/") === false) || (stristr($file_type2, "image/") === false)) && (!empty($value))) {
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('phải là ảnh.', $cimy_uef_domain));
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('should be an image.', $cimy_uef_domain));
 					}
 				}
 				else if (in_array($type, $cimy_uef_file_types)) {
@@ -550,7 +550,7 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 						$file_type2 = $validate['type'];
 
 					if (empty($file_type2) && !empty($value)) {
-						$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('không chấp nhận loại tập tin này.', $cimy_uef_domain));
+						$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('does not accept this file type.', $cimy_uef_domain));
 					}
 				}
 
@@ -560,12 +560,12 @@ function cimy_registration_check($user_login, $user_email, $errors) {
 
 					if (in_array($type, $cimy_uef_file_types)) {
 						if ($file_size < $minlen) {
-							$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('phải có kích thước nhỏ hơn', $cimy_uef_domain).' '.$minlen.' KB.');
+							$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('couldn&#8217;t have size less than', $cimy_uef_domain).' '.$minlen.' KB.');
 						}
 					}
 					else if (!in_array($type, $rule_maxlen_is_str)) {
 						if (cimy_strlen($value) < $minlen) {
-							$errors->add($unique_id, '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.$label.' '.__('phải có dung lượng nhỏ hơn', $cimy_uef_domain).' '.$minlen.'.');
+							$errors->add($unique_id, '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.$label.' '.__('couldn&#8217;t have length less than', $cimy_uef_domain).' '.$minlen.'.');
 						}
 					}
 				}
@@ -638,7 +638,7 @@ function cimy_registration_captcha_check($user_login, $user_email, $errors) {
 		}
 
 		if (!$recaptcha_code_ok)
-			$errors->add("recaptcha_code", '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.__('Mã nhập không chính xác.', $cimy_uef_domain));
+			$errors->add("recaptcha_code", '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.__('Typed code is not correct.', $cimy_uef_domain));
 	}
 
 	if ($options['captcha'] == "securimage") {
@@ -646,7 +646,7 @@ function cimy_registration_captcha_check($user_login, $user_email, $errors) {
 		require_once($cuef_plugin_dir.'/securimage/securimage.php');
 		$securimage = new Securimage();
 		if ($securimage->check($_POST['securimage_response_field']) == false) {
-			$errors->add("securimage_code", '<strong>'.__("LỖI", $cimy_uef_domain).'</strong>: '.__('Mã nhập không chính xác.', $cimy_uef_domain));
+			$errors->add("securimage_code", '<strong>'.__("ERROR", $cimy_uef_domain).'</strong>: '.__('Typed code is not correct.', $cimy_uef_domain));
 		}
 	}
 	return $errors;
@@ -672,7 +672,7 @@ function cimy_uef_validate_username($valid, $username) {
 // show_type == 1 - search form, all fields are text, password fields are skipped
 // show_type == 2 - confirmation form, all fields are plain text, images can be cropped
 function cimy_registration_form($errors=null, $show_type=0) {
-	global $wpdb, $start_cimy_uef_comment, $end_cimy_uef_comment, $rule_maxlen_needed, $fields_name_prefix, $wp_fields_name_prefix, $cuef_plugin_dir, $cimy_uef_file_types, $cimy_uef_textarea_types, $user_level, $cimy_uef_domain, $cimy_uef_file_images_types;
+	global $wpdb, $start_cimy_uef_comment, $end_cimy_uef_comment, $rule_maxlen_needed, $fields_name_prefix, $wp_fields_name_prefix, $cuef_plugin_dir, $cimy_uef_file_types, $cimy_uef_textarea_types, $user_level, $cimy_uef_domain, $cimy_uef_file_images_types, $cimy_uef_text_types;
 
 	if (cimy_is_at_least_wordpress35())
 		cimy_switch_to_blog();
@@ -716,7 +716,7 @@ function cimy_registration_form($errors=null, $show_type=0) {
 			$username = $_POST["user_login"];
 ?>
 			<p id="user_login_p">
-				<label for="user_login"><?php _e("Tên đăng nhập"); ?> </label><?php echo esc_html($username); ?>
+				<label for="user_login"><?php _e("Username"); ?> </label><?php echo esc_html($username); ?>
 			</p>
 <?php
 		}
@@ -889,7 +889,7 @@ function cimy_registration_form($errors=null, $show_type=0) {
 					$obj_class = ' class="'.$input_class.$obj_class.'"';
 					$obj_name = ' name="'.$input_name.'"';
 
-					if ($type == "picture-url")
+					if (in_array($type, $cimy_uef_text_types))
 						$obj_type = ' type="text"';
 					else
 						$obj_type = ' type="'.$type.'"';
@@ -1218,17 +1218,15 @@ function cimy_registration_form($errors=null, $show_type=0) {
 		else
 			$width = 278;
 ?>
-  <div class="clearfix">
-		<div style="width: <?php echo $width; ?>px; float: left; vertical-align: text-top;">
+		<div style="width: <?php echo $width; ?>px; clear: both; height: 80px; vertical-align: text-top;">
 			<img id="captcha" align="left" style="padding-right: 5px; border: 0" src="<?php echo $cuef_securimage_webpath; ?>/securimage_show_captcha.php" alt="CAPTCHA Image" />
 			<object type="application/x-shockwave-flash" data="<?php echo $cuef_securimage_webpath; ?>/securimage_play.swf?audio_file=<?php echo $cuef_securimage_webpath; ?>/securimage_play.php&#038;bgColor1=#fff&#038;bgColor2=#fff&#038;iconColor=#777&#038;borderWidth=1&#038;borderColor=#000" height="19" width="19"><param name="movie" value="<?php echo $cuef_securimage_webpath; ?>/securimage_play.swf?audio_file=<?php echo $cuef_securimage_webpath; ?>/securimage_play.php&#038;bgColor1=#fff&#038;bgColor2=#fff&#038;iconColor=#777&#038;borderWidth=1&#038;borderColor=#000" /></object>
 			<br /><br /><br />
 			<a align="right"<?php if (!empty($obj_tabindex)) echo " tabindex=\"".$tabindex."\""; $tabindex++; ?> style="border-style: none" href="#" onclick="document.getElementById('captcha').src = '<?php echo $cuef_securimage_webpath; ?>/securimage_show_captcha.php?' + Math.random(); return false"><img src="<?php echo $cuef_securimage_webpath; ?>/images/refresh.png" alt="<?php _e("Change image", $cimy_uef_domain); ?>" border="0" onclick="this.blur()" align="bottom" height="19" width="19" /></a>
 		</div>
-		<div style="width: 264px; float: left; vertical-align: bottom; padding: 3px 0px;">
-			<?php _e("Nhập ký tự ở trên vào ô duới đây:", $cimy_uef_domain); ?>&nbsp;<input type="text" name="securimage_response_field" size="12" maxlength="16"<?php if (!empty($obj_tabindex)) echo " tabindex=\"".$tabindex."\""; $tabindex++; ?> />
+		<div style="width: <?php echo $width; ?>px; clear: both; height: 70px; vertical-align: bottom; padding: 5px;">
+			<?php _e("Insert the code:", $cimy_uef_domain); ?>&nbsp;<input type="text" name="securimage_response_field" size="12" maxlength="16"<?php if (!empty($obj_tabindex)) echo " tabindex=\"".$tabindex."\""; $tabindex++; ?> />
 		</div>
-  </div>
 <?php
 	}
 

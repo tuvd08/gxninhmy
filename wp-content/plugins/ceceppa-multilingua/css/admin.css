@@ -47,7 +47,7 @@ label.cml-disabled {
   text-transform: uppercase;
 }
 
-  .cml-separator-li {
+  li .cml-separator-li {
     background: #222;
     min-height: 24px;
   }
@@ -1056,10 +1056,14 @@ display: none !important;
   
   .ceceppaml-trans-fields input[type="text"],
   .ceceppaml-trans-fields textarea {
-    width: 90%;
+    width: 85%;
     margin-right: 10px;
   }
-  
+
+  .cml-fuzzy {
+    display: inline-block;
+  }
+
   .ceceppaml-theme-translations tr.row-domain:hover {
     background: #FFFFE5;
   }
@@ -1142,6 +1146,7 @@ margin-bottom: 10px;
   border:1px solid #ccc;
   cursor: pointer;
   height: 26px;
+  overflow: hidden;
 }
   .cml-dropdown-me  > li > span {
     height: 25px;
@@ -1417,6 +1422,8 @@ div.cml-ex-indent {
   background: #fff;
   display: block;
   padding: 10px;
+  padding-bottom: 50px;
+  position: relative;
 }
 
 #cml-wizard > .content .logo-big:before {
@@ -1455,8 +1462,10 @@ color: #f00;
 }
 
 .cml-skip {
-  margin: 10px;
-  text-align: right;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  margin-top: 15px !important;
 }
 
 .cml-done {
@@ -1679,8 +1688,8 @@ ul.cml-tagslist .button-mini.button-confirm img {
 
 .cml-addons .cml-addon .links span {
   color: #aaa;
+  padding: 10px;
 }
-
 
 .cml-addons .cml-addon .links a {
   text-decoration: none;
@@ -1702,4 +1711,45 @@ ul.cml-tagslist .button-mini.button-confirm img {
   text-align: right;
   display: block;
   width: 100%;
+}
+
+/*.media-frame-content .attachments-browser table tr[class*="cml-media-alternative"] {
+  display: none;
+}
+*/
+.cml-titlewrap {
+  position: relative;
+  margin: 10px 0 0 30px;
+}
+
+.cml-titlewrap > img {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  margin-top: -6px;
+}
+
+.cml-title {
+  padding: 3px 8px;
+  font-size: 1.7em;
+  line-height: 100%;
+  height: 1.7em;
+  width: 100%;
+  outline: 0;
+  margin: 0;
+  background-color: #fff;
+}
+
+form#post table.compat-attachment-fields tr[class*="compat-field-cml-media-title"] {
+  display: none;
+}
+
+
+.search {
+  background: #e4e4e4;
+  float: right;
+  padding: 5px;
+  height: 29px;
+  border: 1px solid #ccc;
+  border-bottom: none;
 }

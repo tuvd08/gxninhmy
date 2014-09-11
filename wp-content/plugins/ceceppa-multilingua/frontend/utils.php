@@ -18,6 +18,7 @@ function cml_is_homepage( $url = null ) {
   //Controllo se è stata impostata una pagina "statica" se l'id di questa è = a quello della statica
   if( cml_use_static_page() ) {
     global $wp_query;
+
     $static_id = array( get_option( "page_for_posts" ), get_option( "page_on_front" ) );
 
     $lang_id = CMLLanguage::get_current_id();
@@ -182,6 +183,18 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
     //current page is homepage?
     $link = CMLUtils::get_home_url( $result->cml_language_slug );
 
+    /*
+     * If url mode == PRE_PATH and "Ignore for default language" option is enabled I have to ?lang slug to $link,
+     * because I need to say the plugin that user choosed default language and I haven't redirect it to his browser
+     * language...
+     */
+    if( $_cml_settings[ 'url_mode_remove_default' ] == 1 &&
+        CMLLanguage::is_default( $result->id ) &&
+        CMLUtils::get_url_mode() == PRE_PATH ) {
+
+      $args[ 'lang' ] = $result->cml_language_slug;
+      $link = add_query_arg( $args, trailingslashit( $link ) );
+    }
     if( is_search() ) {
       if( isset( $_GET[ 's' ] ) ) {
         $args[ 's' ] = esc_attr( $_GET[ 's' ] );
@@ -195,6 +208,8 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
     }
   } else {
     $GLOBALS[ '_cml_force_home_slug' ] = $result->cml_language_slug;
+    CMLUtils::_set( "_forced_language_slug", $result->cml_language_slug );
+    CMLUtils::_set( "_forced_language_id", $result->id );
 
     //I have to force language to $result one
     $wpCeceppaML->force_category_lang( $result->id );
@@ -204,17 +219,32 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
         $GLOBALS[ '_cml_get_queried_object' ] = get_queried_object();
       }
       $q = & $GLOBALS[ '_cml_get_queried_object' ];
-      
-      $is_category = isset( $q->taxonomy ) && "category" == $q->taxonomy;
-      $is_single = isset( $q->ID );
-      $is_page = $is_single;
-      $the_id = ( $is_single ) ? $q->ID : 0;
+
       $is_tag = isset( $q->taxonomy ) && "post_tag" == $q->taxonomy;
+      if( ! $is_tag ) {
+        $is_category = isset( $q->taxonomy );
+      } else {
+        $is_category = false;
+      }
+
+      /*
+       * added for detect woocommerce "shop" page
+       */
+      $is_single = apply_filters( 'cml_is_single_page', isset( $q->ID ), $q );
+      $is_page = $is_single;
+
+      if( $is_single && ! isset( $q->ID ) ) {
+        $the_id = apply_filters( 'cml_get_custom_page_id', 0, $q );
+      } else {
+        $the_id = ( $is_single ) ? $q->ID : 0;
+      }
 
       if( empty( $q ) ) {
         $is_404 = is_404();
       }
     } else {
+      $q = null;
+
       $is_category = is_category();
       $is_single = is_single();
       $is_page = is_page();
@@ -267,7 +297,10 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
     //Collego le categorie delle varie lingue
     if( $is_category ) {
       if( $queried && isset( $q->term_id ) ) {
-    	$cat = array( "term_id" => $q->term_id );
+    	$cat = array(
+                    "term_id" => $q->term_id,
+                    "taxonomy" => $q->taxonomy,
+                    );
       } else {
     	$cat = get_the_category();
       }
@@ -277,8 +310,12 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
 
         //Mi recupererà il link tradotto dal mio plugin ;)
         CMLUtils::_set( '_force_category_lang', $result->id );
-        $link = get_category_link( $cat_id );
+
+        $link = get_term_link( $cat_id, $cat[ 'taxonomy' ] );
         
+        //if is object, it's an Error
+        if( is_object( $link ) ) $link = "";
+
         CMLUtils::_del( '_force_category_lang' );
       } //endif;
 
@@ -309,6 +346,10 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
     }
 
     unset( $GLOBALS[ '_cml_force_home_slug' ] );
+
+    CMLUtils::_del( "_forced_language_slug" );
+    CMLUtils::_del( "_forced_language_id" );
+
     $wpCeceppaML->unset_category_lang();
 
     /* Controllo se è stata impostata una pagina statica,
@@ -338,7 +379,14 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
          */
         $link = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         if( CMLPost::get_language_by_id( $the_id ) != $result->id ) {
-          $link = add_query_arg( array( "lang" => $result->cml_language_slug ), $link );
+          //Is internal link?
+          //if( strpos( $link, CMLUtils::get_home_url() ) === FALSE ) {
+            //$link = add_query_arg( array( "lang" => $result->cml_language_slug ), $link );
+          //} else {
+            $link = str_replace( CMLUtils::get_home_url( CMLLanguage::get_current_slug() ),
+                                 CMLUtils::get_home_url( $result->cml_language_slug ),
+                                 $link );
+          //}
         }
       } else {
         $link = CMLUtils::get_home_url( $result->cml_language_slug );
@@ -353,6 +401,16 @@ function cml_get_the_link( $result, $linked = true, $only_existings = false, $qu
         $link = CMLUtils::get_home_url( $result->cml_language_slug ) . $link;
       }
     }
+    
+
+    $link = apply_filters( 'cml_get_the_link', $link, array(
+                                                    "is_single" => $is_single,
+                                                    "is_category" => $is_category,
+                                                    "is_tag" => $is_tag,
+                                                    "the_id" => $the_id,
+                                                    ),
+                            $q, $result->id );
+
   }
 
   return $link;
@@ -527,7 +585,12 @@ function cml_show_flags( $args ) {
     if( empty( $link) ) continue;
 
     if( $show_flag ) {
-      $img = "<img class=\"$size $image_class\" src='" . cml_get_flag_by_lang_id( $result->id, $size ) . "' title='$result->cml_language' width=\"$width\"/>";
+      $img = sprintf( '<img class="%s %s" src="%s" title="%s" alt="%s" width="%s" />',
+                     $size, $image_class, CMLLanguage::get_flag_src( $result->id, $size ),
+                     $result->cml_language,
+                     sprintf( __( '%1$ flag', 'ceceppaml' ), $result->cml_language_slug ),
+                     $width );
+      //$img = "<img class=\"$size $image_class\" src=\"" . cml_get_flag_by_lang_id( $result->id, $size ) . "\" title='$result->cml_language' width=\"$width\"/>";
     } else {
       $img = "";
     }
@@ -638,4 +701,5 @@ function cml_get_menu() {
 
   return "cml_menu_" . $lang->cml_language_slug;
 }
+
 ?>

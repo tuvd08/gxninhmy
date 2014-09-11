@@ -81,32 +81,35 @@ function cml_generate_lang_columns() {
 /*
  * generate file cmltras.po from translations stored in database
  */
-function cml_generate_mo_from_translations( $type = null, $echo = true ) {
+function cml_generate_mo_from_translations( $type = null, $echo = false ) {
   global $wpdb;
   
-  require_once( CML_PLUGIN_PATH . 'Pgettext/Pgettext.php' );
+  if( CMLUtils::_get( 'no_generate', false ) ) return;
 
-  //update_option( "cml_get_translation_from_po_$type", false );
+  require_once( CML_PLUGIN_ADMIN_PATH . 'php-mo.php' );
+  require_once ( CML_PLUGIN_ADMIN_PATH . 'admin-taxonomies.php' );
+
   update_option( "cml_get_translation_from_po", 0 );
 
   /*
    * I generate translation for each type for avoid that different translations
    * of same word cause wrong "return"
    */
-  $langs = ( $type == "_X_" ) ? CMLLanguage::get_all() : CMLLanguage::get_no_default();
-  foreach( $langs as $lang ) {
-    //$filename = CML_PLUGIN_CACHE_PATH . "cmltrans-" . strtolower( $type ) . "-{$lang->cml_locale}.po";
-    $filename = CML_PLUGIN_CACHE_PATH . "cmltrans-{$lang->cml_locale}.po";
+  $langs = CMLLanguage::get_all();
+  if( ! is_dir( CML_PLUGIN_CACHE_PATH ) ) mkdir( CML_PLUGIN_CACHE_PATH );
+
+  //foreach( $langs as $lang ) {
+    $filename = CML_PLUGIN_CACHE_PATH . "cmltrans-" . CMLLanguage::get_default_locale() . ".po";
 
     $fp = @fopen( $filename, 'w' );
     if( !$fp ) {
-      if( ! $echo ) continue;
+      if( ! $echo ) return;
 
       echo '<div class="error"><p>';
       printf( __( 'Error writing file: %s', 'ceceppaml' ), $filename );
       echo '</p></div>';
 
-      continue;
+      return;
     }
 
     //.po header
@@ -116,35 +119,98 @@ function cml_generate_mo_from_translations( $type = null, $echo = true ) {
     $h = str_replace( '%PROJECT%', "cml_translations", $h );
     $h = str_replace( '%AUTHOR%', $user->user_firstname . " " . $user->user_lastname, $h );
     $h = str_replace( '%EMAIL%', $user->user_email, $h );
-    $h = str_replace( '%LOCALE%', $lang->cml_locale, $h );
+    $h = str_replace( '%TIME%', date( "h:i", time() ), $h );
+    $h = str_replace( '%DATE%', date( "Y-m-d", time() ), $h );
+    //$h = str_replace( '%LOCALE%', $lang->cml_locale, $h );
     fwrite( $fp, $h . PHP_EOL );
 
-    //$query = sprintf( "SELECT UNHEX(cml_text) as text, UNHEX(cml_translation) as translation FROM %s WHERE cml_lang_id = %d AND cml_type = '%s'",
-                     //CECEPPA_ML_TRANSLATIONS, $lang->id, $type );
-    $query = sprintf( "SELECT UNHEX(cml_text) as text, UNHEX(cml_translation) as translation FROM %s WHERE cml_lang_id = %d",
-                     CECEPPA_ML_TRANSLATIONS, $lang->id );
+    _cml_copy_taxonomies_to_translations();
+    $query = sprintf( "SELECT cml_language_slug as slug, UNHEX(cml_text) as text, UNHEX(cml_translation) as translation FROM %s t1 INNER JOIN %s t2 ON t1.cml_lang_id = t2.id",
+                     CECEPPA_ML_TRANSLATIONS, CECEPPA_ML_TABLE );
+
     $rows = $wpdb->get_results( $query );
 
     foreach( $rows as $row ) {
-      $o = 'msgid "' . addslashes( stripslashes( $row->text ) ) . '"' . PHP_EOL;
+      if( empty( $row->translation ) ) continue;
+      /*
+       * Strings stored in .po and mo file start with language slug
+       */
+      $msgid = "_{$row->slug}_" . addslashes( sanitize_title( stripslashes( $row->text ) ) );
+      $o = 'msgid "' . $msgid . '"' . PHP_EOL;
       $s = 'msgstr "' . addslashes( stripslashes( $row->translation ) ) . '"' . PHP_EOL . PHP_EOL;
-    
+
       fwrite( $fp, $o );
       fwrite( $fp, $s );
     }
+
+    //serialize post translations
+    _cml_generate_translations( $fp );
+
+    //menu meta
+    _cml_generate_menu_meta( $fp );
 
     fclose( $fp );
     
     //Convert .po in .mo
     try {
       //Tadaaaaa, file generato... genero il .mo
-      Pgettext::msgfmt( $filename );
+      phpmo_convert( $filename );
       
       //update_option( "cml_get_translation_from_po_$type", true );
       update_option( "cml_get_translation_from_po", 1 );
     } catch (Exception $e) {
-      return $e->getMessage();
+      //return $e->getMessage();
     }
+  //}
+}
+
+  /*
+   * for reduce database queries I store posts relations
+   * in .po serializing ::get_translations result
+   */
+function _cml_generate_translations( & $fp ) {
+  global $wpdb;
+
+  $query = "SELECT * FROM " . CECEPPA_ML_RELATIONS;
+  $rows = $wpdb->get_results( $query, ARRAY_A );
+  $t = null;
+  foreach( $rows as $row ) {
+    unset( $row[ 'id' ] );
+
+    foreach( $row as $key => $value ) {
+      if( $value > 0 && $t == null ) {
+        $t = CMLPost::get_translations( $value, true );
+      }
+
+      if( $value > 0 ) {
+        $msgid = "__cml_{$key}__{$value}";
+
+        $o = 'msgid "' . $msgid . '"' . PHP_EOL;
+        $s = 'msgstr "' . addslashes( serialize( $t ) ) . '"' . PHP_EOL . PHP_EOL;
+
+        fwrite( $fp, $o );
+        fwrite( $fp, $s );
+      }
+    }
+    
+    $t = null;
+  }
+}
+
+function _cml_generate_menu_meta( & $fp ) {
+  global $wpdb;
+
+  $query = "SELECT * FROM  $wpdb->postmeta WHERE  `meta_key` LIKE  '_cml_menu_meta_%'";
+  $rows = $wpdb->get_results( $query );
+  
+  foreach( $rows as $row ) {
+    $msgid = "{$row->meta_key}_{$row->post_id}";
+
+    $o = 'msgid "' . $msgid . '"' . PHP_EOL;
+    $s = 'msgstr "' . addslashes( $row->meta_value ) . '"' . PHP_EOL . PHP_EOL;
+
+    fwrite( $fp, $o );
+    fwrite( $fp, $s );
   }
 }
 
@@ -177,6 +243,8 @@ $small[] = <<< EOT
 }
 EOT;
   }
+
+  if( ! is_dir( CML_PLUGIN_CACHE_PATH ) ) mkdir( CML_PLUGIN_CACHE_PATH );
   
   $css = join( "\n", $tiny ) . "\n" . join( "\n", $small );
   @file_put_contents( CML_PLUGIN_CACHE_PATH . "cml_flags.css", $css );

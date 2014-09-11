@@ -135,7 +135,6 @@ function cml_migrate_database_add_item( $lang, $pid, $llang, $lpid ) {
 
   $query = sprintf( "DELETE FROM %s WHERE %s", CECEPPA_ML_RELATIONS, join( " AND ", $where ) );
   $wpdb->query( $query );
-
 }
 
 /*
@@ -257,6 +256,8 @@ function _cml_migrate_get_record_by_pid( $pid ) {
 
 function _cml_migrate_set_pids_to_zero( $lpid, $rl ) {
   global $wpdb;
+
+  if( ! is_array( $rl ) ) return;
 
   unset( $rl[ 'id' ] );
 

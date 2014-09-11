@@ -631,6 +631,10 @@ A lot of times I cannot reproduce the problem and I need more details, so if you
 
 
 CHANGELOG:
+v2.6.2 - 18/04/2014
+- Fixed date picker on registration page was conflicting with Google Chrome's one (thanks to Francesca)
+- Updated Securimage Captcha to v3.5.2
+
 v2.6.1 - 30/09/2013
 - Added dropdowns for the year and the month selectors to the date picker
 - Added Min and Max date support for the new 'date' extra field (no backend support yet)

@@ -42,9 +42,11 @@ add_shortcode( 'cml_show_available_langs', 'cml_show_available_langs');
 add_shortcode( 'cml_other_langs_available', 'cml_shortcode_other_langs_available' );
 add_shortcode( 'cml_show_flags', 'cml_shortcode_show_flags' );
 add_shortcode( 'cml_translate', 'cml_shortcode_translate' );
+add_shortcode( 'cml_media_alt', 'cml_translate_media_alt' );
 
 foreach( CMLLanguage::get_all() as $lang ) {
   add_shortcode( '_' . $lang->cml_language_slug . "_", 'cml_quick_shortcode' );
+  add_shortcode( ':' . $lang->cml_language_slug, 'cml_quick_shortcode_qml' );
 }
 
 function cml_shortcode_text($attrs) {
@@ -123,9 +125,40 @@ function cml_quick_shortcode( $attrs, $content = null, $shortcode ) {
     //not current one
     if( ! CMLLanguage::is_current( $lang ) ) return "";
 
-    echo $content;
+    return do_shortcode( $content );
   }
 
-  return "";
+  return $content;
+}
+
+//language shortcode in qmltranslate style [:it]
+function cml_quick_shortcode_qml( $attrs, $content = null, $shortcode ) {
+  if( preg_match( "/:(.*)/", $shortcode, $match ) ) {
+    $lang = end( $match );
+
+    //not current one
+    if( ! CMLLanguage::is_current( $lang ) ) return "";
+
+    return do_shortcode( $content );
+  }
+
+  return $content;
+}
+
+function cml_translate_media_alt( $attrs, $content ) {
+  $lang = CMLLanguage::get_current_id();
+  
+  if( CMLLanguage::is_default( $lang ) ) return $content;
+
+  $id = $attrs[ 'id' ];
+
+  $meta = get_post_meta( $id, '_cml_media_meta', true );
+  if( isset( $meta[ 'alternative-' . $lang ] ) &&
+      ! empty( $meta[ 'alternative-' . $lang ] ) ) {
+    
+    return $meta[ 'alternative-' . $lang ];
+  }
+  
+  return $content;
 }
 ?>

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Hueman\n"
+"Project-Id-Version: Attivamente\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-20 13:57+0100\n"
-"PO-Revision-Date: 2013-08-20 14:01+0100\n"
+"POT-Creation-Date: %DATE% %TIME%+0100\n"
+"PO-Revision-Date: %DATE% %TIME%+0100\n"
 "Last-Translator: Alessandro Senese <senesealessandro@gmail.com>\n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -15,6 +15,18 @@ msgstr ""
 "X-Generator: CeceppaMultilingua 1.4\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../inc\n"
+
+msgid "Languages"
+msgstr "Lingue"
+
+msgid "Post relations"
+msgstr "Relazioni tra i post"
+
+msgid "Translations"
+msgstr "Traduzioni"
+
+msgid "Manage languages"
+msgstr "Gestisci lingue"
 
 msgid "Shortcodes"
 msgstr "Shortcode"
@@ -37,11 +49,14 @@ msgstr "Come visualizzare in quale lingua è disponibile l'articolo/pagina corre
 msgid "How to show flags only when translation exists"
 msgstr "Come visualizzare le bandiere solo quando esistono traduzioni"
 
-msgid "Usage:"
-msgstr "Utilizzo:"
+msgid "Where ## is the language slug"
+msgstr "Dove ## è l'abbreviazione della lingua"
 
 msgid "Example:"
 msgstr "Esempio:"
+
+msgid "Usage:"
+msgstr "Utilizzo:"
 
 msgid "How to use the translations stored in \"My Translations\" page"
 msgstr "Come utilizzare le traduzioni salvate nella pagina \"Le mie traduzioni\""
@@ -57,18 +72,6 @@ msgstr "Questo shortcode ritorna una lista <ul>...</ul>"
 
 msgid "This shortcode is available also as function with same name and paramaters"
 msgstr "Lo shortcode è disponibile anche come funzione con gli stessi parametri"
-
-msgid "Debug"
-msgstr "Debug"
-
-msgid "Languages"
-msgstr "Lingue"
-
-msgid "Post relations"
-msgstr "Relazioni tra i post"
-
-msgid "Translations"
-msgstr "Traduzioni"
 
 msgid "Available addons"
 msgstr "Addon disponibili"
@@ -178,6 +181,12 @@ msgstr "Visualizza tutte le opzioni disponibili"
 msgid "Done, close wizard"
 msgstr "Fatto, chiudi la configurazione guidata"
 
+msgid "Navigation Label"
+msgstr "Etichetta di navigazione"
+
+msgid "Title Attribute"
+msgstr "Attributo titolo"
+
 msgid "Select the name of your primary menu:"
 msgstr "Seleziona il nome del tuo menu principale"
 
@@ -187,6 +196,78 @@ msgstr "Salva"
 msgid "Flags"
 msgstr "Bandiere"
 
+msgid "Language"
+msgstr "Lingua"
+
+msgid "All languages"
+msgstr "Tutte le lingue"
+
+msgid "Add translation"
+msgstr "Aggiungi traduzione"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "None"
+msgstr "Nessuna"
+
+msgid "current %s"
+msgstr "% corrente"
+
+msgid "Language: "
+msgstr "Lingua:"
+
+msgid "Edit post: "
+msgstr "Modifica articolo:"
+
+msgid "Translate in:"
+msgstr "Traduci in:"
+
+msgid "This post is a translations, you have to translate existing tag instead of add new one."
+msgstr "Questo articolo è una traduzione, devi tradurre i tag esistenti invece di aggiungerne uno nuovo"
+
+msgid "Help"
+msgstr "Aiuto"
+
+msgid "Search existing tag:"
+msgstr "Cerca tra i tag esistenti:"
+
+msgid "Add new tag"
+msgstr "Aggiungi un nuovo tag"
+
+msgid "Confirm translation"
+msgstr "Conferma traduzione"
+
+msgid "Click to translate"
+msgstr "Clicck per tradurre"
+
+msgid "Post data"
+msgstr "Dati articolo"
+
+msgid "Page data"
+msgstr "Dati pagina"
+
+msgid "Language:"
+msgstr "Lingua:"
+
+msgid "Show all languages"
+msgstr "Visualizza tutte le lingue"
+
+msgid "Something goes wrong during upgrade, click <%s>here</a> to fix "
+msgstr "Qualcosa è andato storto durate l'aggiornamento, clicca <%s>qui</a> per risolvere"
+
+msgid "Error writing file: %s"
+msgstr "Errore nella scrittura del file: %s"
+
+msgid "No tables found!"
+msgstr "Nessuna tabella trovata!"
+
+msgid "If you have uninstalled the plugin, you can remove the plugin now, or deactivate and activete it again to rebuild tables."
+msgstr "Se hai disinstallato il plugin, ora puoi rimuoverlo, oppure puoi disattivarlo e riattivarlo per ricreare le tabelle."
+
+msgid "If you haven't uninstalled the plugin, something goes wrong, please contact me <%s>here"
+msgstr "Se non hai disinstallato il plugin, qualcosa è andato storto, per favore contattami <%s> qui"
+
 msgid "No translable strings founds in %s"
 msgstr "Non è stata trovata alcuna stringa traducibile in %s"
 
@@ -195,9 +276,6 @@ msgstr "Impossibile accedere al percorso %s"
 
 msgid "Available languages: "
 msgstr "Lingue disponibili:"
-
-msgid "Translate in:"
-msgstr "Traduci in:"
 
 msgid "Choose in which languages you want to translate: "
 msgstr "Scegli in quale lingua vuoi tradurre:"
@@ -229,92 +307,23 @@ msgstr "Testo"
 msgid "Translation"
 msgstr "Traduzioni"
 
-msgid "Translate"
-msgstr "Traduci"
+msgid "Translation complete"
+msgstr "Traduzione completata"
 
 msgid "Translation not complete"
 msgstr "Traduzione non completa"
 
-msgid "Translation complete"
-msgstr "Traduzione completata"
-
 msgid "Failed to open stream %s: Permission denied"
 msgstr "Impossibile aprire %s: Permesso negato"
+
+msgid "Something goes wrong :'(. I don't know where to store .mo file"
+msgstr "Qualcosa è andato storto :'(. Non so dove salvare il file .mo"
 
 msgid "Failed to create folder: %s"
 msgstr "Fallita la creazione della cartella: %s"
 
-msgid "Error writing file: %s"
-msgstr "Errore nella scrittura del file: %s"
-
 msgid "Generated files:"
 msgstr "File generati:"
-
-msgid "Language"
-msgstr "Lingua"
-
-msgid "All languages"
-msgstr "Tutte le lingue"
-
-msgid "Edit"
-msgstr "Modifica"
-
-msgid "Add translation"
-msgstr "Aggiungi traduzione"
-
-msgid "None"
-msgstr "Nessuna"
-
-msgid "current %s"
-msgstr "% corrente"
-
-msgid "Language: "
-msgstr "Lingua:"
-
-msgid "Edit post: "
-msgstr "Modifica articolo:"
-
-msgid "Translate to:"
-msgstr "Traduci in:"
-
-msgid "This post is a translations, you have to translate existing tag instead of add new one."
-msgstr "Questo articolo è una traduzione, devi tradurre i tag esistenti invece di aggiungerne uno nuovo"
-
-msgid "Search existing tag:"
-msgstr "Cerca tra i tag esistenti:"
-
-msgid "Add new tag"
-msgstr "Aggiungi un nuovo tag"
-
-msgid "Confirm translation"
-msgstr "Conferma traduzione"
-
-msgid "Click to translate"
-msgstr "Clicck per tradurre"
-
-msgid "Post data"
-msgstr "Dati articolo"
-
-msgid "Page data"
-msgstr "Dati pagina"
-
-msgid "Tags"
-msgstr "Tag"
-
-msgid "Language:"
-msgstr "Lingua:"
-
-msgid "Show all languages"
-msgstr "Visualizza tutte le lingue"
-
-msgid "No tables found!"
-msgstr "Nessuna tabella trovata!"
-
-msgid "If you have uninstalled the plugin, you can remove the plugin now, or deactivate and activete it again to rebuild tables."
-msgstr "Se hai disinstallato il plugin, ora puoi rimuoverlo, oppure puoi disattivarlo e riattivarlo per ricreare le tabelle."
-
-msgid "If you haven't uninstalled the plugin, something goes wrong, please contact me <%s>here"
-msgstr "Se non hai disinstallato il plugin, qualcosa è andato storto, per favore contattami <%s> qui"
 
 msgid "Advanced"
 msgstr "Avanzate"
@@ -343,8 +352,17 @@ msgstr "Personalizzato"
 msgid "Ceceppa Multilingua"
 msgstr "Ceceppa Multilingua"
 
+msgid "Translate"
+msgstr "Traduci"
+
 msgid "My translations"
 msgstr "Le mie traduzioni"
+
+msgid "Site Title"
+msgstr "Titolo sito"
+
+msgid "Tagline"
+msgstr "Motto"
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -370,23 +388,20 @@ msgstr "Shortcode"
 msgid "Api"
 msgstr "Api"
 
-msgid "Help"
-msgstr "Aiuto"
-
 msgid "Click here to show the meaning of language fields"
 msgstr "Clicca qui per visualizzare il significato dei campi della lingua"
-
-msgid "You can order languages, set the default one, enable/disable them "
-msgstr "Puoi ordinare le lingue, scegliere quella predefinita, attivarle/disattivarle"
 
 msgid "Basic"
 msgstr "Base"
 
-msgid "You can also edit language name and date format"
-msgstr "Puoi anche modificare il nome della lingua e il formato della data"
+msgid "You can order languages, set the default one, enable/disable them "
+msgstr "Puoi ordinare le lingue, scegliere quella predefinita, attivarle/disattivarle"
 
 msgid "Intermediate"
 msgstr "Intermedie"
+
+msgid "You can also edit language name and date format"
+msgstr "Puoi anche modificare il nome della lingua e il formato della data"
 
 msgid "You can change flag and edit all language fields"
 msgstr "Puoi cambiare la bandiera e modificare tutti i campi della lingua"
@@ -415,53 +430,53 @@ msgstr "Clicca su ✔ per abilitare/disabilitare la lingua"
 msgid "Your languages"
 msgstr "Le tue lingue"
 
-msgid "List of all available languages.<br /> Click on item to choose flag and add it to your languages"
-msgstr "Elenco delle lingue disponibili.<br />Clicca su una voce per scegliere la bandiera e aggiungere la voce alle tue lingue."
-
 msgid "Add language"
 msgstr "Aggiungi lingua"
 
-msgid "Search the language from the availables and click for add it"
-msgstr "Cerca tra le lingue disponibili e clicca per aggingerla"
+msgid "List of all available languages.<br /> Click on item to choose flag and add it to your languages"
+msgstr "Elenco delle lingue disponibili.<br />Clicca su una voce per scegliere la bandiera e aggiungere la voce alle tue lingue."
 
 msgid "Search language"
 msgstr "Cerca lingue"
 
-msgid "Click here for add custom language"
-msgstr "Clicca qui per aggiungere una lingua personalizzata"
+msgid "Search the language from the availables and click for add it"
+msgstr "Cerca tra le lingue disponibili e clicca per aggingerla"
 
 msgid "Add custom language"
 msgstr "Aggiungi una lingua personalizzata"
 
-msgid "Click here for save changes"
-msgstr "Clicca qui per salvare le modifiche"
+msgid "Click here for add custom language"
+msgstr "Clicca qui per aggiungere una lingua personalizzata"
 
 msgid "Save languages"
 msgstr "Salva le lingue"
 
-msgid "Choose in which languages translate:"
-msgstr "Scegli in quale lingua tradurre"
+msgid "Click here for save changes"
+msgstr "Clicca qui per salvare le modifiche"
 
 msgid "Theme language"
 msgstr "Lingua tema"
 
+msgid "Choose in which languages translate:"
+msgstr "Scegli in quale lingua tradurre"
+
 msgid "Click here for show/hide help"
 msgstr "Clicca qui per visualizzare/nascondere la guida"
-
-msgid "Filter list by language"
-msgstr "Filtra lista per lingua"
 
 msgid "Filter list"
 msgstr "Filtra la lista"
 
+msgid "Filter list by language"
+msgstr "Filtra lista per lingua"
+
 msgid "Click here to filter list by language"
 msgstr "Clicca qui per filtrare la lista per lingua"
 
-msgid "This is the style of current language"
-msgstr "Questo è lo stile della lingua corrente"
-
 msgid "Active language"
 msgstr "Lingua attiva"
+
+msgid "This is the style of current language"
+msgstr "Questo è lo stile della lingua corrente"
 
 msgid "Choose the language of current post/page."
 msgstr "Scegli la lingua degli articoli/pagine correnti"
@@ -531,6 +546,9 @@ msgstr "Puoi personalizzare le etichette di navigazione, oppure, per i Link pers
 
 msgid "If you need different items for each languages, you can create menu for each language"
 msgstr "Se hai bisogno di voci differenti per ogni lingua, puoi creare un menu per ognuna di esse"
+
+msgid "Clicke here for translate the \"Site Title\" and \"Tagline\" in other languages"
+msgstr "Clicca qui per tradurre il \"Titolo del sito\" e il \"Motto\" in altre lingue"
 
 msgid "Your theme must use the function: "
 msgstr "Il tuo tema deve utilizzare la funzione:"
@@ -628,11 +646,17 @@ msgstr "Stai utilizzando IE <= 9"
 msgid "If you need to use custom flags you hate to <%s>upload them manually</a>."
 msgstr "Se hai la necessità di utilizzare bandiere personalizzate devi <%s>fare l'upload manualmente</a>"
 
+msgid "Hide this message"
+msgstr "Nascondi questo messaggio"
+
 msgid "Security error"
 msgstr "Errore di sicurezza"
 
 msgid "Invalid image: "
 msgstr "Immagine non valida:"
+
+msgid "Default language"
+msgstr "Lingua predefinita"
 
 msgid "Language files"
 msgstr "Pacchetti lingua"
@@ -642,6 +666,102 @@ msgstr "Ceceppa Multilingua nella tua lingua"
 
 msgid "Remove translation"
 msgstr "Rimuovi traduzione"
+
+msgid "Edit this item inline"
+msgstr "Modifica questo elemento in linea"
+
+msgid "Quick&nbsp;Edit"
+msgstr "Quick Edit"
+
+msgid "Thanks for using Ceceppa Multilingua"
+msgstr "Grazie per l'utilizzo di Ceceppa Multilingua"
+
+msgid "If you like this plugin, please donate to support development and maintenance"
+msgstr "Se hai gradito \"Ceceppa Multilingua\", sostieni con una donazione il suo sviluppo e il suo mantenimento "
+
+msgid "Rate Ceceppa Multilingua 5%s's on WordPress.org"
+msgstr "Valuta Ceceppa Multilingua con 5%s su WordPress.org"
+
+msgid "Talk about it on your site and link back to the"
+msgstr "Parla del plugin sul tuo sito e aggiungi il link nella"
+
+msgid "plugin page."
+msgstr "pagina del plugin."
+
+msgid "I use Ceceppa Multilingua for WordPress and you should too"
+msgstr "Io uso Ceceppa Multilingua per WordPress e dovresti farlo anche tu"
+
+msgid "Tweet about it."
+msgstr "Twitta il plugin."
+
+msgid "Translate it in your language."
+msgstr "Traducilo nella tua lingua."
+
+msgid "Don't hesitate to report bugs or ask for new features on the <%s>support forum.</a>"
+msgstr "Non esitare a riportare bug o chiedere nuove caratteristiche sul <%s>forum di supporto.</a>"
+
+msgid "Subscribe to official <%s>Google + page</a>,"
+msgstr "Iscriviti alla pagina ufficiale su <%s>Google +</a>,"
+
+msgid "I use to announce development versions and then, test the new versions and report bugs before the final release."
+msgstr "Qui annuncerò le versioni di sviluppo e potrai testarle, riportare bug prima della versione finale."
+
+msgid "Development code is available on github"
+msgstr "Il codice di sviluppo è disponibile su github"
+
+msgid "Setting up a WordPress multilingual site with Ceceppa Multilingua"
+msgstr "Imposta un sito WordPress multilingua con Ceceppa Multilingua"
+
+msgid "About Ceceppa:"
+msgstr "Info su Ceceppa:"
+
+msgid "Donate:"
+msgstr "Dona:"
+
+msgid "Contribute:"
+msgstr "Contribuisci:"
+
+msgid "Documentation:"
+msgstr "Documentazione:"
+
+msgid "No .po files found for %s"
+msgstr "Nessun file .po trovato in %s"
+
+msgid "fuzzy"
+msgstr "Non completa"
+
+msgid "tmp.pot not found: %s"
+msgstr "tmp.pot non trovato: %s"
+
+msgid "Translate title in:"
+msgstr "Traduci titolo in"
+
+msgid "Filter widget"
+msgstr "Filtra widget"
+
+msgid "Show"
+msgstr "Visualizza"
+
+msgid "Hide"
+msgstr "Nascondi"
+
+msgid "If current language is: "
+msgstr "Se la lingua corrente è:"
+
+msgid "Alternative Text"
+msgstr "Testo Alternativo"
+
+msgid "Alt Text"
+msgstr "Testo Alt"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Title in %s"
+msgstr "Titolo in %s"
+
+msgid "Update required, click here for update posts relations"
+msgstr "Aggiornamento richiesto, clicca qui per aggiornare la relazione tra i post"
 
 msgid "Group name"
 msgstr "Nome del gruppo"
@@ -715,9 +835,6 @@ msgstr "Se attivato il plugin filtra le query de \"Articoli più letti\" e \"Pi�
 msgid "The others widget will be filtered only if they use the WP_Query class."
 msgstr "Gli altri widget verranno filtrati solo se usano la classe WP_Query"
 
-msgid "Plugin will automatically filter search in according to current language."
-msgstr "Plugin filtra automaticamente la ricerca in accordo alla lingua corrente."
-
 msgid "Filter wordpress search query"
 msgstr "Filtra la query di ricerca di Wordpress"
 
@@ -787,8 +904,11 @@ msgstr "Lingua corrente"
 msgid "All languages except current"
 msgstr "Tutte le lingue tranne quella corrente"
 
-msgid "Ensure that folder %s if writable"
-msgstr "Verifica che il percorso %s sia scrivibile"
+msgid "Something goes wrong, cannot generate .mo files :("
+msgstr "Qualcosa è andato storto, non posso generare i file .mo :'("
+
+msgid "Ensure that folder <b>%s</b> is writable"
+msgstr "Assicurati che la cartella <b>%s</b> sia scrivibile"
 
 msgid "Thanks for translated Ceceppa Multilingua in your language."
 msgstr "Grazie per aver tradotto Ceceppa Multilingua nella tua lingua."
@@ -811,11 +931,11 @@ msgstr "Aggiorna l'elenco degli addon disponibili"
 msgid "If you want to customize widget titles you have to assign a title for each of them in \"Appearance\" -> \"Widgets\""
 msgstr "Se vuoi personalizzare i titoli dei widget è necessario assegnargli un titolo in \"Aspetto\" -> \"Widgets\""
 
-msgid "Title"
-msgstr "Titolo"
-
 msgid "Reset titles"
 msgstr "Resetta titoli"
+
+msgid "Site title"
+msgstr "Titolo del sito"
 
 msgid "This procedure will erase all plugin data from database"
 msgstr "Questa procedura cancella tutti i dati del plugin dal database"
@@ -873,9 +993,6 @@ msgstr "Oops, qualcosa è andato storto"
 
 msgid "Click for change or upload custom flag"
 msgstr "Clicca per cambiare o personalizzare la bandiera"
-
-msgid "Default language"
-msgstr "Lingua predefinita"
 
 msgid "Enable/Disable language"
 msgstr "Attiva/Disattiva lingua"
@@ -1027,11 +1144,20 @@ msgstr "Cambia il locale di wordpress alla lingua corrente"
 msgid "If enabled language of all plugins and theme will switch in current language, if a translation exists"
 msgstr "Se attivo, la lingua del tema e di tutti i plugin verrà cambiata in quella corrente, se esistono le traduzioni"
 
+msgid "Add [cml_media] shortcode to media inserted in editor"
+msgstr "Aggiunge lo shortcode [cml_media] ai media inseriti nell'editor"
+
+msgid "If enabled the plugin will insert inside [cml_media] shortcode to allow \"alt\" attribute to be translated in frontend"
+msgstr "Se attivo il plugin inserirà lo shortcode [cml_media] per permettere la traduzione dell'attributo \"alt\" nel frontend"
+
 msgid "Categories & Tags"
 msgstr "Categorie & Tags"
 
 msgid "Change wordpress language:"
 msgstr "Cambia la lingua di wordpress"
+
+msgid "Translate media in Editor:"
+msgstr "Traduci i Media nell'Editor:"
 
 msgid "When you add a language the plugin will try to download corresponding WordPress language files. If for, some reason, it fails you can try to download them at: "
 msgstr "Quando aggiungi una lingua il plugin proverà a scaricare i relativi pacchetti lingua per Wordpress. Se, per qualche motivo, qualcosa va storto puoi provare a scaricarli da:"
@@ -1189,77 +1315,11 @@ msgstr "Aggiorna la lingua degli articoli esistenti"
 msgid "Update post relations"
 msgstr "Aggiorna relazioni tra i post"
 
-msgid "Thanks for using Ceceppa Multilingua"
-msgstr "Grazie per l'utilizzo di Ceceppa Multilingua"
+msgid "Debug"
+msgstr "Debug"
 
-msgid "If you like this plugin, please donate to support development and maintenance"
-msgstr "Se hai gradito \"Ceceppa Multilingua\", sostieni con una donazione il suo sviluppo e il suo mantenimento "
-
-msgid "Rate Ceceppa Multilingua 5%s's on WordPress.org"
-msgstr "Valuta Ceceppa Multilingua con 5%s su WordPress.org"
-
-msgid "Talk about it on your site and link back to the"
-msgstr "Parla del plugin sul tuo sito e aggiungi il link nella"
-
-msgid "plugin page."
-msgstr "pagina del plugin."
-
-msgid "I use Ceceppa Multilingua for WordPress and you should too"
-msgstr "Io uso Ceceppa Multilingua per WordPress e dovresti farlo anche tu"
-
-msgid "Tweet about it."
-msgstr "Twitta il plugin."
-
-msgid "Translate it in your language."
-msgstr "Traducilo nella tua lingua."
-
-msgid "Don't hesitate to report bugs or ask for new features on the <%s>support forum.</a>"
-msgstr "Non esitare a riportare bug o chiedere nuove caratteristiche sul <%s>forum di supporto.</a>"
-
-msgid "Subscribe to official <%s>Google + page</a>,"
-msgstr "Iscriviti alla pagina ufficiale su <%s>Google +</a>,"
-
-msgid "I use to announce development versions and then, test the new versions and report bugs before the final release."
-msgstr "Qui annuncerò le versioni di sviluppo e potrai testarle, riportare bug prima della versione finale."
-
-msgid "Development code is available on github"
-msgstr "Il codice di sviluppo è disponibile su github"
-
-msgid "Setting up a WordPress multilingual site with Ceceppa Multilingua"
-msgstr "Imposta un sito WordPress multilingua con Ceceppa Multilingua"
-
-msgid "About Ceceppa:"
-msgstr "Info su Ceceppa:"
-
-msgid "Donate:"
-msgstr "Dona:"
-
-msgid "Contribute:"
-msgstr "Contribuisci:"
-
-msgid "Documentation:"
-msgstr "Documentazione:"
-
-msgid "Translate title in:"
-msgstr "Traduci titolo in"
-
-msgid "Filter widget"
-msgstr "Filtra widget"
-
-msgid "Show"
-msgstr "Visualizza"
-
-msgid "Hide"
-msgstr "Nascondi"
-
-msgid "If current language is: "
-msgstr "Se la lingua corrente è:"
-
-msgid "Update required, click here for update posts relations"
-msgstr "Aggiornamento richiesto, clicca qui per aggiornare la relazione tra i post"
-
-msgid "Manage languages"
-msgstr "Gestisci lingue"
+msgid "%1$ flag"
+msgstr "bandiera %1$"
 
 msgid "generated from \"wpml-config.xml\""
 msgstr "generato da \"wpml-config.xml\""
@@ -1276,17 +1336,29 @@ msgstr "Ora puoi tradurre le voci \"Admin texts / wp_options\" nella pagina <%s>
 msgid "Support to wpml-config.xml is experimental and could not works correctly"
 msgstr "Il supporto ai file wpml-config.xml è sperimentale e potrebbe non funzionare correttamente"
 
+msgid "Go to <%s>My Translations</a> page to translate \"Titles & Metadata\""
+msgstr "Vai alla pagina <%s>Le mie traduzioni</a> per tradurre i \"Titoli & Metadata\""
+
+msgid "Go to <%s>My Translations</a> page to translate \"Title Settings\""
+msgstr "Vai alla pagina <%s>Le mie traduzioni</a> per tradurre le voci in \"Title Settings\""
+
 msgid "Your theme is designed for WPML"
 msgstr "Il tuo tema è stato progettato per WPML"
 
 msgid "Support for theme compatible with WPML is experimental and could not works correctly, if you need help contact me."
 msgstr "Il supporto per i temi compatibili con WPML è sperimentale e potrebbe non funzionare correttamente, se hai bisogno di aiuto contattami."
 
-msgid "Hello"
-msgstr "Ciao"
-
 msgid "CML: Recent Posts"
 msgstr "CML: Articoli recenti"
+
+msgid "The most recent posts on your site"
+msgstr "Gli articoli più recenti sul tuo sito"
+
+msgid "Title:"
+msgstr "Titolo:"
+
+msgid "Number of posts to show:"
+msgstr "Numero degli articoli da mostrare:"
 
 msgid "CML: Language Chooser"
 msgstr "CML: Selettore lingua"
@@ -1308,4 +1380,22 @@ msgstr "CML: Testo"
 
 msgid "You can write arbitrary text or HTML separately for each language"
 msgstr "Puoi scrivere del testo oppure codice HTML separato per ogni lingua"
+
+msgid "Translate to:"
+msgstr "Traduci in:"
+
+msgid "tmp.pot doesn't found: %s"
+msgstr "tmp.pot non trovato: %s"
+
+msgid "Plugin will automatically filter search in according to current language."
+msgstr "Plugin filtra automaticamente la ricerca in accordo alla lingua corrente."
+
+msgid "Tags"
+msgstr "Tag"
+
+msgid "Ensure that folder %s if writable"
+msgstr "Verifica che il percorso %s sia scrivibile"
+
+msgid "Hello"
+msgstr "Ciao"
 
