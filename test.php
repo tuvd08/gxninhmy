@@ -45,6 +45,19 @@
 
 
 <?php 
+
+/** changing default wordpres email settings */
+/*
+add_filter('wp_mail_from', 'new_mail_from');
+add_filter('wp_mail_from_name', 'new_mail_from_name');
+ 
+function new_mail_from($old) {
+ return 'your email address';
+}
+function new_mail_from_name($old) {
+ return 'your name or your website';
+}
+*/
 function get_the_album($album_tag='', $size='w292-h218') {
   if(strlen($album_tag) > 0) {
     $album_url = $album_tag;

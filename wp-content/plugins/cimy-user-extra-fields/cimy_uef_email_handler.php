@@ -39,7 +39,7 @@ function wp_new_user_notification_original($user_id, $plaintext_pass = '', $incl
 	if ( substr( $sitename, 0, 4 ) == 'www.' )
 		$sitename = substr( $sitename, 4 );
 
-	$from_email = 'wordpress@' . $sitename;
+	$from_email = 'noreply@' . $sitename;
 	$headers = sprintf("From: %s <%s>\r\n\\", $blogname, $from_email);
 
 	$message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n\r\n";
@@ -205,8 +205,8 @@ function cimy_signup_user_notification($user, $user_email, $key, $meta = '') {
 	// Send email with activation link.
 	$admin_email = get_site_option( 'admin_email' );
 	if ( $admin_email == '' )
-		$admin_email = 'support@' . $_SERVER['SERVER_NAME'];
-	$from_name = get_site_option( 'blogname' ) == '' ? 'WordPress' : esc_html( get_site_option( 'blogname' ) );
+		$admin_email = 'noreply@' . $_SERVER['SERVER_NAME'];
+	$from_name = get_site_option( 'blogname' ) == '' ? 'Giao Xu Ninh My' : esc_html( get_site_option( 'blogname' ) );
 	$message_headers = "From: \"{$from_name}\" <{$admin_email}>\n" . "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n";
 	$message = sprintf( apply_filters( 'wpmu_signup_user_notification_email', __( "To activate your user, please click the following link:\n\n%s\n\nAfter you activate, you will receive *another email* with your login.\n\n", $cimy_uef_domain) ), site_url( "wp-login.php?cimy_key=$key$redirect_to" ), $key );
 	// TODO: Don't hard code activation link.
