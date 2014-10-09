@@ -67,6 +67,10 @@ if(isset($_REQUEST['clear'])) {
   if(strlen($clear) > 0) {
     if($clear === 'all') {
       clear_all_cache();
+    } else if($clear === 'home') {
+      $domain= $_SERVER['HTTP_HOST'];
+      clear_cache(get_file_name('http://' . $domain));
+      clear_cache(get_file_name('http://www.' . $domain));
     } else {
       $domain= $_SERVER['HTTP_HOST'];
       if(!str_contain($clear, $domain)) {

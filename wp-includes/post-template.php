@@ -221,7 +221,114 @@ function the_content( $more_link_text = null, $strip_teaser = false) {
 	 */
 	$content = apply_filters( 'the_content', $content );
 	$content = str_replace( ']]>', ']]&gt;', $content );
+	
+	  //<album>
+  $regex = '/<album[^>]*>[^<]*<\/album>/';
+  $matches = array();
+  if(preg_match_all($regex , $content, $matches)) {
+    $result = $matches[0];
+    foreach($result as $album_tag) {
+      $album = get_the_album($album_tag, 'w1046-h568');
+      $content = str_replace($album_tag, $album, $content);
+    }
+  }
+
 	echo $content;
+}
+
+//ABSPATH
+function get_the_album($album_tag='', $size='w292-h218') {
+  if(strlen($album_tag) > 0) {
+    $album_url = $album_tag;
+    if(strpos($album_tag, '<album>') >= 0) {
+      $album_url = str_replace('<album>', '', $album_tag);
+      $album_url = str_replace('</album>', '', $album_url);
+    }
+    //
+    $urls = get_the_urls($album_url);
+    if($urls && count($urls) > 0) {
+      $text = '<div class="album-container">'."\n";
+      $text .= '  <ul class="slider-container slider clearfix">'."\n";
+      foreach($urls as $url) {
+        $text .= '  <li class="item-slider'. ((strpos($text, 'li>')) ? '' : ' active-item') .'">'."\n";
+        $text .= '    <a target="_blank" href="'. $url .'=w1600-h1200-no" class="image-box">'."\n";
+        $text .= '      <img class="img-slider thumbnail" src="' . $url .'='.$size.'-p-no"/>'."\n";
+        $text .= '    </a>'."\n";
+        $text .= '  </li>'."\n";
+      }
+      $text .= '  </ul>'."\n";
+      $text .= '</div>'."\n";
+      //
+      return $text ;
+    }
+    
+  }
+  return '';
+}
+
+function get_the_urls($album_url='', $isStr=false) {
+  if(strlen($album_url) > 0) {
+    $key = substr($album_url, lastIndexOf($album_url, '/') + 1);
+    $local = ABSPATH. 'wp-content/albums/'.$key;
+    if(file_exists($local) == true) {
+      $cont_file = file_get_contents($local);
+      if($isStr === true) {
+        return $cont_file;
+      } else {
+        return split(';', $cont_file);
+      }
+    }
+    //
+    $regex = '/("https\:\/\/.*googleusercontent.com\/.*?"),[0-9]{3,4},[0-9]{3,4}/';
+    $input = file_get_contents($album_url);
+    $matches = array();
+    $str_result="";
+    $result = array();
+    if(preg_match_all($regex , $input, $matches)) {
+      $datas = $matches[0];
+      foreach($datas as $mat) {
+        //
+        if(!(strpos($mat, '[') > 0)) {
+          $link = substr($mat, 1, strpos($mat, '"', 1)-1);
+          array_push($result, $link);
+          //
+          if(strlen($str_result) > 0) {
+            $str_result .= ";";
+          }
+          $str_result .= $link;
+        }
+      }
+    }
+    //
+    try {
+      file_put_contents($local, $str_result);
+      chmod ( $local , 775 );
+    } catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+    if($isStr === true) {
+      return $str_result;
+    } else {
+      return $result;
+    }
+  }
+  if($isStr == false) {
+    return array();
+  }
+  return "";
+}
+
+function lastIndexOf($string, $item){  
+  $index=strpos(strrev($string),strrev($item));  
+  if ($index){  
+    $index=strlen($string)-strlen($item)-$index;  
+    return $index;  
+  }
+  return -1;  
+}
+
+function the_urls($album_url='') {
+  echo apply_filters('the_urls', get_the_urls($album_url, true));  
 }
 
 /**

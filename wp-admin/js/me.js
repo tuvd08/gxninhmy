@@ -7,7 +7,7 @@
         action = 'mousedown';
       }
       elm.on(action, function() {
-        $.ajax(window.sire_url + 'clear_cache.php?clear=all&info=true').done(function(msg) {
+        $.ajax(window.sire_url + 'clear_cache.php?clear=home&info=true').done(function(msg) {
             if(window.console && window.console.log) {
               console.log("Clear cache success: \n" + msg);
             }

@@ -106,7 +106,7 @@ function edit_user( $user_id = 0 ) {
 
 	/* checking that username has been typed */
 	if ( $user->user_login == '' )
-		$errors->add( 'user_login', __( '<strong>ERROR</strong>: Please enter a username.' ) );
+		$errors->add( 'user_login', __( '<strong>LỖI</strong>: Hãy nhập tên đăng nhập.' ) );
 
 	/* checking the password has been typed twice */
 	/**
@@ -122,40 +122,40 @@ function edit_user( $user_id = 0 ) {
 
 	if ( $update ) {
 		if ( empty($pass1) && !empty($pass2) )
-			$errors->add( 'pass', __( '<strong>ERROR</strong>: You entered your new password only once.' ), array( 'form-field' => 'pass1' ) );
+			$errors->add( 'pass', __( '<strong>LỖI</strong>: Bạn nhập mật khẩu mới của bạn chỉ một lần.' ), array( 'form-field' => 'pass1' ) );
 		elseif ( !empty($pass1) && empty($pass2) )
-			$errors->add( 'pass', __( '<strong>ERROR</strong>: You entered your new password only once.' ), array( 'form-field' => 'pass2' ) );
+			$errors->add( 'pass', __( '<strong>LỖI</strong>: Bạn nhập mật khẩu mới của bạn chỉ một lần.' ), array( 'form-field' => 'pass2' ) );
 	} else {
 		if ( empty($pass1) )
-			$errors->add( 'pass', __( '<strong>ERROR</strong>: Please enter your password.' ), array( 'form-field' => 'pass1' ) );
+			$errors->add( 'pass', __( '<strong>LỖI</strong>: Xin hãy nhập mật khẩu.' ), array( 'form-field' => 'pass1' ) );
 		elseif ( empty($pass2) )
-			$errors->add( 'pass', __( '<strong>ERROR</strong>: Please enter your password twice.' ), array( 'form-field' => 'pass2' ) );
+			$errors->add( 'pass', __( '<strong>LỖI</strong>: Xin hãy nhập lại mật khẩu.' ), array( 'form-field' => 'pass2' ) );
 	}
 
 	/* Check for "\" in password */
 	if ( false !== strpos( wp_unslash( $pass1 ), "\\" ) )
-		$errors->add( 'pass', __( '<strong>ERROR</strong>: Passwords may not contain the character "\\".' ), array( 'form-field' => 'pass1' ) );
+		$errors->add( 'pass', __( '<strong>LỖI</strong>: Mật khẩu có thể không chứa ký tự "\\".' ), array( 'form-field' => 'pass1' ) );
 
 	/* checking the password has been typed twice the same */
 	if ( $pass1 != $pass2 )
-		$errors->add( 'pass', __( '<strong>ERROR</strong>: Please enter the same password in the two password fields.' ), array( 'form-field' => 'pass1' ) );
+		$errors->add( 'pass', __( '<strong>LỖI</strong>: Mật khẩu nhập lại không đúng.' ), array( 'form-field' => 'pass1' ) );
 
 	if ( !empty( $pass1 ) )
 		$user->user_pass = $pass1;
 
 	if ( !$update && isset( $_POST['user_login'] ) && !validate_username( $_POST['user_login'] ) )
-		$errors->add( 'user_login', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.' ));
+		$errors->add( 'user_login', __( '<strong>LỖI</strong>: Tên đăng nhập này là không hợp lệ vì nó sử dụng các ký tự đặc biệt. Xin vui lòng nhập tên đăng nhập hợp lệ.' ));
 
 	if ( !$update && username_exists( $user->user_login ) )
-		$errors->add( 'user_login', __( '<strong>ERROR</strong>: This username is already registered. Please choose another one.' ));
+		$errors->add( 'user_login', __( '<strong>LỖI</strong>: Tên đăng nhập này đã được đăng ký. Xin hãy chọn tên khác.' ));
 
 	/* checking e-mail address */
 	if ( empty( $user->user_email ) ) {
-		$errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please enter an e-mail address.' ), array( 'form-field' => 'email' ) );
+		$errors->add( 'empty_email', __( '<strong>LỖI</strong>: Hãy nhập địa chỉ email của bạn.' ), array( 'form-field' => 'email' ) );
 	} elseif ( !is_email( $user->user_email ) ) {
-		$errors->add( 'invalid_email', __( '<strong>ERROR</strong>: The email address isn&#8217;t correct.' ), array( 'form-field' => 'email' ) );
+		$errors->add( 'invalid_email', __( '<strong>LỖI</strong>: Email bạn nhập không chính xác.' ), array( 'form-field' => 'email' ) );
 	} elseif ( ( $owner_id = email_exists($user->user_email) ) && ( !$update || ( $owner_id != $user->ID ) ) ) {
-		$errors->add( 'email_exists', __('<strong>ERROR</strong>: This email is already registered, please choose another one.'), array( 'form-field' => 'email' ) );
+		$errors->add( 'email_exists', __('<strong>LỖI</strong>: Email này đã được đăng ký, xin vui lòng chọn một email khác.'), array( 'form-field' => 'email' ) );
 	}
 
 	/**
@@ -434,9 +434,9 @@ function default_password_nag() {
 	echo '<div class="error default-password-nag">';
 	echo '<p>';
 	echo '<strong>' . __('Notice:') . '</strong> ';
-	_e('You&rsquo;re using the auto-generated password for your account. Would you like to change it to something easier to remember?');
+	_e('Bạn đang sử dụng mật khẩu tạo ra tự động cho tài khoản của bạn. Bạn có muốn thay đổi nó để dễ dàng nhớ hơn không??');
 	echo '</p><p>';
-	printf( '<a href="%s">' . __('Yes, take me to my profile page') . '</a> | ', get_edit_profile_url() . '#password' );
-	printf( '<a href="%s" id="default-password-nag-no">' . __('No thanks, do not remind me again') . '</a>', '?default_password_nag=0' );
+	printf( '<a href="%s">' . __('Có, đưa tôi đến trang hồ sơ cá nhân của tôi') . '</a> | ', get_edit_profile_url( get_current_user_id() ) . '#password' );
+	printf( '<a href="%s" id="default-password-nag-no">' . __('Không cảm ơn, không nhắc nhở tôi một lần nữa') . '</a>', '?default_password_nag=0' );
 	echo '</p></div>';
 }

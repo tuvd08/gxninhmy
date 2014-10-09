@@ -145,6 +145,23 @@ function login_header( $title = 'Log In', $message = '', $wp_error = '' ) {
 	$classes = apply_filters( 'login_body_class', $classes, $action );
 
 	?>
+  <style>
+  html, body {
+    font-family: "Helvetica Neue",arial,sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    font: 400 13px/16px arial;
+  }
+  #login {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+    margin: 10px auto;
+    padding: 3% 0;
+  }
+  .login #login #nav {
+    font-weight: bold;
+  }
+  </style>
 	</head>
 	<body class="login <?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 	<div id="login">
@@ -212,10 +229,22 @@ function login_header( $title = 'Log In', $message = '', $wp_error = '' ) {
  */
 function login_footer($input_id = '') {
 	global $interim_login;
+  $redirect_title = "Trang Chủ - Giáo Xứ Ninh Mỹ";
+  $redirect_to = esc_url( home_url( '/' ) ); 
+  if(isset($_REQUEST['redirect_to'])) {
+		//path to directory to scan
+		$redirect_to = $_REQUEST['redirect_to'];
+		if(strlen($redirect_to) > 0) {
+      $redirect_to = esc_url( $redirect_to ); 
+      $redirect_title = "Trang trước";
+		}
+	}
+
 
 	// Don't allow interim logins to navigate away from the page.
 	if ( ! $interim_login ): ?>
-	<p id="backtoblog"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php esc_attr_e( 'Are you lost?' ); ?>"><?php printf( __( '&larr; Back to %s' ), get_bloginfo( 'title', 'display' ) ); ?></a></p>
+	<p id="backtoblog">
+    <a href="<?php echo $redirect_to; ?>" title="<?php esc_attr_e( 'Bạn thực sự không muốn đăng nhập/đăng nhập?' ); ?>"><?php printf( __( '&larr; Quay trở lại %s' ), $redirect_title ); ?></a></p>
 	<?php endif; ?>
 
 	</div>
@@ -273,11 +302,11 @@ function retrieve_password() {
 	$errors = new WP_Error();
 
 	if ( empty( $_POST['user_login'] ) ) {
-		$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.'));
+		$errors->add('empty_username', __('<strong>LỖI</strong>: Nhập tên đăng nhập hoặc địa chỉ email của bạn.'));
 	} else if ( strpos( $_POST['user_login'], '@' ) ) {
 		$user_data = get_user_by( 'email', trim( $_POST['user_login'] ) );
 		if ( empty( $user_data ) )
-			$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.'));
+			$errors->add('invalid_email', __('<strong>LỖI</strong>: Email bạn nhập không đúng.'));
 	} else {
 		$login = trim($_POST['user_login']);
 		$user_data = get_user_by('login', $login);
@@ -294,7 +323,7 @@ function retrieve_password() {
 		return $errors;
 
 	if ( !$user_data ) {
-		$errors->add('invalidcombo', __('<strong>ERROR</strong>: Invalid username or e-mail.'));
+		$errors->add('invalidcombo', __('<strong>LỖI</strong>: Tên đăng nhập hoặc email không đúng.'));
 		return $errors;
 	}
 
@@ -332,7 +361,7 @@ function retrieve_password() {
 	$allow = apply_filters( 'allow_password_reset', true, $user_data->ID );
 
 	if ( ! $allow )
-		return new WP_Error('no_password_reset', __('Password reset is not allowed for this user'));
+		return new WP_Error('no_password_reset', __('Bạn không có quyền thay đổi mật khẩu, hãy liên hệ tới <a href="mailto:gxninhmy@gmail.com?Subject=Loi%20dang%20nhap%20website.">quản trị.'));
 	else if ( is_wp_error($allow) )
 		return $allow;
 
@@ -357,11 +386,11 @@ function retrieve_password() {
 	$hashed = $wp_hasher->HashPassword( $key );
 	$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
 
-	$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
+	$message = __('Một người nào đó yêu cầu mật khẩu được thiết lập lại cho tài khoản sau đây:') . "\r\n\r\n";
 	$message .= network_home_url( '/' ) . "\r\n\r\n";
-	$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-	$message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
-	$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
+	$message .= sprintf(__('Tên đăng nhập: %s'), $user_login) . "\r\n\r\n";
+	$message .= __('Nếu điều này là một nhầm lẫn, hãy bỏ qua email này và sẽ không có gì xảy ra..') . "\r\n\r\n";
+	$message .= __('Để thiết lập lại mật khẩu của bạn, hãy mở đường dẫn sau đây:') . "\r\n\r\n";
 	$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
 
 	if ( is_multisite() )
@@ -373,7 +402,7 @@ function retrieve_password() {
 		 */
 		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-	$title = sprintf( __('[%s] Password Reset'), $blogname );
+	$title = sprintf( __('[%s] Thay đổi Mật khẩu'), $blogname );
 
 	/**
 	 * Filter the subject of the password reset email.
@@ -394,7 +423,7 @@ function retrieve_password() {
 	$message = apply_filters( 'retrieve_password_message', $message, $key );
 
 	if ( $message && !wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) )
-		wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function.') );
+		wp_die( __('E-mail không gửi đi được.') . "<br />\n" . __('Lý do: Máy chủ của bạn có thể đã bị vô hiệu hóa các hàm mail().') );
 
 	return true;
 }
@@ -497,9 +526,9 @@ case 'retrievepassword' :
 
 	if ( isset( $_GET['error'] ) ) {
 		if ( 'invalidkey' == $_GET['error'] )
-			$errors->add( 'invalidkey', __( 'Sorry, that key does not appear to be valid.' ) );
+			$errors->add( 'invalidkey', __( 'Xin lỗi, mã nhập có vẻ không hợp lệ.' ) );
 		elseif ( 'expiredkey' == $_GET['error'] )
-			$errors->add( 'expiredkey', __( 'Sorry, that key has expired. Please try again.' ) );
+			$errors->add( 'expiredkey', __( 'Xin lỗi, mã này đã hết hạn. Vui lòng thử lại.' ) );
 	}
 
 	$lostpassword_redirect = ! empty( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '';
@@ -519,7 +548,7 @@ case 'retrievepassword' :
 	 */
 	do_action( 'lost_password' );
 
-	login_header(__('Lost Password'), '<p class="message">' . __('Please enter your username or email address. You will receive a link to create a new password via email.') . '</p>', $errors);
+	login_header(__('Quên mật khẩu'), '<p class="message">' . __('Điền tên đăng nhập hoặc địa chỉ email của bạn. Bạn sẽ nhận được một liên kết để tạo ra một mật khẩu mới và được gửi qua email.') . '</p>', $errors);
 
 	$user_login = isset($_POST['user_login']) ? wp_unslash($_POST['user_login']) : '';
 
@@ -527,7 +556,7 @@ case 'retrievepassword' :
 
 <form name="lostpasswordform" id="lostpasswordform" action="<?php echo esc_url( network_site_url( 'wp-login.php?action=lostpassword', 'login_post' ) ); ?>" method="post">
 	<p>
-		<label for="user_login" ><?php _e('Username or E-mail:') ?><br />
+		<label for="user_login" ><?php _e('Tên đăng nhập hoặc E-mail:') ?><br />
 		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr($user_login); ?>" size="20" /></label>
 	</p>
 	<?php
@@ -538,16 +567,21 @@ case 'retrievepassword' :
 	 */
 	do_action( 'lostpassword_form' ); ?>
 	<input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
-	<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Get New Password'); ?>" /></p>
+	<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Nhận mật khẩu mới'); ?>" /></p>
 </form>
 
 <p id="nav">
-<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e('Log in') ?></a>
+<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e('Đăng nhập') ?></a>
 <?php
 if ( get_option( 'users_can_register' ) ) :
-	$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register' ) );
-
-	/** This filter is documented in wp-includes/general-template.php */
+	$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Đăng ký' ) );
+	/**
+	 * Filter the registration URL below the login form.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string $registration_url Registration URL.
+	 */
 	echo ' | ' . apply_filters( 'register', $registration_url );
 endif;
 ?>
@@ -587,7 +621,7 @@ case 'rp' :
 	$errors = new WP_Error();
 
 	if ( isset($_POST['pass1']) && $_POST['pass1'] != $_POST['pass2'] )
-		$errors->add( 'password_reset_mismatch', __( 'The passwords do not match.' ) );
+		$errors->add( 'password_reset_mismatch', __( 'Mật khẩu nhập lại không đúng' ) );
 
 	/**
 	 * Fires before the password reset procedure is validated.
@@ -602,7 +636,7 @@ case 'rp' :
 	if ( ( ! $errors->get_error_code() ) && isset( $_POST['pass1'] ) && !empty( $_POST['pass1'] ) ) {
 		reset_password($user, $_POST['pass1']);
 		setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
-		login_header( __( 'Password Reset' ), '<p class="message reset-pass">' . __( 'Your password has been reset.' ) . ' <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
+		login_header( __( 'Thay đổi mật khẩu' ), '<p class="message reset-pass">' . __( 'Mật khẩu của bạn đã được thiết lập lại.' ) . ' <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Đăng nhập' ) . '</a></p>' );
 		login_footer();
 		exit;
 	}
@@ -610,24 +644,23 @@ case 'rp' :
 	wp_enqueue_script('utils');
 	wp_enqueue_script('user-profile');
 
-	login_header(__('Reset Password'), '<p class="message reset-pass">' . __('Enter your new password below.') . '</p>', $errors );
+	login_header(__('Thay đổi mật khẩu'), '<p class="message reset-pass">' . __('Nhập mật khẩu mới của bạn.') . '</p>', $errors );
 
 ?>
 <form name="resetpassform" id="resetpassform" action="<?php echo esc_url( network_site_url( 'wp-login.php?action=resetpass', 'login_post' ) ); ?>" method="post" autocomplete="off">
 	<input type="hidden" id="user_login" value="<?php echo esc_attr( $rp_login ); ?>" autocomplete="off" />
 
 	<p>
-		<label for="pass1"><?php _e('New password') ?><br />
+		<label for="pass1"><?php _e('Mật khẩu mới') ?><br />
 		<input type="password" name="pass1" id="pass1" class="input" size="20" value="" autocomplete="off" /></label>
 	</p>
 	<p>
-		<label for="pass2"><?php _e('Confirm new password') ?><br />
+		<label for="pass2"><?php _e('Nhập lại mật khẩu mới') ?><br />
 		<input type="password" name="pass2" id="pass2" class="input" size="20" value="" autocomplete="off" /></label>
 	</p>
 
 	<div id="pass-strength-result" class="hide-if-no-js"><?php _e('Strength indicator'); ?></div>
-	<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
-
+	<p class="description indicator-hint"><?php _e('Gợi ý: Mật khẩu phải có ít nhất 7 ký tự. Để làm cho nó khó hơn, hãy sử dụng chữ hoa và chữ thường, số và các ký tự như: ! " ? $ % ^ &amp; ).'); ?></p>
 	<br class="clear" />
 
 	<?php
@@ -644,12 +677,11 @@ case 'rp' :
 </form>
 
 <p id="nav">
-<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e( 'Log in' ); ?></a>
+<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e( 'Đăng nhập' ); ?></a>
 <?php
 if ( get_option( 'users_can_register' ) ) :
-	$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register' ) );
-
-	/** This filter is documented in wp-includes/general-template.php */
+	$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Đăng ký' ) );
+	/** This filter is documented in wp-login.php */
 	echo ' | ' . apply_filters( 'register', $registration_url );
 endif;
 ?>
@@ -699,12 +731,12 @@ case 'register' :
 	 * @param string $registration_redirect The redirect destination URL.
 	 */
 	$redirect_to = apply_filters( 'registration_redirect', $registration_redirect );
-	login_header(__('Registration Form'), '<p class="message register">' . __('Register For This Site') . '</p>', $errors);
+	login_header(__('Đăng Ký Thành Viên'), '<p class="message register">' . __('Đăng Ký Thành Viên') . '</p>', $errors);
 ?>
 
 <form name="registerform" id="registerform" action="<?php echo esc_url( site_url('wp-login.php?action=register', 'login_post') ); ?>" method="post" novalidate="novalidate">
 	<p>
-		<label for="user_login"><?php _e('Username') ?><br />
+		<label for="user_login"><?php _e('Tên đăng nhập') ?><br />
 		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr(wp_unslash($user_login)); ?>" size="20" /></label>
 	</p>
 	<p>
@@ -719,15 +751,15 @@ case 'register' :
 	 */
 	do_action( 'register_form' );
 	?>
-	<p id="reg_passmail"><?php _e('A password will be e-mailed to you.') ?></p>
+	<p id="reg_passmail"><?php _e('Chúng tôi sẽ gửi mật khẩu qua hòm thư email cho bạn. Hãy kiểm tra hòm thư.') ?></p>
 	<br class="clear" />
 	<input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
-	<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Register'); ?>" /></p>
+	<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Đăng ký'); ?>" /></p>
 </form>
 
 <p id="nav">
-<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e( 'Log in' ); ?></a> |
-<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" title="<?php esc_attr_e( 'Password Lost and Found' ) ?>"><?php _e( 'Lost your password?' ); ?></a>
+<a href="<?php echo esc_url( wp_login_url() ); ?>"><?php _e( 'Đăng nhập' ); ?></a> |
+<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" title="<?php esc_attr_e( 'Mật khẩu Mất và lấy lại' ) ?>"><?php _e( 'Quên mật khẩu?' ); ?></a>
 </p>
 
 <?php
@@ -767,12 +799,10 @@ default:
 
 	if ( empty( $_COOKIE[ LOGGED_IN_COOKIE ] ) ) {
 		if ( headers_sent() ) {
-			$user = new WP_Error( 'test_cookie', sprintf( __( '<strong>ERROR</strong>: Cookies are blocked due to unexpected output. For help, please see <a href="%1$s">this documentation</a> or try the <a href="%2$s">support forums</a>.' ),
-				__( 'http://codex.wordpress.org/Cookies' ), __( 'https://wordpress.org/support/' ) ) );
+			$user = new WP_Error('test_cookie', __('<strong>LỖI</strong>: Cookie bị chặn hoặc không được hỗ trợ bởi trình duyệt của bạn. Bạn phải <a href="http://codex.wordpress.org/Cookies"> bật cookie </a> để sử dụng đăng nhập trang web.'));
 		} elseif ( isset( $_POST['testcookie'] ) && empty( $_COOKIE[ TEST_COOKIE ] ) ) {
 			// If cookies are disabled we can't log in even with a valid user+pass
-			$user = new WP_Error( 'test_cookie', sprintf( __( '<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href="%s">enable cookies</a> to use WordPress.' ),
-				__( 'http://codex.wordpress.org/Cookies' ) ) );
+			$user = new WP_Error('test_cookie', __('<strong>LỖI</strong>: Cookie bị chặn hoặc không được hỗ trợ bởi trình duyệt của bạn. Bạn phải <a href="http://codex.wordpress.org/Cookies"> bật cookie </a> để sử dụng đăng nhập trang web.'));
 		}
 	}
 
@@ -790,7 +820,7 @@ default:
 
 	if ( !is_wp_error($user) && !$reauth ) {
 		if ( $interim_login ) {
-			$message = '<p class="message">' . __('You have logged in successfully.') . '</p>';
+			$message = '<p class="message">' . __('Bạn đã đăng nhập thành công.') . '</p>';
 			$interim_login = 'success';
 			login_header( '', $message ); ?>
 			</div>
@@ -824,21 +854,21 @@ default:
 
 	if ( $interim_login ) {
 		if ( ! $errors->get_error_code() )
-			$errors->add('expired', __('Session expired. Please log in again. You will not move away from this page.'), 'message');
+			$errors->add('expired', __('Phiên đăng nhập đã hết hạn. Xin vui lòng đăng nhập lại. Bạn sẽ không bị di chuyển khỏi trang hiện tại.'), 'message');
 	} else {
 		// Some parts of this script use the main login form to display a message
 		if		( isset($_GET['loggedout']) && true == $_GET['loggedout'] )
-			$errors->add('loggedout', __('You are now logged out.'), 'message');
+			$errors->add('loggedout', __('Bạn đã đăng xuất.'), 'message');
 		elseif	( isset($_GET['registration']) && 'disabled' == $_GET['registration'] )
-			$errors->add('registerdisabled', __('User registration is currently not allowed.'));
+			$errors->add('registerdisabled', __('Đăng ký người dùng hiện đang bị khóa.'));
 		elseif	( isset($_GET['checkemail']) && 'confirm' == $_GET['checkemail'] )
-			$errors->add('confirm', __('Check your e-mail for the confirmation link.'), 'message');
+			$errors->add('confirm', __('Kiểm tra e-mail của bạn để mở liên kết xác nhận.'), 'message');
 		elseif	( isset($_GET['checkemail']) && 'newpass' == $_GET['checkemail'] )
-			$errors->add('newpass', __('Check your e-mail for your new password.'), 'message');
+			$errors->add('newpass', __('Kiểm tra e-mail để xem mật khẩu mới của bạn.'), 'message');
 		elseif	( isset($_GET['checkemail']) && 'registered' == $_GET['checkemail'] )
-			$errors->add('registered', __('Registration complete. Please check your e-mail.'), 'message');
+			$errors->add('registered', __('Đăng ký hoàn tất. Vui lòng kiểm tra e-mail của bạn.'), 'message');
 		elseif ( strpos( $redirect_to, 'about.php?updated' ) )
-			$errors->add('updated', __( '<strong>You have successfully updated WordPress!</strong> Please log back in to see what&#8217;s new.' ), 'message' );
+			$errors->add('updated', __( '<strong>bạn đã cập nhật thành công </strong> Hãy đăng nhập lại để trải nghiệm sự tuyệt vời.' ), 'message' );
 	}
 
 	/**
@@ -855,7 +885,7 @@ default:
 	if ( $reauth )
 		wp_clear_auth_cookie();
 
-	login_header(__('Log In'), '', $errors);
+	login_header(__('Đăng Nhập'), '', $errors);
 
 	if ( isset($_POST['log']) )
 		$user_login = ( 'incorrect_password' == $errors->get_error_code() || 'empty_password' == $errors->get_error_code() ) ? esc_attr(wp_unslash($_POST['log'])) : '';
@@ -864,11 +894,11 @@ default:
 
 <form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
 	<p>
-		<label for="user_login"><?php _e('Username') ?><br />
+		<label for="user_login"><?php _e('Tên đăng nhập') ?><br />
 		<input type="text" name="log" id="user_login" class="input" value="<?php echo esc_attr($user_login); ?>" size="20" /></label>
 	</p>
 	<p>
-		<label for="user_pass"><?php _e('Password') ?><br />
+		<label for="user_pass"><?php _e('Mật khẩu') ?><br />
 		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" /></label>
 	</p>
 	<?php
@@ -879,9 +909,9 @@ default:
 	 */
 	do_action( 'login_form' );
 	?>
-	<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" <?php checked( $rememberme ); ?> /> <?php esc_attr_e('Remember Me'); ?></label></p>
+	<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" <?php checked( $rememberme ); ?> /> <?php esc_attr_e('Đăng nhập tự động'); ?></label></p>
 	<p class="submit">
-		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Log In'); ?>" />
+		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_attr_e('Đăng Nhập'); ?>" />
 <?php	if ( $interim_login ) { ?>
 		<input type="hidden" name="interim-login" value="1" />
 <?php	} else { ?>
@@ -898,13 +928,13 @@ default:
 <p id="nav">
 <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( $_GET['checkemail'], array( 'confirm', 'newpass' ) ) ) :
 	if ( get_option( 'users_can_register' ) ) :
-		$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Register' ) );
+		$registration_url = sprintf( '<a href="%s">%s</a>', esc_url( wp_registration_url() ), __( 'Đăng ký' ) );
 
 		/** This filter is documented in wp-includes/general-template.php */
 		echo apply_filters( 'register', $registration_url ) . ' | ';
 	endif;
 	?>
-	<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" title="<?php esc_attr_e( 'Password Lost and Found' ); ?>"><?php _e( 'Lost your password?' ); ?></a>
+	<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" title="<?php esc_attr_e( 'Mật khẩu Mất và lấy lại' ); ?>"><?php _e( 'Quên mật khẩu?' ); ?></a>
 <?php endif; ?>
 </p>
 <?php } ?>
@@ -950,3 +980,4 @@ try {
 login_footer();
 break;
 } // end action switch
+
