@@ -196,7 +196,7 @@ if ( $thumbnail_support && current_user_can( 'upload_files' ) )
 	add_meta_box('postimagediv', __('Featured Image'), 'post_thumbnail_meta_box', null, 'side', 'low');
 
 if ( post_type_supports($post_type, 'excerpt') )
-	add_meta_box('postexcerpt', __('Excerpt'), 'post_excerpt_meta_box', null, 'normal', 'core');
+	add_meta_box('postexcerpt', __('Excerpt (<span style="color:#F00">Không được quên nhập phần này nhé - các em ^^</span>)'), 'post_excerpt_meta_box', null, 'normal', 'core');
 
 if ( post_type_supports($post_type, 'trackbacks') )
 	add_meta_box('trackbacksdiv', __('Send Trackbacks'), 'post_trackback_meta_box', null, 'normal', 'core');

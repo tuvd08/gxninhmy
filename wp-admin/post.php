@@ -11,6 +11,14 @@
 /** WordPress Administration Bootstrap */
 require_once( dirname( __FILE__ ) . '/admin.php' );
 
+if ( !defined('ABSPATHADMIN') ) {
+	define('ABSPATHADMIN', dirname(__FILE__) . '/');
+}
+if ( !defined('ABSPATH') ) {
+	define('ABSPATH',  str_replace('/wp-admin/', '', ABSPATHADMIN) . '/');
+}
+require_once( ABSPATH . 'clear_cache.php' );
+
 $parent_file = 'edit.php';
 $submenu_file = 'edit.php';
 
@@ -227,6 +235,8 @@ case 'editpost':
 	check_admin_referer('update-post_' . $post_id);
 
 	$post_id = edit_post();
+	
+	clear_all_cache();
 
 	// Session cookie flag that the post was saved
 	if ( isset( $_COOKIE['wp-saving-post'] ) && $_COOKIE['wp-saving-post'] === $post_id . '-check' ) {
@@ -234,6 +244,8 @@ case 'editpost':
 	}
 
 	redirect_post($post_id); // Send user on their way while we keep working
+	
+	
 
 	exit();
 
@@ -280,6 +292,8 @@ case 'untrash':
 
 case 'delete':
 	check_admin_referer('delete-post_' . $post_id);
+
+	clear_all_cache();
 
 	if ( ! $post )
 		wp_die( __( 'This item has already been deleted.' ) );

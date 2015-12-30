@@ -523,7 +523,7 @@ function post_categories_meta_box( $post, $box ) {
 function post_excerpt_meta_box($post) {
 ?>
 <label class="screen-reader-text" for="excerpt"><?php _e('Excerpt') ?></label><textarea rows="1" cols="40" name="excerpt" id="excerpt"><?php echo $post->post_excerpt; // textarea_escaped ?></textarea>
-<p><?php _e('Excerpts are optional hand-crafted summaries of your content that can be used in your theme. <a href="http://codex.wordpress.org/Excerpt" target="_blank">Learn more about manual excerpts.</a>'); ?></p>
+<p><?php _e('Excerpts: Là phần giới thiệu căn bản về bài viết của bạn, sẽ hiển thị dưới tiêu đề hoặc tooltip. <a href="http://codex.wordpress.org/Excerpt" target="_blank">Hiểu rõ hơn về excerpts tại đây.</a>'); ?></p>
 <?php
 }
 
