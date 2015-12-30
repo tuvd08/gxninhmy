@@ -1,5 +1,5 @@
 <?php
-  if(!is_user_logged_in()) {
+  if(!is_user_logged_in() && $_SERVER['REQUEST_URI'] !== '/lienhe/') {
     // Now the script has run, generate a new cache file
     $fp = @fopen($GLOBALS['cachefile'], 'w'); 
     

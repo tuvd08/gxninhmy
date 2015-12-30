@@ -10,7 +10,7 @@
         //
         $pageid = basename(get_permalink());
         
-        if(is_search() || strcmp($pageid, "") == 0 || strcmp($pageid, "gxninhmy") == 0) {
+        if(is_search() || strcmp($pageid, "") == 0 || strcmp($pageid, "ninhmy.net") == 0) {
           $isHome = true;
         }
         if(!$isHome) {
@@ -109,6 +109,23 @@
       <li class="list-group-item" id="year"><span class="lb">Trong năm</span></li>
       <li class="list-group-item" id="all"><span class="lb">Tất cả(4/4/2014)</span></li>
     </ul>
+    <?php
+    if(function_exists('isMobie') === false || (isMobie() === false)) {
+    ?>
+      <h5 class="title" style="border-top:1px solid #cccccc">
+        <a target="_blank" href="https://plus.google.com/photos/+Gi%C3%A1oX%E1%BB%A9NinhM%E1%BB%B9/albums/5133683255739020865">
+        Tuần Chầu Ninh Mỹ 2007
+        </a>
+      </h5>
+      <div class="list-group statistic"> 
+        <?php 
+        $url_test="https://plus.google.com/photos/+Gi%C3%A1oX%E1%BB%A9NinhM%E1%BB%B9/albums/5133683255739020865";
+        echo get_the_album($url_test, 'w292-h218');
+        ?>
+      </div>
+    <?php
+    }
+    ?>
     <div style="border-top:1px solid #cccccc; height:1px;"></div>
   </div>
 

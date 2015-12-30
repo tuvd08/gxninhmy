@@ -31,7 +31,7 @@ function updateMonthly($val) {
   $items=mysql_fetch_array($result);
   if(!$items || count($items) == 0) {
     mysql_query("INSERT INTO `nm_monthly_static` VALUES (NULL,'".$c_month. "-". $c_year."', ".$val.")");
-  } else {print_r($items);
+  } else {
 		mysql_query("UPDATE `nm_monthly_static` s SET `s`.`count`=". $val . "  WHERE `s`.index='".$c_month. "-". $c_year."'");
 	}
   //
@@ -59,7 +59,7 @@ $sqlcn = mysql_connect('127.0.0.1:3306', 'root', 'root');
 if (!$sqlcn) {
     die('Could not connect: ' . mysql_error());
 }
-mysql_select_db('gxninhmy', $sqlcn); 
+mysql_select_db('anthinh_ninhmy', $sqlcn); 
 $result= mysql_query("SELECT * FROM `nm_static`");
 $static=mysql_fetch_array($result);
 $od = $static['per_day'];
@@ -67,6 +67,25 @@ $ow = $static['per_week'];
 $om = $static['per_month'];
 $oy = $static['per_year'];
 $oa = $static['all'];
+
+$size = 0;
+$count_ = 0;
+/*
+$result= mysql_query("SELECT COUNT(`ip`) AS count FROM `nm_static_info` WHERE `ip`='".$ip."'");
+if($dt = mysql_fetch_array($result)) {
+	$count_ = $dt['count'];
+}
+if($count_ == 0) {
+	$result= mysql_query("SELECT COUNT(`ip`) AS count FROM `nm_static_info`");
+	$size = mysql_fetch_array($result)['count'];
+}
+*/
+$result= mysql_query("SELECT `ip` FROM `nm_static_info` WHERE `ip`='".$ip."'");
+$count_ = mysql_num_rows($result);
+if($count_ == 0) {
+	$result= mysql_query("SELECT `ip` FROM `nm_static_info`");
+	$size = mysql_num_rows($result);
+}
 
 if($isCount) {
   $expire = time()+60*60*24;
@@ -99,7 +118,7 @@ if($isCount) {
     $od = newInfo(date("j", $time), $od);
     
     //check week $cW = floor($time/(60*60*24*7));
-		$ddate = date("Y", $time)."-".date("n", $time)."-".(date("j", $time)*1 - 1);
+		$ddate = date("Y", $time)."-".date("n", $time)."-".(date("j", $time)*1);
 		$date = new DateTime($ddate);
 		$cW = $date->format("W");
     $ow = newInfo($cW, $ow);
@@ -129,7 +148,7 @@ if(isset($_REQUEST['f'])) {
   }
 }
 
-$data = $f."({'day': '".$od."', 'week': '".$ow."', 'month': '".$om."', 'year': '".$oy."', 'all': '".$oa."'})";
+$data = $f."({'day': '".$od."', 'week': '".$ow."', 'month': '".$om."', 'year': '".$oy."', 'all': '".$oa."', 'count': '".$size."', 'back_count': '".$count_."'})";
 header("HTTP/1.1 200 OK");
 header("Content-Type:text/javascript");
 echo $data;

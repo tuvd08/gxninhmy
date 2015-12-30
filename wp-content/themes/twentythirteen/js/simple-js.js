@@ -3,6 +3,7 @@
     window.Load = {};
     window.Resize = window.Resize || new Array(); //push
     window.ResizeWidth = window.ResizeWidth || new Array();
+    window.InitMethods = window.InitMethods || new Array();
 
     Load.currWidth = 0;
         
@@ -33,7 +34,6 @@
   
 
     Load.loadMin700 = function() {
-      window.maxWidth = $('body').width();
       if(window.maxWidth < 700) {
         $('body').addClass('min-body');
         $('.max').hide();
@@ -41,23 +41,21 @@
         $('.right-column').css({padding:'0px', margin: '0px', width : '5px'});
         $('.left-column').css({padding:'0px', margin: '0px', width : '5px'});
         $('.menu-container').css('position', 'relative')
-           .find('.main_menu').addClass('show-menu-block');
+           .find('.main_menu').addClass('show-menu-block').data('width', (window.maxWidth - 10))
+           .find('ul.sub-menu').css({'position':'static', 'float':'none'});
         //
         var img = $('img.banner-img').css('margin-left', function() {return (window.maxWidth - $(this).width())/2;});
      } else {
        if($('.min').eq(0).css('display') === 'block') {
          $('.max').show();
          $('.min').hide();
-         //$('.right-column').attr('style', '');
          $('.left-column').animateWidth({to: 250, callback: Load.callBackLoadResize }); 
          $('.menu-container').attr('style', '')
-           .find('.main_menu').removeClass('show-menu-block');
        }
      }
     }
     
     Load.loadMin900 = function() {
-      window.maxWidth = $('body').width();
       //right-container
       if(window.maxWidth < 900) {
         $('.right-column').css({padding:'0px', margin: '0px', width : '5px'});
@@ -180,8 +178,10 @@
     window.ResizeWidth.push(Load.loadMin700);
     window.ResizeWidth.push(Load.loadMin900);
     window.ResizeWidth.push(Load.homeBox);
+    window.InitMethods.push(Load.onload);
 
     $(window).on('resize', function (evt) {
+			window.maxWidth = $('body').width();
       try {
         for (var i = 0; i < window.Resize.length; ++i) {
           var method = window.Resize[i];
@@ -212,9 +212,18 @@
         thiz.append('<span class="badge">' + vl + '</span>');
       });
       
-      
-      
+      var info = $('<ul style="margin: auto; padding: 10px; text-align: center; font-weight: bold;"></ul>');
+      var li = $('<li class="list-group-item"><span style="color: rgb(66, 139, 202);" class="lb"></span></li>');
+      if(result['count'] == 0) {
+				li.find('span').html('Vui mừng bạn trở lại<br>Gxninhmy.net');
+			} else {
+				li.find('span').html('Quý vị là vị khách<br> ' + result['count'] + ' <br>Gxninhmy.net');
+			}
+      li.appendTo(info);
+      //
+      info.insertBefore(statistic);
+      $('<div style="border-top:1px solid #cccccc; height:1px;"></div>').insertBefore(statistic);
     }
-    
+  $('.max').hide();  
   window.closeLayer = Load.closeLayer;
 })(jQuery);

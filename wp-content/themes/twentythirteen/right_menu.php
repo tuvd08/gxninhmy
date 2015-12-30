@@ -62,7 +62,9 @@
       ?>
     </div>
   </div>
-  
+<?php
+if(function_exists('isMobie') === false || (isMobie() === false)) {
+?>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Video về Giáo Xứ</h3>
@@ -84,4 +86,7 @@
       ?>
     </div>
   </div>
+<?php
+}
+?>
 </div>

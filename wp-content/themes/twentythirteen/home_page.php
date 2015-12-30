@@ -41,7 +41,7 @@ the_post_thumbnail( array(100,100) );  // Other resolutions
         <?php endif; ?>
           <span>
             <div>
-              <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
+              <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="top" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
                   <?php the_title(); ?>                                                                              
               </a>
               <?php the_excerpt(); ?>
@@ -63,7 +63,7 @@ the_post_thumbnail( array(100,100) );  // Other resolutions
                   $excerpt = str_replace('<p>', '', $excerpt);
                   $excerpt = str_replace('</p>', '', $excerpt);
                 ?>
-                  <a class="ellipsis sub-post" data-toggle="tooltip" data-placement="bottom" title="<?php echo $excerpt; ?>" href="<?php echo get_permalink(); ?>" class="<?php echo $the_clazz; ?>">
+                  <a class="ellipsis sub-post" data-toggle="tooltip" data-placement="top" title="<?php echo $excerpt; ?>" href="<?php echo get_permalink(); ?>" class="<?php echo $the_clazz; ?>">
                       <span><?php the_title(); ?></span>
                   </a>
                 </div>
@@ -106,7 +106,7 @@ the_post_thumbnail( array(100,100) );  // Other resolutions
               <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-box')); $the_clazz = "title-post";?>
           </a>
         <?php endif; ?>
-          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
+          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="top" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
               <?php the_title(); ?>                                                                              
           </a>
           <?php the_excerpt(); ?>
@@ -147,7 +147,7 @@ foreach($categories as $cate) {
               <?php the_post_thumbnail('thumbnail', array('class' => 'thumbnail thumbnail-box')); $the_clazz = "title-post";?>
           </a>
         <?php endif; ?>
-          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
+          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="top" title="<?php the_title(); ?>" class="<?php echo $the_clazz; ?>">
               <?php the_title(); ?>                                                                              
           </a>
           <?php the_excerpt(); ?>
@@ -192,7 +192,7 @@ wp_reset_postdata();
           $excerpt = str_replace('<p>', '', $excerpt);
           $excerpt = str_replace('</p>', '', $excerpt);
         ?>
-          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
+          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
               <?php the_title(); echo ' - ' . get_the_date(). ''; ?>
           </a>
       </div>
@@ -235,7 +235,7 @@ wp_reset_postdata();
           $excerpt = str_replace('<p>', '', $excerpt);
           $excerpt = str_replace('</p>', '', $excerpt);
         ?>
-          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
+          <a href="<?php echo get_permalink(); ?>" data-toggle="tooltip" data-placement="top" title="<?php echo $excerpt; ?>" class="<?php echo $the_clazz; ?>">
               <?php the_title(); echo ' - ' . get_the_date(). ''; ?>
           </a>
       </div>

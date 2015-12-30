@@ -1,5 +1,6 @@
 (function($, window) {
-
+  window.ResizeWidth = window.ResizeWidth || new Array();
+  window.InitMethods = window.InitMethods || new Array();
   function effectContent() {
     var effect = {
       types : {leftToRight : 'ltr', rightToLeft : 'rtl'},
@@ -176,13 +177,7 @@
     return OjSlider;
   }
 
-  (function($){
-    window.ResizeWidth = window.ResizeWidth || new Array();
-    //
-  })($);
-
-   // load after ready
-  $(document).ready(function() {
+  function initNinhMyBase() {
     //
     $('.slider-container').each(function(index) {
       var timeLive = 4000;
@@ -193,7 +188,10 @@
       postSlider.init($(this), true, timeLive);
       postSlider.start();
     });
-  });
+  }
+  window.InitMethods.push(initNinhMyBase);
+   // load after ready
+  $(document).ready(initNinhMyBase);
   
   function nextOrFirst (elm) {
     var parent = elm.parents('ul:first');

@@ -123,10 +123,10 @@ function wp_authenticate_username_password($user, $username, $password) {
 		$error = new WP_Error();
 
 		if ( empty($username) )
-			$error->add('empty_username', __('<strong>LỖI</strong>: Hãy nhập tên đăng nhập.'));
+			$error->add('empty_username', __('<strong>ERROR</strong>: The username field is empty.'));
 
 		if ( empty($password) )
-			$error->add('empty_password', __('<strong>LỖI</strong>: Hãy nhập tên mật khẩu.'));
+			$error->add('empty_password', __('<strong>ERROR</strong>: The password field is empty.'));
 
 		return $error;
 	}
@@ -134,7 +134,7 @@ function wp_authenticate_username_password($user, $username, $password) {
 	$user = get_user_by('login', $username);
 
 	if ( !$user )
-		return new WP_Error( 'invalid_username', sprintf( __( '<strong>LỖI</strong>: Tên đăng nhập không đúng. <a href="%s" title="Lấy lại mật khẩu">Lấy lại mật khẩu/tên đăng nhập</a>?' ), wp_lostpassword_url() ) );
+		return new WP_Error( 'invalid_username', sprintf( __( '<strong>ERROR</strong>: Invalid username. <a href="%s">Lost your password</a>?' ), wp_lostpassword_url() ) );
 
 	/**
 	 * Filter whether the given user can be authenticated with the provided $password.
@@ -150,7 +150,7 @@ function wp_authenticate_username_password($user, $username, $password) {
 		return $user;
 
 	if ( !wp_check_password($password, $user->user_pass, $user->ID) )
-		return new WP_Error( 'incorrect_password', sprintf( __( '<strong>LỖI</strong>: Mật khẩu bạn nhập cho người dùng <strong>%1$s</strong> không đúng. <a href="%2$s" title="Lấy lại mật khẩu">Lấy lại mật khẩu</a>?' ),
+		return new WP_Error( 'incorrect_password', sprintf( __( '<strong>ERROR</strong>: The password you entered for the username <strong>%1$s</strong> is incorrect. <a href="%2$s">Lost your password</a>?' ),
 		$username, wp_lostpassword_url() ) );
 
 	return $user;
@@ -184,7 +184,7 @@ function wp_authenticate_cookie($user, $username, $password) {
 			$auth_cookie = AUTH_COOKIE;
 
 		if ( !empty($_COOKIE[$auth_cookie]) )
-			return new WP_Error('expired_session', __('Xin hãy đăng nhập lại.'));
+			return new WP_Error('expired_session', __('Please log in again.'));
 
 		// If the cookie is not set, be silent.
 	}
@@ -214,7 +214,7 @@ function wp_authenticate_spam_check( $user ) {
 		$spammed = apply_filters( 'check_is_user_spammed', is_user_spammy(), $user );
 
 		if ( $spammed )
-			return new WP_Error( 'spammer_account', __( '<strong>LỖI</strong>: Tài khoản của bạn đã bị khóa.' ) );
+			return new WP_Error( 'spammer_account', __( '<strong>ERROR</strong>: Your account has been marked as a spammer.' ) );
 	}
 	return $user;
 }
@@ -1818,6 +1818,9 @@ function wp_insert_user( $userdata ) {
 	$data = wp_unslash( $compacted );
 
 	if ( $update ) {
+		if ( $user_email !== $old_user_data->user_email ) {
+			$data['user_activation_key'] = '';
+		}
 		$wpdb->update( $wpdb->users, $data, compact( 'ID' ) );
 		$user_id = (int) $ID;
 	} else {
@@ -2121,22 +2124,22 @@ function register_new_user( $user_login, $user_email ) {
 
 	// Check the username
 	if ( $sanitized_user_login == '' ) {
-		$errors->add( 'empty_username', __( '<strong>LỖI</strong>: Hãy nhập tên đăng nhập.' ) );
+		$errors->add( 'empty_username', __( '<strong>ERROR</strong>: Please enter a username.' ) );
 	} elseif ( ! validate_username( $user_login ) ) {
-		$errors->add( 'invalid_username', __( '<strong>LỖI</strong>: Tên đăng nhập này là không hợp lệ vì nó sử dụng các ký tự đặc biệt. Xin vui lòng nhập tên đăng nhập hợp lệ.' ) );
+		$errors->add( 'invalid_username', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.' ) );
 		$sanitized_user_login = '';
 	} elseif ( username_exists( $sanitized_user_login ) ) {
-		$errors->add( 'username_exists', __( '<strong>LỖI</strong>: Tên đăng nhập này đã được đăng ký. Xin hãy chọn tên khác.' ) );
+		$errors->add( 'username_exists', __( '<strong>ERROR</strong>: This username is already registered. Please choose another one.' ) );
 	}
 
 	// Check the e-mail address
 	if ( $user_email == '' ) {
-		$errors->add( 'empty_email', __( '<strong>LỖI</strong>: Hãy nhập địa chỉ email của bạn.' ) );
+		$errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please type your e-mail address.' ) );
 	} elseif ( ! is_email( $user_email ) ) {
-		$errors->add( 'invalid_email', __( '<strong>LỖI</strong>: Email bạn nhập không chính xác' ) );
+		$errors->add( 'invalid_email', __( '<strong>ERROR</strong>: The email address isn&#8217;t correct.' ) );
 		$user_email = '';
 	} elseif ( email_exists( $user_email ) ) {
-		$errors->add( 'email_exists', __( '<strong>LỖI</strong>: Email này đã được đăng ký, xin vui lòng chọn một email khác.' ) );
+		$errors->add( 'email_exists', __( '<strong>ERROR</strong>: This email is already registered, please choose another one.' ) );
 	}
 
 	/**
@@ -2176,7 +2179,7 @@ function register_new_user( $user_login, $user_email ) {
 	$user_pass = wp_generate_password( 12, false );
 	$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );
 	if ( ! $user_id || is_wp_error( $user_id ) ) {
-		$errors->add( 'registerfail', sprintf( __( '<strong>LỖI</strong>: Nếu bạn không thể đăng ký được, xin liện với <a href="mailto:%s">quản trị trang web</a> !' ), get_option( 'admin_email' ) ) );
+		$errors->add( 'registerfail', sprintf( __( '<strong>ERROR</strong>: Couldn&#8217;t register you&hellip; please contact the <a href="mailto:%s">webmaster</a> !' ), get_option( 'admin_email' ) ) );
 		return $errors;
 	}
 

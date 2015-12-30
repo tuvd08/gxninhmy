@@ -1,8 +1,24 @@
 html, body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, 'Source Sans Pro', Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 20px;
+}
+body {
+  visibility : hidden;
+}
+.max {
+  display: block;
+}
+
+.min {
+  display: block;
+}
+
+@media (min-width: 710px) {
+  .min {
+    
+  }
 }
 
 .site-main {
@@ -94,7 +110,7 @@ img.thumbnail-left-menu {
 .post-content {
   padding:10px;
   font-size: 15px;
-  font-family: "Source Sans Pro",Helvetica,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, 'Source Sans Pro', Arial, sans-serif;
 }
 
 .left {
@@ -102,14 +118,6 @@ img.thumbnail-left-menu {
 }
 .right {
   float: right;
-}
-
-.max {
-  display: block;
-}
-
-.min {
-  display: none;
 }
 
 .menu-show {
@@ -171,7 +179,7 @@ img.thumbnail-left-menu {
   margin: 0px auto;
   width: 100%;
   max-width: 1349px;
-  max-height: 200px;
+  max-height: 240px;
   min-width: 540px;
 }
 
@@ -184,7 +192,7 @@ img.thumbnail-left-menu {
   display: block;
 }
 .home-page .the-title .title-post {
-  margin-left: 80px;
+  margin-left: 5px;
 }
 .home-page .the-title .mini-link-post-image {
   margin-left: 40px;
@@ -192,7 +200,7 @@ img.thumbnail-left-menu {
 
 .home-page .home-box .title-post {
   margin-top:5px;
-  margin-left: 165px;
+  margin-left: 15px;
   font-size: 16px;
   line-height: 24px;
   border-bottom: 1px solid #eee;
@@ -244,7 +252,7 @@ img.thumbnail-left-menu {
   display: block;
 }
 
-.slider-container ul, li {
+.slider-container ul, .slider-container li {
   list-style-type: none;
 }
 
@@ -263,4 +271,6 @@ img.thumbnail-left-menu {
   width: 112px;
 }
 
-
+.form-group span.wpcf7-form-control-wrap {
+	position: static;
+}

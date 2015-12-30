@@ -40,6 +40,7 @@ function clear_all_cache() {
 }
 
 function get_file_name($link) {
+	echo '<div>get_file_name: '.$link . '</div>';
   return md5($link) . '.cache';
 }
 
@@ -51,6 +52,7 @@ function clear_cache($file='', $isInfo=true) {
     if(!str_contain($file, $cachedir) > 0) {
       $file = $cachedir.$file;
     }
+    echo '<div>clear_cache: '.$file . '</div>';
     if(is_file($file)) {
       @unlink($file);
       //
@@ -70,7 +72,7 @@ if(isset($_REQUEST['clear'])) {
     } else if($clear === 'home') {
       $domain= $_SERVER['HTTP_HOST'];
       clear_cache(get_file_name('http://' . $domain));
-      clear_cache(get_file_name('http://www.' . $domain));
+      clear_cache(get_file_name('http://' . $domain.'/'));
     } else {
       $domain= $_SERVER['HTTP_HOST'];
       if(!str_contain($clear, $domain)) {

@@ -631,6 +631,31 @@ A lot of times I cannot reproduce the problem and I need more details, so if you
 
 
 CHANGELOG:
+v2.6.5 - 11/05/2015
+- Fixed PHP error on Extended Users on WordPress 4.2 (thanks to Ryan Marshall and Josie Stauffer)
+- Fixed PHP notice on cimy_uef_functions.php at line 673 when using avatar Extra Field (thanks to rossini7777)
+
+v2.6.4 - 31/12/2014
+- Fixed a DoS security issue on file, avatar and picture Extra Fields where a blog's user can delete random server's files
+  All versions between v0.9.5 and v2.6.3 (included) are vulnerable (credit to Sébastien Payet)
+- Fixed a DoS security issue on file, avatar and picture Extra Fields where user can 'hide' multiple files on the server
+  All versions between v0.9.5 and v2.6.3 (included) are vulnerable (credit to Sébastien Payet)
+- Added Hungarian (Balázs Németh)
+
+v2.6.3 - 03/10/2014
+- Fixed the upload of files when 'Form confirmation' is enabled (thanks to Max)
+- Fixed date range was not going beyond -/+10 years (thanks to LH)
+- Fixed PHP notice when updating an user in its profile and a file/picture/avatar is not uploaded (thanks to Adrian)
+- Fixed PHP error on multiple files upload when 'Form confirmation' is enabled
+- Fixed PHP warning when using dropdown-multi and 'Form confirmation' is enabled
+- Fixed avatar thumbnail was not automatically created when 'Form confirmation' is enabled
+- Fixed Securimage captcha returned 'Typed code is not correct' error for correct codes when 'Form confirmation' is enabled
+- Fixed 'true' error appears in some cases when 'Form confirmation' and captcha are enabled together
+- Fixed use of deprecated function 'image_resize'
+- Added Dutch (Wietse Stienstra)
+- Updated Swedish (Hugo Krantz)
+- Updated Securimage Captcha to v3.5.4
+
 v2.6.2 - 18/04/2014
 - Fixed date picker on registration page was conflicting with Google Chrome's one (thanks to Francesca)
 - Updated Securimage Captcha to v3.5.2

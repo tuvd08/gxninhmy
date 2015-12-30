@@ -1,6 +1,6 @@
 <?php
 
-  if(!is_user_logged_in()) {
+  if(!is_user_logged_in() && $_SERVER['REQUEST_URI'] !== '/lienhe/') {
 
     // Settings
     $cachedir = '/tmp/cache-ninhmy/'; // Directory to cache files in (keep outside web root)
@@ -21,8 +21,11 @@
     );
     // Script
     $page = 'http://' . $domain . $_SERVER['REQUEST_URI']; // Requested page
-    $cachefile = $cachedir . md5($page) . '.' . $cacheext; // Cache file to either load or create
-
+    $isMobie = '';
+    if(function_exists('isMobie') !== false && (isMobie() === true)) {
+      $isMobie = '_mobile';
+    }
+    $cachefile = $cachedir . md5($page) . $isMobie . '.' . $cacheext; // Cache file to either load or create
     $GLOBALS['cachefile'] = $cachefile;
     
     $ignore_page = false;

@@ -16,7 +16,7 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'gxninhmy');
+define('DB_NAME', 'anthinh_ninhmy');
 
 /** MySQL database username */
 define('DB_USER', 'root');
@@ -88,3 +88,10 @@ if ( !defined('ABSPATH') )
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
+
+function isMobie() {
+  $uin = strtolower(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
+  return (strrpos($uin, "phone") !== false ||
+            strrpos($uin, "mobile") !== false ||
+            strrpos($uin, "android") !== false);//ipad, mobile, android
+}

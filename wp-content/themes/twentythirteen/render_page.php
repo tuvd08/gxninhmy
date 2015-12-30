@@ -40,9 +40,13 @@ $pageid = basename(get_permalink());
 					</footer><!-- .entry-meta -->
 				</article><!-- #post -->
 			<?php } ?>
-    <?php } else { 
-            $page_data = get_page( $page_id ); 
-            echo '<div class="entry-content">'. apply_filters('the_content', $page_data->post_content) . '</div>';
+    <?php } else {
+            $page_data = get_page( $page_id );
+            $content=apply_filters('the_content', $page_data->post_content);
+            if(strlen($content) == 0) {
+                $content = '<br><div class="alert alert-warning">Xin lỗi, mục này hiện chưa có bài viết nào, hãy quay lại sau nhé.</div>';
+            }
+            echo '<div class="entry-content">'. $content . '</div>';
           }
     ?>
   
