@@ -17,19 +17,23 @@
 					<li>
 						<h3><?php esc_html_e( 'Past six months' , 'akismet');?></h3>
 						<span><?php echo number_format( $stat_totals['6-months']->spam );?></span>
-						<?php echo esc_html( _n( 'Spam blocked', 'Spam blocked', $stat_totals['6-months']->spam, 'akismet' ) ); ?>
+						<?php esc_html_e( 'Spam blocked' , 'akismet');?>
 					</li>
 					<li>
 						<h3><?php esc_html_e( 'All time' , 'akismet');?></h3>
 						<span><?php echo number_format( $stat_totals['all']->spam );?></span>
-						<?php echo esc_html( _n( 'Spam blocked', 'Spam blocked', $stat_totals['all']->spam, 'akismet' ) ); ?>
+						<?php esc_html_e( 'Spam blocked' , 'akismet');?>
 					</li>
 					<li>
 						<h3><?php esc_html_e( 'Accuracy' , 'akismet');?></h3>
 						<span><?php echo $stat_totals['all']->accuracy; ?>%</span>
-						<?php printf( _n( '%s missed spam', '%s missed spam', $stat_totals['all']->missed_spam, 'akismet' ), number_format( $stat_totals['all']->missed_spam ) ); ?>
-						|
-						<?php printf( _n( '%s false positive', '%s false positives', $stat_totals['all']->false_positives, 'akismet' ), number_format( $stat_totals['all']->false_positives ) ); ?>
+						<?php printf(
+							esc_html(
+								_n( '%s missed spam, %s false positive', '%s missed spam, %s false positives', $stat_totals['all']->false_positives , 'akismet')
+							),
+							number_format( $stat_totals['all']->missed_spam ),
+							number_format( $stat_totals['all']->false_positives )
+						); ?>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
