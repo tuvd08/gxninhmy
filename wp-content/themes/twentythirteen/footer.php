@@ -32,6 +32,9 @@
 <!-- #colophon -->
 	</div><!-- #page -->
 	<div id="slider-image-display" style="display:none"></div>
+<div class="bodyMarkLayer">
+   <div title="Click here to stop this action." class="uiLoadingIcon"></div>
+</div>
 	<script src="<?php echo esc_url( home_url( '/' ) ); ?>/static.php?f=Load.callBack" type="text/javascript"></script>
 	<script type="text/javascript">
 		window.pageid = '<?php echo $GLOBALS["pageid"]; ?>';
@@ -40,11 +43,6 @@
 	<?php wp_footer(); ?>
 </div>
 	<script src="<?php echo get_template_directory_uri(); ?>/js/main-base.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		window.q = window.jQuery;
-		window.jQuery = null;
-		window.$ = null;
-	</script>	
 </body>
 </html>
 

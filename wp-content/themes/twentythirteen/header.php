@@ -79,7 +79,7 @@
 						<a class="screen-reader-text skip-link" href="#content" title="<?php esc_attr_e( 'Skip to content', 'twentythirteen' ); ?>"><?php _e( 'Skip to content', 'twentythirteen' ); ?></a>
 						<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) ); ?>
 					</div>
-					<div class="min"><a href="javascript:void(0)" class="on-show-menu" data-toggle="tooltip" data-placement="bottom" title="Mở danh mục"> <i class="menu-show glyphicon glyphicon-list"></i></a></div>
+					<div class="min" style="display:none"><a href="javascript:void(0)" class="on-show-menu" data-toggle="tooltip" data-placement="bottom" title="Mở danh mục"> <i class="menu-show glyphicon glyphicon-list"></i></a></div>
 					<?php get_search_form(); ?>
 				</nav><!-- #site-navigation -->
 			</div><!-- #navbar -->

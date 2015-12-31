@@ -5,7 +5,7 @@ html, body {
   line-height: 20px;
 }
 body {
-  visibility : hidden;
+  /*visibility : hidden;*/
 }
 .max {
   display: block;
@@ -273,4 +273,48 @@ img.thumbnail-left-menu {
 
 .form-group span.wpcf7-form-control-wrap {
 	position: static;
+}
+
+@-webkit-keyframes loadingIcon {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes loadingIcon {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.uiLoadingIcon {
+  margin: auto;
+  margin-top: 18%;
+  width: 48px;
+  height: 48px;
+  background: url("images/loading48x48Light.png") no-repeat 0 0;
+  -webkit-animation: loadingIcon 1s infinite linear;
+  animation: loadingIcon 1s infinite linear;
+}
+.bodyMarkLayer {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgba(249, 249, 249, 0.54);
+}
+.bodyMarkLayer .uiLoadingIcon {
+  position: fixed;
+  left: calc(50% - 24px);
 }

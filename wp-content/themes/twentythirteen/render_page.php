@@ -1,11 +1,14 @@
 <?php 
 $pageid = basename(get_permalink());
-
   $subcategories=get_category_by_slug($pageid);
 
   $qr_categories = $pageid;
   if($subcategories) {
-    foreach($subcategories as $cat){ $qr_categories .= ','.$cat -> slug;}
+    foreach($subcategories as $cat){
+      if(isset($cat -> slug)) {
+        $qr_categories .= ','.$cat -> slug;  
+      }
+    }
   }
 	//$strQuery = array( 'posts_per_page' => 16, 'offset' => $offset, 'category_name' => 'art_culture,food_travel,science_tech,health_sports', 'orderby' => 'date', 'order' => 'ASC' ); rand
   $strQuery = array('posts_per_page' => 100, 'category_name' => $qr_categories, 'orderby' => 'date', 'order' => 'DESC'  );
@@ -41,10 +44,14 @@ $pageid = basename(get_permalink());
 				</article><!-- #post -->
 			<?php } ?>
     <?php } else {
+            $content= '';
+            if(!isset($page_id)) {
+              $page_id  = '';
+            }            
             $page_data = get_page( $page_id );
             $content=apply_filters('the_content', $page_data->post_content);
             if(strlen($content) == 0) {
-                $content = '<br><div class="alert alert-warning">Xin lỗi, mục này hiện chưa có bài viết nào, hãy quay lại sau nhé.</div>';
+              $content = '<br><div class="alert alert-warning">Xin lỗi, mục này hiện chưa có bài viết nào, hãy quay lại sau nhé.</div>';
             }
             echo '<div class="entry-content">'. $content . '</div>';
           }

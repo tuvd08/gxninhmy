@@ -1,19 +1,18 @@
 <div class="main_menu">
   <div class="uiHomeMenu">
       <h5 class="title">Danh Mục</h5>
-      
       <ul class="uiNavigations">  
-      
       <?php 
         $GLOBALS["pageid"] = "home";
         $GLOBALS["parentId"] = "home";
         //
         $pageid = basename(get_permalink());
-        
-        if(is_search() || strcmp($pageid, "") == 0 || strcmp($pageid, "ninhmy.net") == 0) {
+        $isHome = false;
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        if(is_search() || strcmp($pageid, "") == 0 || $actual_link == esc_url( home_url( '/' ) )) {
           $isHome = true;
         }
-        if(!$isHome) {
+        if($isHome === false) {
           $cat = get_category_by_slug($pageid);
 
           if($cat && $cat -> slug) {
