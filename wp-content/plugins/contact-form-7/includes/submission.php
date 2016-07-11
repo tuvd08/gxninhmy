@@ -71,6 +71,8 @@ class WPCF7_Submission {
 
 	private function setup_posted_data() {
 		$posted_data = (array) $_POST;
+		$posted_data = array_diff_key( $posted_data, array( '_wpnonce' => '' ) );
+		$posted_data = $this->sanitize_posted_data( $posted_data );
 
 		$tags = $this->contact_form->form_scan_shortcode();
 
@@ -89,7 +91,7 @@ class WPCF7_Submission {
 			$pipes = $tag['pipes'];
 
 			if ( WPCF7_USE_PIPE
-			&& is_a( $pipes, 'WPCF7_Pipes' )
+			&& $pipes instanceof WPCF7_Pipes
 			&& ! $pipes->zero() ) {
 				if ( is_array( $value) ) {
 					$new_value = array();
@@ -112,15 +114,28 @@ class WPCF7_Submission {
 		return $this->posted_data;
 	}
 
+	private function sanitize_posted_data( $value ) {
+		if ( is_array( $value ) ) {
+			$value = array_map( array( $this, 'sanitize_posted_data' ), $value );
+		} elseif ( is_string( $value ) ) {
+			$value = wp_check_invalid_utf8( $value );
+			$value = wp_kses_no_null( $value );
+		}
+
+		return $value;
+	}
+
 	private function submit() {
 		if ( ! $this->is( 'init' ) ) {
 			return $this->status;
 		}
 
 		$this->meta = array(
-			'remote_ip' => preg_replace( '/[^0-9a-f.:, ]/', '',
-				$_SERVER['REMOTE_ADDR'] ),
-			'user_agent' => substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ),
+			'remote_ip' => isset( $_SERVER['REMOTE_ADDR'] )
+				? preg_replace( '/[^0-9a-f.:, ]/', '', $_SERVER['REMOTE_ADDR'] )
+				: '',
+			'user_agent' => isset( $_SERVER['HTTP_USER_AGENT'] )
+				? substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ) : '',
 			'url' => preg_replace( '%(?<!:|/)/.*$%', '',
 				untrailingslashit( home_url() ) ) . wpcf7_get_request_uri(),
 			'timestamp' => current_time( 'timestamp' ),
@@ -164,10 +179,8 @@ class WPCF7_Submission {
 			return false;
 		}
 
-		$result = array(
-			'valid' => true,
-			'reason' => array(),
-			'idref' => array() );
+		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
+		$result = new WPCF7_Validation();
 
 		$tags = $this->contact_form->form_scan_shortcode();
 
@@ -176,26 +189,11 @@ class WPCF7_Submission {
 				$result, $tag );
 		}
 
-		$result = apply_filters( 'wpcf7_validate', $result );
+		$result = apply_filters( 'wpcf7_validate', $result, $tags );
 
-		if ( $result['valid'] ) {
-			return true;
-		} else {
-			foreach ( (array) $result['reason'] as $name => $reason ) {
-				$field = array( 'reason' => $reason );
+		$this->invalid_fields = $result->get_invalid_fields();
 
-				if ( isset( $result['idref'][$name] )
-				&& wpcf7_is_name( $result['idref'][$name] ) ) {
-					$field['idref'] = $result['idref'][$name];
-				} else {
-					$field['idref'] = null;
-				}
-
-				$this->invalid_fields[$name] = $field;
-			}
-
-			return false;
-		}
+		return $result->is_valid();
 	}
 
 	private function accepted() {
@@ -204,6 +202,12 @@ class WPCF7_Submission {
 
 	private function spam() {
 		$spam = false;
+
+		$user_agent = (string) $this->get_meta( 'user_agent' );
+
+		if ( strlen( $user_agent ) < 2 ) {
+			$spam = true;
+		}
 
 		if ( WPCF7_VERIFY_NONCE && ! $this->verify_nonce() ) {
 			$spam = true;
@@ -222,8 +226,8 @@ class WPCF7_Submission {
 
 	private function blacklist_check() {
 		$target = wpcf7_array_flatten( $this->posted_data );
-		$target[] = $_SERVER['REMOTE_ADDR'];
-		$target[] = $_SERVER['HTTP_USER_AGENT'];
+		$target[] = $this->get_meta( 'remote_ip' );
+		$target[] = $this->get_meta( 'user_agent' );
 
 		$target = implode( "\n", $target );
 
@@ -291,5 +295,3 @@ class WPCF7_Submission {
 		}
 	}
 }
-
-?>

@@ -11,14 +11,6 @@
 /** WordPress Administration Bootstrap */
 require_once( dirname( __FILE__ ) . '/admin.php' );
 
-if ( !defined('ABSPATHADMIN') ) {
-	define('ABSPATHADMIN', dirname(__FILE__) . '/');
-}
-if ( !defined('ABSPATH') ) {
-	define('ABSPATH',  str_replace('/wp-admin/', '', ABSPATHADMIN) . '/');
-}
-require_once( ABSPATH . 'clear_cache.php' );
-
 $parent_file = 'edit.php';
 $submenu_file = 'edit.php';
 
@@ -92,8 +84,6 @@ case 'post-quickdraft-save':
 	$_POST['comment_status'] = get_default_comment_status( $post->post_type );
 	$_POST['ping_status']    = get_default_comment_status( $post->post_type, 'pingback' );
 
-  clear_all_cache();
-
 	edit_post();
 	wp_dashboard_quick_press();
 	exit;
@@ -102,9 +92,6 @@ case 'postajaxpost':
 case 'post':
 	check_admin_referer( 'add-' . $post_type );
 	$post_id = 'postajaxpost' == $action ? edit_post() : write_post();
-
-  clear_all_cache();
-
 	redirect_post( $post_id );
 	exit();
 
@@ -205,8 +192,6 @@ case 'editpost':
 
 	$post_id = edit_post();
 
-  clear_all_cache();
-
 	// Session cookie flag that the post was saved
 	if ( isset( $_COOKIE['wp-saving-post'] ) && $_COOKIE['wp-saving-post'] === $post_id . '-check' ) {
 		setcookie( 'wp-saving-post', $post_id . '-saved', time() + DAY_IN_SECONDS, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, is_ssl() );
@@ -236,8 +221,6 @@ case 'trash':
 	if ( ! wp_trash_post( $post_id ) )
 		wp_die( __( 'Error in moving to Trash.' ) );
 
-  clear_all_cache();
-
 	wp_redirect( add_query_arg( array('trashed' => 1, 'ids' => $post_id), $sendback ) );
 	exit();
 
@@ -255,8 +238,6 @@ case 'untrash':
 
 	if ( ! wp_untrash_post( $post_id ) )
 		wp_die( __( 'Error in restoring from Trash.' ) );
-
-  clear_all_cache();
 
 	wp_redirect( add_query_arg('untrashed', 1, $sendback) );
 	exit();
@@ -281,8 +262,6 @@ case 'delete':
 		if ( ! wp_delete_post( $post_id, true ) )
 			wp_die( __( 'Error in deleting.' ) );
 	}
-
-  clear_all_cache();
 
 	wp_redirect( add_query_arg('deleted', 1, $sendback) );
 	exit();

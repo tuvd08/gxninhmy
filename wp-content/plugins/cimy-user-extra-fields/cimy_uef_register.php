@@ -666,7 +666,7 @@ function cimy_uef_sanitize_username($username, $raw_username, $strict) {
 
 function cimy_uef_validate_username($valid, $username) {
 	$options = cimy_get_options();
-	if (!in_array("username", $options["wp_hidden_fields"]) && empty($username) && cimy_uef_is_register_page()) {
+	if ($options["wp_hidden_fields"] && !in_array("username", $options["wp_hidden_fields"]) && empty($username) && cimy_uef_is_register_page()) {
 		return true;
 	}
 	return $valid;
