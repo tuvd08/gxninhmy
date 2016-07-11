@@ -70,7 +70,7 @@
           </article><!-- #post -->
         </div>
         <?php
-        if(get_the_ID() != '362') {
+        if(get_the_ID() != '362' && false) {
         ?>
         <div class="panel panel-danger uiBox">
           <div class="panel-heading">

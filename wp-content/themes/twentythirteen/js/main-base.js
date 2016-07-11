@@ -54,9 +54,10 @@
 		$('a').on('click', function(evt) {
 			var elm = $(this);
 			var href = elm.attr('href');
+      var clazz = elm.attr('class');
 			var isAjax = (href.indexOf('/') > 0 && href.indexOf('register') < 0)
 						 && elm.hasClass('image-box') === false
-						 && elm.attr('class').indexOf('img-') < 0
+						 && (!clazz || clazz.indexOf('img-') < 0)
 						 && elm.parents('#wpadminbar').length === 0
 						 && elm.hasClass('dropdown-toggle') === false
 						 && elm.hasClass('post-edit-link') === false;

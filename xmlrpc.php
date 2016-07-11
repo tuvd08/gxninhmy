@@ -5,6 +5,18 @@
  * @package WordPress
  */
 
+$RQ = (isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : "GET";
+
+if($RQ && (strtolower($RQ) === 'post')) {
+  $IP = $_SERVER['REMOTE_ADDR'];
+  $URL_ = "http://ipinfo.io/".$IP."/json";
+  $homepage = @file_get_contents($URL_);
+  if($homepage && strrpos(strtolower($homepage), 'vn') === false) {
+    echo "You are not Vietnames bye bye";
+    header('Location: https://www.google.com/');
+    exit();
+  }
+}
 /**
  * Whether this is an XML-RPC Request
  *

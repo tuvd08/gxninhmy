@@ -6,6 +6,21 @@
  * @subpackage Twenty_Thirteen
  * @since Twenty Thirteen 1.0
  */
+$path=$_SERVER['REQUEST_URI'];//svbuichu.com
+//
+
+if (strrpos($path, 'svbuichu.com') !== FALSE || strrpos($path, 'www') !== FALSE) {
+  header('Location: http:/' . $_SERVER['REQUEST_URI']);
+  exit();
+}
+
+if (strrpos($path, 'suyniem') !== FALSE) {//
+  $path = $_SERVER['DOCUMENT_ROOT'] . str_replace('%20', '-',$_SERVER['REQUEST_URI']);
+  if(file_exists($path) !== FALSE) {
+    header('Location: http://ninhmy.net' . str_replace(' ', '-', str_replace('%20', '-',$_SERVER['REQUEST_URI'])));
+    exit();
+  }
+}
 
 get_header(); ?>
 

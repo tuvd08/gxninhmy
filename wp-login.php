@@ -9,7 +9,22 @@
  */
 
 /** Make sure that the WordPress bootstrap has run before continuing. */
+
+
 require( dirname(__FILE__) . '/wp-load.php' );
+
+$IP = $_SERVER['REMOTE_ADDR'];
+//$IP='185.45.13.147';
+//http://ipinfo.io/185.45.13.147/json
+
+$URL_ = "http://ipinfo.io/".$IP."/json";
+//$homepage = @file_get_contents($URL_);
+//if($homepage && strrpos(strtolower($homepage), 'vn') === false) {
+//  echo "You are not Vietnames bye bye";
+//  header('Location: https://www.google.com/');
+//  exit();
+//}
+//
 
 // Redirect to https login if forced to use SSL
 if ( force_ssl_admin() && ! is_ssl() ) {
@@ -66,6 +81,7 @@ function login_header( $title = 'Log In', $message = '', $wp_error = '' ) {
 	<head>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
 	<title><?php bloginfo('name'); ?> &rsaquo; <?php echo $title; ?></title>
+
 	<?php
 
 	wp_admin_css( 'login', true );
@@ -146,6 +162,18 @@ function login_header( $title = 'Log In', $message = '', $wp_error = '' ) {
 	$classes = apply_filters( 'login_body_class', $classes, $action );
 
 	?>
+  <script type="text/javascript">
+  function checkCountry(json) {
+    if(typeof json == 'object' && json.country) {
+      var country = json.country;
+      if(country.toLowerCase() != 'vn') {
+        window.location.replace("https://google.com/");
+      }
+    }
+  }
+  </script>
+  <script type="text/javascript" src="http://ipinfo.io/json?callback=checkCountry"></script>
+
 	</head>
 	<body class="login <?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 	<div id="login">
@@ -711,8 +739,7 @@ case 'register' :
 	$redirect_to = apply_filters( 'registration_redirect', $registration_redirect );
 	login_header(__('Registration Form'), '<p class="message register">' . __('Register For This Site') . '</p>', $errors);
 ?>
-
-<form name="registerform" id="registerform" action="<?php echo esc_url( wp_registration_url() ); ?>" method="post" novalidate="novalidate">
+<form name="registerform" id="registerform" action="<?php echo esc_url( site_url( 'wp-login.php?action=register', 'login_post' ) ); ?>" method="post" novalidate="novalidate">
 	<p>
 		<label for="user_login"><?php _e('Username') ?><br />
 		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr(wp_unslash($user_login)); ?>" size="20" /></label>
@@ -878,7 +905,7 @@ default:
 	}
 ?>
 
-<form name="loginform" id="loginform" action="<?php echo esc_url( wp_login_url() ); ?>" method="post">
+<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
 	<p>
 		<label for="user_login"><?php _e('Username') ?><br />
 		<input type="text" name="log" id="user_login"<?php echo $aria_describedby_error; ?> class="input" value="<?php echo esc_attr( $user_login ); ?>" size="20" /></label>

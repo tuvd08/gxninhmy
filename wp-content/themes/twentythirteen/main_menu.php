@@ -109,7 +109,7 @@
       <li class="list-group-item" id="all"><span class="lb">Tất cả(4/4/2014)</span></li>
     </ul>
     <?php
-    if(function_exists('isMobie') === false || (isMobie() === false)) {
+    if((function_exists('isMobie') === false || (isMobie() === false)) && function_exists('get_the_album')) {
     ?>
       <h5 class="title" style="border-top:1px solid #cccccc">
         <a target="_blank" href="https://plus.google.com/photos/+Gi%C3%A1oX%E1%BB%A9NinhM%E1%BB%B9/albums/5133683255739020865">
@@ -125,6 +125,15 @@
     <?php
     }
     ?>
+    <h5 class="title" style="border-top:1px solid #cccccc">Lịch Công Giáo</h5>
+    <ul class="list-group statistic"> 
+      <li class="list-group-item"><span class="lb">Windown phone app</span></li>
+      <li class="list-group-item">
+        <a href="https://goo.gl/njCsf9" target="_blank">
+          <img alt="Lịch Công Giáo" src="https://store-images.s-microsoft.com/image/apps.37283.13510798887416606.5e21f19b-0923-4b78-ac4f-b5adf47a1316.0c030eed-9c3e-409d-9a46-38f18e3773c6?w=580&h=326&q=60"/>
+        </a>
+      </li>
+    </ul>
     <div style="border-top:1px solid #cccccc; height:1px;"></div>
   </div>
 

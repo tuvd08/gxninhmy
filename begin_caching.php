@@ -32,6 +32,7 @@
     for ($i = 0; $i < count($ignore_list); $i++) {
         $ignore_page = (strpos($page, $ignore_list[$i]) !== false) ? true : $ignore_page;
     }
+//$ignore_page=true;
     $cachefile_created = ((@file_exists($cachefile)) and ($ignore_page === false)) ? @filemtime($cachefile) : 0;
     @clearstatcache();
     // Show file from cache if still valid

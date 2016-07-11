@@ -658,7 +658,7 @@ function cimy_registration_captcha_check($user_login, $user_email, $errors) {
 
 function cimy_uef_sanitize_username($username, $raw_username, $strict) {
 	$options = cimy_get_options();
-	if (!in_array("username", $options["wp_hidden_fields"]) && !empty($_POST['user_email']) && is_email($_POST['user_email']) && cimy_uef_is_register_page()) {
+	if ($options["wp_hidden_fields"] && !in_array("username", $options["wp_hidden_fields"]) && !empty($_POST['user_email']) && is_email($_POST['user_email']) && cimy_uef_is_register_page()) {
 		$username = $_POST['user_email'];
 	}
 	return $username;

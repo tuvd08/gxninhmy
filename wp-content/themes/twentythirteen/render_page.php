@@ -26,6 +26,9 @@ $pageid = basename(get_permalink());
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<header class="entry-header">
 						<h1 class="entry-title"><a style="text-decoration:none" href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h1>
+						<div class="entry-meta">
+							<?php twentythirteen_entry_meta(); ?>
+						</div><!-- .entry-meta -->
 					</header><!-- .entry-header -->
 
 					<div class="entry-content">
