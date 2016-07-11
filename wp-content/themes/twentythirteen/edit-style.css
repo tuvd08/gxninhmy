@@ -51,7 +51,7 @@ body {
 .uiHomeMenu .uiNavigations .navItemSelected:after{background:#567ab6;border:1px solid #224886;border-left:0;-webkit-box-shadow:inset -1px 0px 2px rgba(255, 255, 255, 0.14);-moz-box-shadow:inset -1px 0px 2px rgba(255, 255, 255, 0.14);box-shadow:inset -1px 0px 2px rgba(255, 255, 255, 0.14);content:"";height:34px;left:0;top:-1px;position:absolute;width:5px;}
 .uiHomeMenu .uiNavigations .navItemSelected>a{font-weight:bold;}
 .uiHomeMenu .uiNavigations>li.navItem:hover{background:#f5f5f5;}
-.uiHomeMenu .uiNavigations>li>a{display:block;width:auto;color:#808080;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uiHomeMenu .uiNavigations>li>a{display:block;width:auto;color:#4c4c4c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .uiHomeMenu .uiNavigations>li>a>i{margin-right:8px;}
 .uiHomeMenu .uiNavigations>li>a:hover{color:#2f5e92; text-decoration: none;}
 

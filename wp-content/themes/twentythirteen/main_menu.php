@@ -127,9 +127,11 @@
     ?>
     <h5 class="title" style="border-top:1px solid #cccccc">Lịch Công Giáo</h5>
     <ul class="list-group statistic"> 
-      <li class="list-group-item"><span class="lb">Windown phone app</span></li>
+      <li class="list-group-item"><a  target="_blank" href="https://itunes.apple.com/us/app/id1111434451"><span class="lb" style="display:inline">IPhone app</span></a></li>
+      <li class="list-group-item"><a  target="_blank" href="https://play.google.com/store/apps/details?id=com.tech.christian.calendar"><span class="lb" style="display:inline">Android app</span></a></li>
+      <li class="list-group-item"><a  target="_blank" href="https://www.microsoft.com/vi-vn/store/apps/lich-cong-giao-2016/9nblggh4wsxg"><span class="lb" style="display:inline">Windown phone app</span></a></li>
       <li class="list-group-item">
-        <a href="https://goo.gl/njCsf9" target="_blank">
+        <a href="https://play.google.com/store/apps/details?id=com.tech.christian.calendar&hl=vi" target="_blank">
           <img alt="Lịch Công Giáo" src="https://store-images.s-microsoft.com/image/apps.37283.13510798887416606.5e21f19b-0923-4b78-ac4f-b5adf47a1316.0c030eed-9c3e-409d-9a46-38f18e3773c6?w=580&h=326&q=60"/>
         </a>
       </li>

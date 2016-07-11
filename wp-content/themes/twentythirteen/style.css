@@ -870,20 +870,23 @@ div.nav-menu > ul {
 
 .nav-menu li:hover > a,
 .nav-menu li a:hover {
-	background-color: #220e10;
-	color: #fff;
+	background-color: #f5f5f5;
+	color: #2f5e92;
 }
 
 .nav-menu .sub-menu,
 .nav-menu .children {
 	background-color: #220e10;
 	border: 2px solid #f7f5e7;
-	border-top: 0;
 	display: none;
 	padding: 0;
 	position: absolute;
 	left: -2px;
 	z-index: 99999;
+	border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	border-top: 0;
 }
 
 .nav-menu .sub-menu ul,
@@ -895,14 +898,16 @@ div.nav-menu > ul {
 
 ul.nav-menu ul a,
 .nav-menu ul ul a {
-	color: #fff;
+	color: #7b7b7b;
 	margin: 0;
-	width: 200px;
+	width: 240px;
+	padding: 10px 20px;
+	background: #f0f0f0;
 }
 
 ul.nav-menu ul a:hover,
 .nav-menu ul ul a:hover {
-	background-color: #db572f;
+	background-color: #f5f5f5;
 }
 
 ul.nav-menu li:hover > ul,
